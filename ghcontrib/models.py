@@ -12,3 +12,14 @@ class Repo(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Commit(models.Model):
+    repo = models.ForeignKey(Repo, related_name='commits')
+    url = models.URLField()
+    date = models.DateTimeField()
+    message = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.message
+

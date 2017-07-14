@@ -4,5 +4,8 @@
 {% load static %}
 
 {% block content %}
-
+<h3>Users</h3>
+{% for username in usernames %}
+  <div><a href="{% url 'repos' username %}">{{ username }}</a></div>
+{% endfor %}
 {% endblock %}

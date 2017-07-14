@@ -1,33 +1,27 @@
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
-from .mixins import TemplateAnonymousView, TemplateView
-from ..models import Repo
+from .mixins import TemplateAnonymousView, TemplateView, AjaxView
+from ..models import Repo, Commit, User
+from ..commit_data_loader import load_commit_data
+
 
 class HomeView(TemplateAnonymousView):
     template_name = 'home.html'
+    def get_context_data(self):
+        return {'usernames': User.objects.exclude(username='admin').values_list('username', flat=True)}
 
 
 class ReposView(TemplateAnonymousView):
     template_name = 'repos.html'
-    def get_context_data(self):
-        return {'users': paginate(self.users, self.request.GET.get('page'),
-                                  settings.PEOPLE_ON_PAGE)}
-
-    def get(self, *args, **kwargs):
-        self.users = self.request.user.get_users(sort=True)
-        return super().get(*args, **kwargs)
+    def get_context_data(self, username):
+        return {'repos': User.objects.get(username=username).repos.all(), 'username': username}
 
 
 class MyReposView(TemplateView):
-    template_name = 'my_repos.html'
-    def get_context_data(self):
-        return {'users': paginate(self.users, self.request.GET.get('page'),
-                                  settings.PEOPLE_ON_PAGE)}
-
+    template_name = ''
     def get(self, *args, **kwargs):
-        self.users = self.request.user.get_users(sort=True)
-        return super().get(*args, **kwargs)
+        return redirect(reverse('repos', args=(self.request.user.username,)))
 
 
 class MyReposEditView(TemplateView):
@@ -46,11 +40,24 @@ class AddRepoView(TemplateView):
         return redirect(reverse('my_repos_edit'))
 
 
-class DeleteRepoView(TemplateView):
-    template_name = ''
+class DeleteRepoView(AjaxView):
     def post(self, *args, **kwargs):
         id = self.request.POST['id']
         user = self.request.user
         if user.repos.filter(pk=id).exists():
             Repo.objects.filter(pk=id).delete()
         return redirect(reverse('my_repos_edit'))
+
+
+class LoadCommitDataView(TemplateView):
+    template_name = ''
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        repos = user.repos.all()
+        for repo in repos:
+            commit_data = load_commit_data(user.username, repo.name)
+            Commit.objects.filter(repo=repo).delete()
+            for commit in commit_data:
+                Commit.objects.create(repo=repo, url=commit['url'], message=commit['message'], date=commit['date'])
+        return redirect(reverse('my_repos_edit'))
+

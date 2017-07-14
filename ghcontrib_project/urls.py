@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.contrib.auth.views import login
 # from django.views.i18n import javascript_catalog
 from ghcontrib.views.user import logout_view, PreferencesView
-from ghcontrib.views.ghcontrib import HomeView, ReposView, MyReposView, MyReposEditView, AddRepoView, DeleteRepoView
+from ghcontrib.views.ghcontrib import (HomeView, ReposView, MyReposView, MyReposEditView, AddRepoView,
+                                       DeleteRepoView, LoadCommitDataView)
 
 
 admin.autodiscover()
@@ -47,7 +48,9 @@ urlpatterns = [
     url(r'^delete-repo/$', DeleteRepoView.as_view(), name='delete_repo'),
     url(r'^add-repo/$', AddRepoView.as_view(), name='add_repo'),
     url(r'^my-repos/$', MyReposView.as_view(), name='my_repos'),
-    url(r'^[\w\d_-]+/$', ReposView.as_view(), name='repos'),
+    url(r'^load-commit-data/$', LoadCommitDataView.as_view(), name='load_commit_data'),
+    url(r'^(?P<username>[\w\d_-]+)/$', ReposView.as_view(), name='repos'),
+
 ]
 
 if settings.DEBUG:
