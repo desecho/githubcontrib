@@ -1,0 +1,5 @@
+Django==1.11
+django-braces==1.11.0
+django-simple-menu==1.2.1
+mysqlclient==1.3.10
+social-auth-app-django==1.1.0

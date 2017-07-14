@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<form action="{% url 'add_repo' %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="name" class="form-control col-3" placeholder="Name">
+  <button type="submit" class="btn btn-primary col-3">Add</button>
+</form>
+<br>
+{% for repo in repos %}
+  <div>{{ repo }} <a href="javascript:void(0)" onclick="deleteRepo({{ repo.pk }}, this)"><i class="fa fa-trash"></i></a></div>
+{% endfor%}
+{% endblock %}
+
+{% block js %}
+<script>
+  const urlDeleteRepo = '{% url 'delete_repo' %}';
+</script>
+<script src="{% static 'js/my_repos_edit.js' %}"></script>
+{% endblock %}
