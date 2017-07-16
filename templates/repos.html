@@ -6,7 +6,7 @@
 {% block content %}
 <h3>{{ username }}</h3>
 {% for repo in repos %}
-  <div>{{ repo }} </div>
+  <div class="bold">{{ repo }}</div>
   {% for commit in repo.commits.all %}
     <div class="ml-5">{{ commit.message }} / {{ commit.date }} / <a href="{{ commit.url }}" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i>
 </a></div>
