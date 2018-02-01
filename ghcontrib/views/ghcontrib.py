@@ -1,9 +1,9 @@
-from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
-from .mixins import TemplateAnonymousView, TemplateView, AjaxView
-from ..models import Repo, Commit, User
 from ..commit_data_loader import load_commit_data
+from ..models import Commit, Repo, User
+from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
 class HomeView(TemplateAnonymousView):
@@ -60,4 +60,3 @@ class LoadCommitDataView(TemplateView):
             for commit in commit_data:
                 Commit.objects.create(repo=repo, url=commit['url'], message=commit['message'], date=commit['date'])
         return redirect(reverse('my_repos_edit'))
-

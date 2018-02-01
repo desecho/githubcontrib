@@ -17,11 +17,13 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import login
-# from django.views.i18n import javascript_catalog
-from ghcontrib.views.user import logout_view, PreferencesView
-from ghcontrib.views.ghcontrib import (HomeView, ReposView, MyReposView, MyReposEditView, AddRepoView,
-                                       DeleteRepoView, LoadCommitDataView)
 
+from ghcontrib.views.ghcontrib import (
+    AddRepoView, DeleteRepoView, HomeView, LoadCommitDataView, MyReposEditView,
+    MyReposView, ReposView,
+)
+# from django.views.i18n import javascript_catalog
+from ghcontrib.views.user import PreferencesView, logout_view
 
 admin.autodiscover()
 

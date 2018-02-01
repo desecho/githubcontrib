@@ -199,4 +199,3 @@ try:
     from local_settings2 import *  # noqa pylint: disable=wildcard-import
 except ImportError:
     pass
-
