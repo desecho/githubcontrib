@@ -14,6 +14,6 @@ Installation
 
 .. code:: bash
 
-    mkvirtualenv -p /usr/bin/python3.5 ghcontrib
+    mkvirtualenv -p /usr/bin/python3.6 ghcontrib
     bower install
     pip install -r requirements.txt
