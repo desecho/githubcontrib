@@ -3,7 +3,7 @@ from dateutil import parser
 
 
 def load_commit_data(username, repo):
-    url = 'https://api.github.com/search/commits?q=author:%s+repo:%s+sort:author-date-desc' % (username, repo)
+    url = f'https://api.github.com/search/commits?q=author:{username}+repo:{repo}+sort:author-date-desc'
     r = requests.get(url, headers={'Accept': 'application/vnd.github.cloak-preview'});
     commits = r.json()['items']
     commit_data = []
