@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import os.path as op
+import sys
 
 try:
     import local_settings
