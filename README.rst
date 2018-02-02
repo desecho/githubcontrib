@@ -1,9 +1,10 @@
-GitHubContrub
+GitHubContrib
 ==========================================================
 
 Development
 
 .. code:: bash
+
     pip install -r requirements.txt
 
 Use `clean.sh` to automatically "isort" your code.
