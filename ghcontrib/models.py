@@ -7,7 +7,7 @@ class User(AbstractUser):
 
 
 class Repo(models.Model):
-    user = models.ForeignKey(User, related_name='repos')
+    user = models.ForeignKey(User, models.CASCADE, related_name='repos')
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -15,7 +15,7 @@ class Repo(models.Model):
 
 
 class Commit(models.Model):
-    repo = models.ForeignKey(Repo, related_name='commits')
+    repo = models.ForeignKey(Repo, models.CASCADE, related_name='commits')
     url = models.URLField()
     date = models.DateTimeField()
     message = models.CharField(max_length=255)
