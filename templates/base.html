@@ -23,6 +23,7 @@
   <div id="content" class="container-fluid mt-3">
     {% block content %}{% endblock %}
   </div>
+  <script src="{% url 'javascript-catalog' %}"></script>
   <script src="{% static 'bower/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'bower/jgrowl/jquery.jgrowl.min.js' %}"></script>
   <script src="{% static 'bower/tether/dist/js/tether.min.js' %}"></script>
