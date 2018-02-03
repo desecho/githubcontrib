@@ -1,6 +1,5 @@
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.shortcuts import get_object_or_404
 
 from ..commit_data_loader import load_commit_data
 from ..models import Commit, Repo, User

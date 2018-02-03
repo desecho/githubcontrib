@@ -4,6 +4,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import login
 from django.views.i18n import JavaScriptCatalog
+
 from ghcontrib.views.ghcontrib import (
     AddRepoView,
     DeleteRepoView,
@@ -37,7 +38,6 @@ urlpatterns = [
         name='javascript-catalog'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^(?P<username>[\w\d_-]+)/$', ReposView.as_view(), name='repos'),
-
 ]
 
 if settings.DEBUG:
