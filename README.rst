@@ -1,20 +1,19 @@
 GitHubContrib
 ==========================================================
 
+The web application on Python/Django, jQuery, Bootstrap. It allows you to have a profile page with your opensource contributions.
+
+Installation instructions
+----------------------------
+
+1. Use ansible-playbook-server_ to deploy.
+2. Do git clone.
+
 Development
+--------------
 
-.. code:: bash
+| Use `clean.sh` to automatically prettify your code.
+| Use `tox` for testing and linting.
 
-    pip install -r requirements.txt
 
-Use `clean.sh` to automatically "isort" your code.
-Use `tox` for testing and linting.
-
-Installation
-----------------
-
-.. code:: bash
-
-    mkvirtualenv -p /usr/bin/python3.6 ghcontrib
-    bower install
-    pip install -r requirements.txt
+.. _ansible-playbook-server: https://github.com/desecho/ansible-playbook-server
