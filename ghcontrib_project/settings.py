@@ -49,16 +49,13 @@ SECRET_KEY = local_settings.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = local_settings.DEBUG
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 ALLOWED_HOSTS = [local_settings.PROJECT_DOMAIN]
-
 
 # Application definition
 
@@ -80,7 +77,6 @@ if DEBUG:
         'template_timings_panel',
     ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -94,14 +90,12 @@ MIDDLEWARE = [
 if DEBUG:
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
-
 ROOT_URLCONF = 'ghcontrib_project.urls'
-
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': (os.path.join(BASE_DIR, 'templates'),),
+        'DIRS': (os.path.join(BASE_DIR, 'templates'), ),
         'OPTIONS': {
             'context_processors': (
                 'django.contrib.auth.context_processors.auth',
@@ -119,7 +113,8 @@ TEMPLATES = [
                     'django.template.loaders.app_directories.Loader',
                 ]),
             ],
-            'debug': DEBUG
+            'debug':
+            DEBUG
         },
     },
 ]
@@ -131,7 +126,6 @@ if DEBUG:
     ]
 
 WSGI_APPLICATION = 'ghcontrib_project.wsgi.application'
-
 
 STATIC_ROOT = op.join(local_settings.PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
@@ -162,7 +156,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -175,7 +168,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

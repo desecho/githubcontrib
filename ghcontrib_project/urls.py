@@ -5,8 +5,13 @@ from django.contrib import admin
 from django.contrib.auth.views import login
 
 from ghcontrib.views.ghcontrib import (
-    AddRepoView, DeleteRepoView, HomeView, LoadCommitDataView, MyReposEditView,
-    MyReposView, ReposView,
+    AddRepoView,
+    DeleteRepoView,
+    HomeView,
+    LoadCommitDataView,
+    MyReposEditView,
+    MyReposView,
+    ReposView,
 )
 from ghcontrib.views.user import PreferencesView, logout_view
 
@@ -20,9 +25,7 @@ urlpatterns = [
     url(r'^logout/$', logout_view, name='logout'),
     # Preferences
     url(r'^preferences/$', PreferencesView.as_view(), name='preferences'),
-
     url(r'^admin/', admin.site.urls),
-
     url('', include('social_django.urls', namespace='social')),
     url(r'^my-repos/edit/$', MyReposEditView.as_view(), name='my_repos_edit'),
     url(r'^delete-repo/$', DeleteRepoView.as_view(), name='delete_repo'),

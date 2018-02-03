@@ -1,5 +1,5 @@
-from django.urls import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 
 from ..commit_data_loader import load_commit_data
 from ..models import Commit, Repo, User
@@ -24,7 +24,7 @@ class MyReposView(TemplateView):
     template_name = ''
 
     def get(self, *args, **kwargs):
-        return redirect(reverse('repos', args=(self.request.user.username,)))
+        return redirect(reverse('repos', args=(self.request.user.username, )))
 
 
 class MyReposEditView(TemplateView):
@@ -46,7 +46,6 @@ class AddRepoView(TemplateView):
 
 
 class DeleteRepoView(AjaxView):
-
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         id_ = self.request.POST['id']
         user = self.request.user

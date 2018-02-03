@@ -20,7 +20,9 @@ class Migration(migrations.Migration):
                 ('url', models.URLField()),
                 ('date', models.DateTimeField()),
                 ('message', models.CharField(max_length=255)),
-                ('repo', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='commits', to='ghcontrib.Repo')),
+                ('repo',
+                 models.ForeignKey(
+                     on_delete=django.db.models.deletion.CASCADE, related_name='commits', to='ghcontrib.Repo')),
             ],
         ),
     ]
