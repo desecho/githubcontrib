@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
 
 from ..commit_data_loader import load_commit_data
 from ..models import Commit, Repo, User
@@ -17,7 +18,8 @@ class ReposView(TemplateAnonymousView):
     template_name = 'repos.html'
 
     def get_context_data(self, username):
-        return {'repos': User.objects.get(username=username).repos.all(), 'username': username}
+        user = get_object_or_404(User, username=username)
+        return {'repos': user.repos.all(), 'username': username}
 
 
 class MyReposView(TemplateView):
