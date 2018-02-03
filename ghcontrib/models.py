@@ -13,6 +13,9 @@ class Repo(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class Commit(models.Model):
     repo = models.ForeignKey(Repo, models.CASCADE, related_name='commits')
@@ -22,3 +25,6 @@ class Commit(models.Model):
 
     def __str__(self):
         return self.message
+
+    class Meta:
+        ordering = ['-date']
