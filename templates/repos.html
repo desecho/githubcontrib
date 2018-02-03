@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-<h3>{{ username }}</h3>
+<h3>{{ username }} <a href="https://github.com/{{ username }}" target="_blank"><i class="fa fa-github"></i></a></h3>
 {% for repo in repos %}
   <div class="repo">{{ repo }}</div>
   {% for commit in repo.commits.all %}
