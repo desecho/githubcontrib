@@ -1,9 +1,13 @@
+import re
+
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 
-from ..commit_data_loader import load_commit_data
+from ..github import Github
 from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
+
+ERROR_REPOSITORY_NOT_FOUND = 'Repository not found'
 
 
 class HomeView(TemplateAnonymousView):
@@ -31,19 +35,27 @@ class MyReposView(TemplateView):
 class MyReposEditView(TemplateView):
     template_name = 'my_repos_edit.html'
 
-    def get_context_data(self):
-        return {'repos': self.request.user.repos.all()}
+    def get_context_data(self, **kwargs):
+        kwargs['repos'] = self.request.user.repos.all()
+        return kwargs
 
 
-class AddRepoView(TemplateView):
-    template_name = ''
-
+class AddRepoView(MyReposEditView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
-        name = self.request.POST['name']
-        user = self.request.user
-        if not user.repos.filter(name=name).exists():
-            Repo.objects.create(name=name, user=user)
-        return redirect(reverse('my_repos_edit'))
+        def add_repo():
+            name = self.request.POST['name']
+            if re.match('.+/.+', name) is not None:
+                if Github().repo_exists(name):
+                    user = self.request.user
+                    if not user.repos.filter(name=name).exists():
+                        Repo.objects.create(name=name, user=user)
+                    return True
+            return False
+
+        result = add_repo()
+        if not result:
+            kwargs['error'] = ERROR_REPOSITORY_NOT_FOUND
+        return self.get(*args, **kwargs)
 
 
 class DeleteRepoView(AjaxView):
@@ -55,15 +67,18 @@ class DeleteRepoView(AjaxView):
         return redirect(reverse('my_repos_edit'))
 
 
-class LoadCommitDataView(TemplateView):
-    template_name = ''
-
+class LoadCommitDataView(MyReposEditView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         user = self.request.user
         repos = user.repos.all()
+        gh = Github()
         for repo in repos:
-            commit_data = load_commit_data(user.username, repo.name)
+            commit_data = gh.get_commit_data(user.username, repo.name)
+            if commit_data is None:
+                kwargs['error'] = ERROR_REPOSITORY_NOT_FOUND
+                kwargs['repo'] = repo.name
+                break
             Commit.objects.filter(repo=repo).delete()
             for commit in commit_data:
                 Commit.objects.create(repo=repo, url=commit['url'], message=commit['message'], date=commit['date'])
-        return redirect(reverse('my_repos_edit'))
+        return self.get(*args, **kwargs)

@@ -4,6 +4,12 @@
 {% load static %}
 
 {% block content %}
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  Repository {{ repo }} not found.
+</div>
+{% endif %}
+
 <form action="{% url 'add_repo' %}" method="post">
   {% csrf_token %}
   <input type="text" name="name" class="form-control col-3" placeholder="Name">

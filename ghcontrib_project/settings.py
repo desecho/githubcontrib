@@ -187,6 +187,8 @@ LOGIN_URL = '/login/'
 SOCIAL_AUTH_GITHUB_KEY = local_settings.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = local_settings.SOCIAL_AUTH_GITHUB_SECRET
 
+GITHUB_API_KEY = local_settings.GITHUB_API_KEY
+
 # This is here to fix the problem with static files on dev
 try:
     from local_settings2 import *  # noqa pylint: disable=wildcard-import
