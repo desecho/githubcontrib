@@ -9,19 +9,13 @@ from .fixtures import (
     commits1_output,
     commits2_output_page1,
     commits2_output_page2,
-    commits_jieter,
     commits_python_social_auth,
     repo,
     url_page1,
     url_page2,
     username,
 )
-from .fixtures.commit_items import (
-    commits1_items,
-    commits2_items_page1,
-    commits2_items_page2,
-    commits2_items_total,
-)
+from .fixtures.commit_items import commits1_items, commits2_items_total
 
 github_mock = flexmock(spec=github.Github)
 ghcontrib_github_mock = flexmock(spec=Github)
@@ -67,7 +61,7 @@ def test_load_commits_one_page():
     response_mock = flexmock()
     response_mock.should_receive('json').and_return(commits1_output)
     requests_mock.should_receive('get').and_return(response_mock)
-    result = gh._load_commits(username, repo, 1, [])
+    result = gh._load_commits(username, repo, 1, [])  # pylint: disable=protected-access
     assert result == commits1_items
 
 
@@ -81,7 +75,7 @@ def test_load_commits_two_pages():
     response_mock_page2.should_receive('json').and_return(commits2_output_page2)
     requests_mock.should_receive('get').with_args(url_page2, headers=gh.HEADERS).and_return(response_mock_page2)
 
-    result = gh._load_commits('desecho', 'desecho/movies', 1, [])
+    result = gh._load_commits('desecho', 'desecho/movies', 1, [])  # pylint: disable=protected-access
     assert result == commits2_items_total
 
 

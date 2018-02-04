@@ -21,7 +21,8 @@ class BaseTestCase(TestCase):
     def get_json(self, response):
         return json.loads(self.get_content(response))
 
-    def get_user_model(self):
+    @staticmethod
+    def get_user_model():
         return get_user_model()
 
     def setUp(self):
