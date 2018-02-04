@@ -35,10 +35,12 @@ urlpatterns += [
     # User
     url(r'^login/$', login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
+
     # Preferences
     url(r'^preferences/$', PreferencesView.as_view(), name='preferences'),
     url(r'^save-preferences/$', SavePreferencesView.as_view(), name='save_preferences'),
-    # Internal
+
+    # Services
     url(r'^admin/', admin.site.urls),
     url('', include('social_django.urls', namespace='social')),
     url(r'^jsi18n/$',
@@ -50,7 +52,6 @@ urlpatterns += [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^my-repositories/$', MyReposView.as_view(), name='my_repos'),
     url(r'^my-contributions/$', MyContribsView.as_view(), name='my_contribs'),
-    # AJAX
     url(r'^delete-repository/$', DeleteRepoView.as_view(), name='delete_repo'),
     url(r'^add-repository/$', AddRepoView.as_view(), name='add_repo'),
     url(r'^load-commit-data/$', LoadCommitDataView.as_view(), name='load_commit_data'),

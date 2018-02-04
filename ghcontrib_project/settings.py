@@ -22,18 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = local_settings.DEBUG
 INTERNAL_IPS = local_settings.INTERNAL_IPS
 DEBUG_TOOLBAR_PANELS = [
-    # 'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
-    # 'debug_toolbar.panels.settings.SettingsPanel',
-    # 'debug_toolbar.panels.headers.HeadersPanel',
-    # 'debug_toolbar.panels.request.RequestPanel',
     'debug_toolbar.panels.sql.SQLPanel',
-    # 'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    # 'debug_toolbar.panels.templates.TemplatesPanel',
-    # 'debug_toolbar.panels.cache.CachePanel',
     'debug_toolbar.panels.signals.SignalsPanel',
-    # 'debug_toolbar.panels.logging.LoggingPanel',
-    # 'debug_toolbar.panels.redirects.RedirectsPanel',
     'template_timings_panel.panels.TemplateTimings.TemplateTimings',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
@@ -96,7 +87,7 @@ if not DEBUG:  # pragma: no cover
         },
         'handlers': {
             'sentry': {
-                'level': 'ERROR',  # To capture more than ERROR, change to WARNING, INFO, etc.
+                'level': 'ERROR',
                 'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
                 'tags': {
                     'custom-tag': 'x'
@@ -190,25 +181,30 @@ AUTHENTICATION_BACKENDS = (
 
 # Internationalization
 LANGUAGE_CODE = 'en'
-TIME_ZONE = 'US/Eastern'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
 LANGUAGES = (
     ('en', 'English'),
     ('ru', 'Русский'),
 )
 LOCALE_PATHS = (op.join(local_settings.PROJECT_ROOT, 'project', 'locale'), )
 
-# Loggin
+# Timezone
+TIME_ZONE = 'US/Eastern'
+USE_TZ = True
+
+# Login
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-# Social
+# --== Project settings ==--
+
+# API Keys
+GITHUB_API_KEY = local_settings.GITHUB_API_KEY
+
+# Secrets
 SOCIAL_AUTH_GITHUB_KEY = local_settings.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = local_settings.SOCIAL_AUTH_GITHUB_SECRET
-
-GITHUB_API_KEY = local_settings.GITHUB_API_KEY
 
 # This is here to fix the problem with static files on dev
 try:

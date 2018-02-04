@@ -8,7 +8,6 @@ class BaseTestCase(TestCase):
     fixtures = [
         'users.json',
     ]
-
     USER_USERNAME = 'neo'
     USER_PASSWORD = 'password'
     # Superuser - admin/adminpassword
