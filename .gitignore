@@ -11,3 +11,4 @@ env
 local_settings.py
 db.sqlite3
 ghcontrib/static/bower/
+.pytest_cache/
