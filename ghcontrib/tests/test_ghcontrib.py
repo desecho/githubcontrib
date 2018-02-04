@@ -8,5 +8,5 @@ class GithubContribTestCase(BaseTestLoginCase):
         url = reverse('home')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertListEqual(list(response.context_data['usernames']), ['fox', 'ironman', 'neo'])
+        self.assertListEqual(list(response.context_data['usernames']), ['fox', 'ironman'])
 

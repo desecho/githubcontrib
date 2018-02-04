@@ -13,7 +13,11 @@ class HomeView(TemplateAnonymousView):
     template_name = 'home.html'
 
     def get_context_data(self):
-        return {'usernames': User.objects.exclude(username='admin').values_list('username', flat=True)}
+        users = User.objects.exclude(username='admin')
+        user = self.request.user
+        if user.is_authenticated:
+            users = users.exclude(pk=user.pk)
+        return {'usernames': users.values_list('username', flat=True)}
 
 
 class ContribsView(TemplateAnonymousView):
