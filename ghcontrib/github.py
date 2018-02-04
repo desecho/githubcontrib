@@ -6,6 +6,11 @@ from github.GithubException import UnknownObjectException
 
 
 class Github:
+    # The limit is set by GitHub
+    MAX_NUMBER_OF_ITEMS = 100
+    BASE_URL = 'https://api.github.com'
+    HEADERS = {'Accept': 'application/vnd.github.cloak-preview'}
+
     def __init__(self):
         self.gh = github.Github(settings.GITHUB_API_KEY)
 
@@ -23,13 +28,24 @@ class Github:
             return False
         return True
 
+    def _load_commits(self, username, repo, page, commits_total):
+        # Use sort filter here because we want to make sure we can use pagination consistently.
+        url = (f'{self.BASE_URL}/search/commits?access_token={settings.GITHUB_API_KEY}&'
+               f'q=author:{username}+repo:{repo}+sort:author-date-desc&'
+               f'per_page={self.MAX_NUMBER_OF_ITEMS}&page={page}')
+        r = requests.get(url, headers=self.HEADERS)
+        commits = r.json()['items']
+        commits_total += commits
+        if len(commits) == self.MAX_NUMBER_OF_ITEMS:
+            return self._load_commits(username, repo, page + 1, commits_total)
+        return commits_total
+
     def get_commit_data(self, username: str, repo: str):
         if not self.repo_exists(repo):
             return None
-        url = (f'https://api.github.com/search/commits?access_token={settings.GITHUB_API_KEY}&'
-               f'q=author:{username}+repo:{repo}+sort:author-date-desc')
-        r = requests.get(url, headers={'Accept': 'application/vnd.github.cloak-preview'})
-        commits = r.json()['items']
+
+        commits = self._load_commits(username, repo, 1, [])
+
         commit_data = []
         for commit in commits:
             url = commit['html_url']
