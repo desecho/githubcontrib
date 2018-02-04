@@ -63,8 +63,11 @@ class DeleteRepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         id_ = self.request.POST['id']
         user = self.request.user
-        if user.repos.filter(pk=id_).exists():
-            Repo.objects.filter(pk=id_).delete()
+        repos = user.repos.filter(pk=id_)
+        if repos.exists():
+            repos.delete()
+        else:
+            return self.fail(_('Repository not found'))
         return self.success()
 
 

@@ -21,16 +21,21 @@ function ($scope, DeleteRepo, AddRepo, LoadCommitData) {
   $scope.deleteRepo = function($event){
     const element = $event.target;
     const id = $(element).data('id')
-    DeleteRepo.post($.param({id: id}), function(){
+    DeleteRepo.post($.param({id: id}), function(response){
       $scope.repos = $scope.repos.filter(function(repo){
-        if (repo.id != id) {
-          return id;
+        if (response.status === 'success') {
+          if (repo.id != id) {
+            return id;
+          }
+        } else {
+          displayMessage(response.error);
         }
       });
     }, function(){
       displayMessage(gettext('Error deleting repository'));
     });
   };
+
   $scope.addRepo = function(){
     AddRepo.post($.param({name: $scope.name}), function(response){
       if (response.status === 'success') {
@@ -43,6 +48,7 @@ function ($scope, DeleteRepo, AddRepo, LoadCommitData) {
       displayMessage(gettext('Error adding repository'));
     });
   };
+
   $scope.loadCommitData = function(){
     LoadCommitData.post($.param({name: $scope.name}), function(response){
       if (response.status !== 'success') {
