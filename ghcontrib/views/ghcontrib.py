@@ -1,7 +1,8 @@
 import json
 import re
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from ..github import Github
@@ -23,19 +24,16 @@ class HomeView(TemplateAnonymousView):
 class ContribsView(TemplateAnonymousView):
     template_name = 'contribs.html'
 
-    @staticmethod
-    def _get_repos_and_username(user):
-        return {'repos': user.repos.all(), 'username': user.username}
-
     def get_context_data(self, username):
         user = get_object_or_404(User, username=username)
-        return self._get_repos_and_username(user)
+        return {'repos': user.repos.all(), 'username': user.username}
 
 
-class MyContribsView(ContribsView, TemplateView):
-    def get_context_data(self):
-        user = self.request.user
-        return self._get_repos_and_username(user)
+class MyContribsView(TemplateView):
+    template_name = ''
+
+    def get(self, *args, **kwargs):  # pylint: disable=unused-argument
+        return redirect(reverse('contribs', args=(self.request.user.username, )))
 
 
 class MyReposView(TemplateView):
