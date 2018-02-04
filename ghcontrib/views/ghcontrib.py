@@ -3,12 +3,11 @@ import re
 
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from ..github import Github
 from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
-from django.utils.translation import ugettext_lazy as _
-
 
 
 class HomeView(TemplateAnonymousView):
@@ -56,6 +55,7 @@ class AddRepoView(AjaxView):
             return self.fail(_('Repository not found'))
         return self.fail(_('Repository name is incorrect'))
 
+
 class DeleteRepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         id_ = self.request.POST['id']
@@ -63,6 +63,7 @@ class DeleteRepoView(AjaxView):
         if user.repos.filter(pk=id_).exists():
             Repo.objects.filter(pk=id_).delete()
         return self.success()
+
 
 class LoadCommitDataView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument

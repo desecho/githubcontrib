@@ -3,8 +3,8 @@ import json
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-from .mixins import AjaxView, TemplateView
 from ..models import activate_user_language_preference
+from .mixins import AjaxView, TemplateView
 
 
 def logout_view(request):

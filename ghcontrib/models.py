@@ -1,9 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.signals import user_logged_in
 from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import LANGUAGE_SESSION_KEY
-from django.conf import settings
 
 
 def activate_user_language_preference(request, lang):
