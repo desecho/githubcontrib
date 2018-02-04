@@ -1,7 +1,7 @@
 [run]
 branch = True
 omit =
-    ghcontrib/tests.py
+    ghcontrib/tests/*
     ghcontrib/migrations/*
     /tmp/*
     /usr/lib/*
@@ -18,7 +18,7 @@ ignore_errors = True
 show_missing = True
 
 omit =
-    ghcontrib/tests.py
+    ghcontrib/tests/*
     ghcontrib/migrations/*
     /tmp/*
     /usr/lib/*

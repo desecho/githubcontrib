@@ -22,7 +22,7 @@ try:
 except ImportError:
     try:
         from . import initial_settings as local_settings
-    except ImportError:
+    except ImportError:  # pragma: no cover
         print('No initial settings!')
         sys.exit()
 
@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     'ghcontrib',
 ]
 
-if DEBUG:
+if DEBUG:  # pragma: no cover
     INSTALLED_APPS += [
         'debug_toolbar',
         'template_timings_panel',
@@ -92,10 +92,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-if DEBUG:
+if DEBUG:  # pragma: no cover
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
-if not DEBUG:
+if not DEBUG:  # pragma: no cover
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': True,
@@ -171,7 +171,7 @@ TEMPLATES = [
     },
 ]
 
-if DEBUG:
+if DEBUG:  # pragma: no cover
     TEMPLATES[0]['OPTIONS']['loaders'] = [
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',

@@ -49,7 +49,7 @@ urlpatterns = [
     url(r'^(?P<username>[\w\d_-]+)/$', ContribsView.as_view(), name='contribs'),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG:  # pragma: no cover
     import debug_toolbar
 
     urlpatterns += [
