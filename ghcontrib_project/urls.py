@@ -7,12 +7,12 @@ from django.views.i18n import JavaScriptCatalog
 
 from ghcontrib.views.ghcontrib import (
     AddRepoView,
+    ContribsView,
     DeleteRepoView,
     HomeView,
     LoadCommitDataView,
-    MyReposEditView,
+    MyContribsView,
     MyReposView,
-    ReposView,
 )
 from ghcontrib.views.user import PreferencesView, logout_view
 
@@ -20,24 +20,25 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
-
+    url(r'^my-repositories/$', MyReposView.as_view(), name='my_repos'),
+    url(r'^delete-repository/$', DeleteRepoView.as_view(), name='delete_repo'),
+    url(r'^add-repository/$', AddRepoView.as_view(), name='add_repo'),
+    url(r'^my-contributions/$', MyContribsView.as_view(), name='my_contribs'),
+    url(r'^load-commit-data/$', LoadCommitDataView.as_view(), name='load_commit_data'),
     # User
     url(r'^login/$', login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
-    # Preferences
     url(r'^preferences/$', PreferencesView.as_view(), name='preferences'),
+    # -------------------------------------------------------------------------------------------
+    # Internal
     url(r'^admin/', admin.site.urls),
     url('', include('social_django.urls', namespace='social')),
-    url(r'^my-repos/edit/$', MyReposEditView.as_view(), name='my_repos_edit'),
-    url(r'^delete-repo/$', DeleteRepoView.as_view(), name='delete_repo'),
-    url(r'^add-repo/$', AddRepoView.as_view(), name='add_repo'),
-    url(r'^my-repos/$', MyReposView.as_view(), name='my_repos'),
-    url(r'^load-commit-data/$', LoadCommitDataView.as_view(), name='load_commit_data'),
     url(r'^jsi18n/$',
         JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'),
         name='javascript-catalog'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^(?P<username>[\w\d_-]+)/$', ReposView.as_view(), name='repos'),
+    # -------------------------------------------------------------------------------------------
+    url(r'^(?P<username>[\w\d_-]+)/$', ContribsView.as_view(), name='contribs'),
 ]
 
 if settings.DEBUG:

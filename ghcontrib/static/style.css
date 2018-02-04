@@ -1,4 +1,7 @@
 .repo {
   font-weight: bold;
-  margin-top: 10px;
+}
+
+ul {
+  padding: 0;
 }

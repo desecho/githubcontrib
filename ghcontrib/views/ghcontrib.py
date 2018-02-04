@@ -17,30 +17,31 @@ class HomeView(TemplateAnonymousView):
         return {'usernames': User.objects.exclude(username='admin').values_list('username', flat=True)}
 
 
-class ReposView(TemplateAnonymousView):
-    template_name = 'repos.html'
+class ContribsView(TemplateAnonymousView):
+    template_name = 'contribs.html'
 
     def get_context_data(self, username):
         user = get_object_or_404(User, username=username)
         return {'repos': user.repos.all(), 'username': username}
 
 
+class MyContribsView(TemplateView):
+    template_name = 'contribs.html'
+
+    def get_context_data(self):
+        user = self.request.user
+        return {'repos': user.repos.all(), 'username': user.username}
+
+
 class MyReposView(TemplateView):
-    template_name = ''
-
-    def get(self, *args, **kwargs):
-        return redirect(reverse('repos', args=(self.request.user.username, )))
-
-
-class MyReposEditView(TemplateView):
-    template_name = 'my_repos_edit.html'
+    template_name = 'my_repos.html'
 
     def get_context_data(self, **kwargs):
         kwargs['repos'] = self.request.user.repos.all()
         return kwargs
 
 
-class AddRepoView(MyReposEditView):
+class AddRepoView(MyReposView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         def add_repo():
             name = self.request.POST['name']
@@ -67,7 +68,7 @@ class DeleteRepoView(AjaxView):
         return redirect(reverse('my_repos_edit'))
 
 
-class LoadCommitDataView(MyReposEditView):
+class LoadCommitDataView(MyReposView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         user = self.request.user
         repos = user.repos.all()

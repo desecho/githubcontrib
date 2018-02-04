@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<h3>
+  {{ username }}
+  <a href="https://github.com/{{ username }}" target="_blank"><i class="fa fa-github"></i></a>
+</h3>
+<br>
+{% for repo in repos %}
+  <div class="repo">{{ repo }}</div>
+  <ul>
+  {% for commit in repo.commits.all %}
+    <li class="ml-5">
+      {{ commit.message }} [{{ commit.date|date:"j F Y" }}]
+      <a href="{{ commit.url }}" target="_blank">
+        <i class="fa fa-external-link-square" aria-hidden="true"></i>
+      </a>
+  {% endfor %}
+  </ul>
+{% endfor %}
+
+{% endblock %}
