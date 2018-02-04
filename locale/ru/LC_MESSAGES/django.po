@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-03 22:50-0500\n"
-"PO-Revision-Date: 2018-02-03 22:53-0456\n"
+"POT-Creation-Date: 2018-02-04 01:58-0500\n"
+"PO-Revision-Date: 2018-02-04 01:59-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -31,24 +31,33 @@ msgstr "Мои Контрибуции"
 msgid "My Repositories"
 msgstr "Мои Репозитории"
 
-#: ghcontrib/views/ghcontrib.py:11
+#: ghcontrib/views/ghcontrib.py:55
+msgid "Repository already exists"
+msgstr "Репозиторий уже существует"
+
+#: ghcontrib/views/ghcontrib.py:56
 msgid "Repository not found"
 msgstr "Репозиторий не найден"
+
+#: ghcontrib/views/ghcontrib.py:57
+msgid "Repository name is incorrect"
+msgstr "Имя репозитория не верно"
+
+#: ghcontrib/views/ghcontrib.py:76
+#, python-brace-format
+#| msgid "Repository not found"
+msgid "Repository {name} not found"
+msgstr "Репозиторий {name} не найден"
 
 #: templates/includes/menu.html:7
 msgid "Toggle navigation"
 msgstr "Переключить навигацию"
 
-#: templates/my_repos.html:9
-#, python-format
-msgid "Repository %(repo)s not found"
-msgstr "Репозиторий %(repo)s не найден"
-
-#: templates/my_repos.html:17
+#: templates/my_repos.html:12
 msgid "Add"
 msgstr "Добавить"
 
-#: templates/my_repos.html:22
+#: templates/my_repos.html:13
 msgid "Load / Update commits"
 msgstr "Загрузить / Обновить коммиты"
 
@@ -63,3 +72,6 @@ msgstr "Настройки"
 #: templates/user/preferences.html:12
 msgid "Language"
 msgstr "Язык"
+
+#~ msgid "Repository %(repo)s not found"
+#~ msgstr "Репозиторий %(repo)s не найден"

@@ -7,3 +7,7 @@ ul {
 }
 
 #preferences label {display: block;}
+
+#loading-bar-spinner {
+  display: none;
+}

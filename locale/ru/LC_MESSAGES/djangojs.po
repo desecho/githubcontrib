@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-03 22:51-0500\n"
+"POT-Creation-Date: 2018-02-04 01:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,6 +22,18 @@ msgstr ""
 
 #: ghcontrib/static/js/main.js:43
 msgid "Close all notifications"
+msgstr ""
+
+#: ghcontrib/static/js/my_repos.js:31
+msgid "Error deleting repository"
+msgstr ""
+
+#: ghcontrib/static/js/my_repos.js:43
+msgid "Error adding repository"
+msgstr ""
+
+#: ghcontrib/static/js/my_repos.js:52
+msgid "Error loading commit data"
 msgstr ""
 
 #: ghcontrib/static/js/preferences.js:16

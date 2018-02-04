@@ -1,3 +1,4 @@
+import json
 import re
 
 from django.shortcuts import get_object_or_404, redirect
@@ -8,7 +9,6 @@ from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 from django.utils.translation import ugettext_lazy as _
 
-ERROR_REPOSITORY_NOT_FOUND = _('Repository not found')
 
 
 class HomeView(TemplateAnonymousView):
@@ -38,27 +38,23 @@ class MyReposView(TemplateView):
     template_name = 'my_repos.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['repos'] = self.request.user.repos.all()
+        repos = [{'id': repo.id, 'name': repo.name} for repo in self.request.user.repos.all()]
+        kwargs['repos'] = json.dumps(repos)
         return kwargs
 
 
-class AddRepoView(MyReposView):
+class AddRepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
-        def add_repo():
-            name = self.request.POST['name']
-            if re.match('.+/.+', name) is not None:
-                if Github().repo_exists(name):
-                    user = self.request.user
-                    if not user.repos.filter(name=name).exists():
-                        Repo.objects.create(name=name, user=user)
-                    return True
-            return False
-
-        result = add_repo()
-        if not result:
-            kwargs['error'] = ERROR_REPOSITORY_NOT_FOUND
-        return self.get(*args, **kwargs)
-
+        name = self.request.POST['name']
+        if re.match('.+/.+', name) is not None:
+            if Github().repo_exists(name):
+                user = self.request.user
+                if not user.repos.filter(name=name).exists():
+                    repo_id = Repo.objects.create(name=name, user=user).pk
+                    return self.success(id=repo_id)
+                return self.fail(_('Repository already exists'))
+            return self.fail(_('Repository not found'))
+        return self.fail(_('Repository name is incorrect'))
 
 class DeleteRepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
@@ -66,10 +62,9 @@ class DeleteRepoView(AjaxView):
         user = self.request.user
         if user.repos.filter(pk=id_).exists():
             Repo.objects.filter(pk=id_).delete()
-        return redirect(reverse('my_repos'))
+        return self.success()
 
-
-class LoadCommitDataView(MyReposView):
+class LoadCommitDataView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         user = self.request.user
         repos = user.repos.all()
@@ -77,10 +72,9 @@ class LoadCommitDataView(MyReposView):
         for repo in repos:
             commit_data = gh.get_commit_data(user.username, repo.name)
             if commit_data is None:
-                kwargs['error'] = ERROR_REPOSITORY_NOT_FOUND
-                kwargs['repo'] = repo.name
-                break
+                name = repo.name
+                return self.fail(_(f'Repository {name} not found'))
             Commit.objects.filter(repo=repo).delete()
             for commit in commit_data:
                 Commit.objects.create(repo=repo, url=commit['url'], message=commit['message'], date=commit['date'])
-        return self.get(*args, **kwargs)
+        return self.success()
