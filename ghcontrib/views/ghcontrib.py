@@ -23,17 +23,19 @@ class HomeView(TemplateAnonymousView):
 class ContribsView(TemplateAnonymousView):
     template_name = 'contribs.html'
 
+    @staticmethod
+    def _get_repos_and_username(user):
+        return {'repos': user.repos.all(), 'username': user.username}
+
     def get_context_data(self, username):
         user = get_object_or_404(User, username=username)
-        return {'repos': user.repos.all(), 'username': username}
+        return self._get_repos_and_username(user)
 
 
-class MyContribsView(TemplateView):
-    template_name = 'contribs.html'
-
+class MyContribsView(ContribsView, TemplateView):
     def get_context_data(self):
         user = self.request.user
-        return {'repos': user.repos.all(), 'username': user.username}
+        return self._get_repos_and_username(user)
 
 
 class MyReposView(TemplateView):
