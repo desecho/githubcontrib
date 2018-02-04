@@ -1,0 +1,18 @@
+[
+{
+    "model": "ghcontrib.repo",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "name": "jieter/django-tables2"
+    }
+},
+{
+    "model": "ghcontrib.repo",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "name": "python-social-auth/social-core"
+    }
+}
+]
