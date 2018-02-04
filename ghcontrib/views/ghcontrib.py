@@ -6,8 +6,9 @@ from django.urls import reverse
 from ..github import Github
 from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
+from django.utils.translation import ugettext_lazy as _
 
-ERROR_REPOSITORY_NOT_FOUND = 'Repository not found'
+ERROR_REPOSITORY_NOT_FOUND = _('Repository not found')
 
 
 class HomeView(TemplateAnonymousView):
@@ -65,7 +66,7 @@ class DeleteRepoView(AjaxView):
         user = self.request.user
         if user.repos.filter(pk=id_).exists():
             Repo.objects.filter(pk=id_).delete()
-        return redirect(reverse('my_repos_edit'))
+        return redirect(reverse('my_repos'))
 
 
 class LoadCommitDataView(MyReposView):

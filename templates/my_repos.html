@@ -6,20 +6,20 @@
 {% block content %}
 {% if error %}
 <div class="alert alert-danger" role="alert">
-  Repository {{ repo }} not found.
+  {% blocktrans %}Repository {{ repo }} not found{% endblocktrans %}.
 </div>
 {% endif %}
 
 <form action="{% url 'add_repo' %}" method="post">
   {% csrf_token %}
-  <input type="text" name="name" class="form-control col-3" placeholder="user/project">
+  <input type="text" name="name" required class="form-control col-3" placeholder="user/project">
   <br>
-  <button type="submit" class="btn btn-primary col-3">Add</button>
+  <button type="submit" class="btn btn-primary col-3">{% trans 'Add' %}</button>
 </form>
 <br>
 <form action="{% url 'load_commit_data' %}" method="post">
   {% csrf_token %}
-  <button type="submit" class="btn btn-primary col-3">Load / Update commits</button>
+  <button type="submit" class="btn btn-primary col-3">{% trans 'Load / Update commits' %}</button>
 </form>
 <br>
 
@@ -32,5 +32,5 @@
 <script>
   const urlDeleteRepo = '{% url 'delete_repo' %}';
 </script>
-<script src="{% static 'js/my_repos_edit.js' %}"></script>
+<script src="{% static 'js/my_repos.js' %}"></script>
 {% endblock %}

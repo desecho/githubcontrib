@@ -34,4 +34,20 @@ $.ajaxSetup({
   }
 });
 
+const headers = {
+  'X-CSRFToken': csrftoken,
+  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+  'X-Requested-With': 'XMLHttpRequest',
+};
+
 $.jGrowl.defaults.closerTemplate = '<div>' + gettext('Close all notifications') + '</div>';
+
+const app = angular.module('ghcontrib', ['ngResource', 'angular-loading-bar']);
+app.config(function($interpolateProvider) {
+  $interpolateProvider.startSymbol('[[');
+  $interpolateProvider.endSymbol(']]');
+});
+app.config(['$resourceProvider', function($resourceProvider) {
+  // Don't strip trailing slashes from calculated URLs
+  $resourceProvider.defaults.stripTrailingSlashes = false;
+}]);

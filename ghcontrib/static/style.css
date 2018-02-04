@@ -5,3 +5,5 @@
 ul {
   padding: 0;
 }
+
+#preferences label {display: block;}

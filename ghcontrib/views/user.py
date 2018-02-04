@@ -1,7 +1,10 @@
+import json
+
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-from .mixins import TemplateView
+from .mixins import AjaxView, TemplateView
+from ..models import activate_user_language_preference
 
 
 def logout_view(request):
@@ -11,3 +14,18 @@ def logout_view(request):
 
 class PreferencesView(TemplateView):
     template_name = 'user/preferences.html'
+
+
+class SavePreferencesView(AjaxView):
+    def post(self, request):
+        try:
+            POST = request.POST
+            language = POST['language']
+        except KeyError:
+            return self.render_bad_request_response()
+
+        user = request.user
+        user.language = language
+        user.save()
+        activate_user_language_preference(request, language)
+        return self.success()

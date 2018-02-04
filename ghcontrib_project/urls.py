@@ -14,7 +14,7 @@ from ghcontrib.views.ghcontrib import (
     MyContribsView,
     MyReposView,
 )
-from ghcontrib.views.user import PreferencesView, logout_view
+from ghcontrib.views.user import PreferencesView, logout_view,SavePreferencesView
 
 admin.autodiscover()
 
@@ -28,7 +28,10 @@ urlpatterns = [
     # User
     url(r'^login/$', login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
+    # Preferences
     url(r'^preferences/$', PreferencesView.as_view(), name='preferences'),
+    url(r'^save-preferences/$', SavePreferencesView.as_view(), name='save_preferences'),
+
     # -------------------------------------------------------------------------------------------
     # Internal
     url(r'^admin/', admin.site.urls),
@@ -37,6 +40,7 @@ urlpatterns = [
         JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'),
         name='javascript-catalog'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^rosetta/', include('rosetta.urls')),
     # -------------------------------------------------------------------------------------------
     url(r'^(?P<username>[\w\d_-]+)/$', ContribsView.as_view(), name='contribs'),
 ]

@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'raven.contrib.django.raven_compat',
+    'rosetta',
     'social_django',
     'menu',
     'ghcontrib',
@@ -85,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -243,6 +245,13 @@ SOCIAL_AUTH_GITHUB_KEY = local_settings.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = local_settings.SOCIAL_AUTH_GITHUB_SECRET
 
 GITHUB_API_KEY = local_settings.GITHUB_API_KEY
+
+LANGUAGES = (
+    ('en', 'English'),
+    ('ru', 'Русский'),
+)
+
+LOCALE_PATHS = (op.join(local_settings.PROJECT_ROOT, 'project', 'locale'), )
 
 # This is here to fix the problem with static files on dev
 try:

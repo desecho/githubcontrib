@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<div ng-controller="PreferencesController">
+<form class="form-horizontal" id="preferences">
+  <legend>{% trans 'Settings' %}</legend>
+  <br>
+  <div class="form-group row">
+    <label class="col-form-label col-sm-2" for="lang">{% trans 'Language' %}:</label>
+    <div class="col-sm-10">
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
+    {% for language in languages %}
+    <label class="radio">
+      <input type="radio" ng-click="savePreferences(true)" name="lang" value="{{ language.code }}" {% ifequal user.language language.code %} checked {% endifequal %}> {{ language.name_local }}
+    </label>
+    {% endfor %}
+    </div>
+  </div>
+</form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  const urlSavePreferences = '{% url 'save_preferences' %}';
+</script>
+<script src="{% static 'js/preferences.js' %}"></script>
+{% endblock %}
