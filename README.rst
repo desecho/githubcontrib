@@ -1,6 +1,8 @@
 GitHubContrib
 ==========================================================
 
+|Build Status| |Requirements Status| |Codecov|
+
 The web application on Python/Django, jQuery, Bootstrap. It allows you to have a profile page with your opensource contributions.
 
 Installation instructions
@@ -15,5 +17,13 @@ Development
 | Use `clean.sh` to automatically prettify your code.
 | Use `tox` for testing and linting.
 
+.. |Requirements Status| image:: https://requires.io/github/desecho/ghcontrib/requirements.svg?branch=master
+   :target: https://requires.io/github/desecho/ghcontrib/requirements/?branch=master
+
+.. |Codecov| image:: https://codecov.io/gh/desecho/ghcontrib/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/desecho/ghcontrib
+
+.. |Build Status| image:: https://travis-ci.org/desecho/ghcontrib.svg?branch=master
+   :target: https://travis-ci.org/desecho/ghcontrib
 
 .. _ansible-playbook-server: https://github.com/desecho/ansible-playbook-server
