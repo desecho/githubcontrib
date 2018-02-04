@@ -14,7 +14,11 @@ from ghcontrib.views.ghcontrib import (
     MyContribsView,
     MyReposView,
 )
-from ghcontrib.views.user import PreferencesView, logout_view, SavePreferencesView
+from ghcontrib.views.user import (
+    PreferencesView,
+    SavePreferencesView,
+    logout_view,
+)
 
 admin.autodiscover()
 

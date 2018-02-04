@@ -1,8 +1,7 @@
 import json
 import re
 
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 
 from ..github import Github
