@@ -43,9 +43,7 @@ class Github:
     def get_commit_data(self, username: str, repo: str):
         if not self.repo_exists(repo):
             return None
-
         commits = self._load_commits(username, repo, 1, [])
-
         commit_data = []
         for commit in commits:
             url = commit['html_url']
