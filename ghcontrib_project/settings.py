@@ -15,6 +15,8 @@ import os
 import os.path as op
 import sys
 
+import raven
+
 try:
     import local_settings
 except ImportError:
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'raven.contrib.django.raven_compat',
     'social_django',
     'menu',
     'ghcontrib',
@@ -89,6 +92,53 @@ MIDDLEWARE = [
 
 if DEBUG:
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'root': {
+            'level': 'WARNING',
+            'handlers': ['sentry'],
+        },
+        'formatters': {
+            'verbose': {
+                'format': ('%(levelname)s %(asctime)s %(module)s '
+                           '%(process)d %(thread)d %(message)s')
+            },
+        },
+        'handlers': {
+            'sentry': {
+                'level': 'ERROR',  # To capture more than ERROR, change to WARNING, INFO, etc.
+                'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+                'tags': {
+                    'custom-tag': 'x'
+                },
+            },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose'
+            }
+        },
+        'loggers': {
+            'django.db.backends': {
+                'level': 'ERROR',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+            'raven': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+            'sentry.errors': {
+                'level': 'DEBUG',
+                'handlers': ['console'],
+                'propagate': False,
+            },
+        },
+    }
 
 ROOT_URLCONF = 'ghcontrib_project.urls'
 
@@ -180,6 +230,11 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+RAVEN_CONFIG = {
+    'dsn': local_settings.RAVEN_DSN,
+    'release': raven.fetch_git_sha(local_settings.GIT_ROOT),
+}
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
