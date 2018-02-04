@@ -1,19 +1,23 @@
 import json
+import os
 
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.serializers.json import DjangoJSONEncoder
+from django.forms.models import model_to_dict
 from django.test import TestCase
 
 
 class BaseTestCase(TestCase):
-    # fixtures = [
-    #     'users.json',
-    # ]
+    fixtures = [
+        'users.json',
+    ]
 
-    # USER_USERNAME = 'neo'
-    # USER_PWD = 'password'
-    # # Superuser - admin/adminpassword
-    # # Another user - fox/password
+    USER_USERNAME = 'neo'
+    USER_PASSWORD = 'password'
+    # Superuser - admin/adminpassword
+    # Another user - fox/password
 
     @staticmethod
     def get_content(response):
@@ -34,7 +38,16 @@ class BaseTestCase(TestCase):
         if username is None:
             username = self.USER_USERNAME
         self.client.logout()
-        self.client.login(username=username, password=self.USER_PWD)
+        self.client.login(username=username, password=self.USER_PASSWORD)
+
+    def load_json(self, filename):
+        base_path = os.path.join(settings.BASE_DIR, 'ghcontrib', 'tests', 'files')
+        path = os.path.join(base_path, filename)
+        with open(path) as f:
+            return json.load(f)
+
+    def dump_instance(self, instance):
+        return json.dumps(model_to_dict(instance), cls=DjangoJSONEncoder)
 
 
 class BaseTestLoginCase(BaseTestCase):

@@ -8,3 +8,15 @@ INTERNAL_IPS = []
 
 GIT_ROOT = ''
 RAVEN_DSN = ''
+PROJECT_DOMAIN = ''
+PROJECT_ROOT = ''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+    }
+}
