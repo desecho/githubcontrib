@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Django settings for Github Contrib project."""
+"""Django settings for GithubContrib project."""
 
 import os
 import os.path as op
@@ -21,19 +21,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Debugging
 DEBUG = local_settings.DEBUG
 INTERNAL_IPS = local_settings.INTERNAL_IPS
-DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'template_timings_panel.panels.TemplateTimings.TemplateTimings',
-    'debug_toolbar.panels.profiling.ProfilingPanel',
-]
 
 DATABASES = local_settings.DATABASES
 WSGI_APPLICATION = 'ghcontrib_project.wsgi.application'
 ROOT_URLCONF = 'ghcontrib_project.urls'
 SECRET_KEY = local_settings.SECRET_KEY
 ALLOWED_HOSTS = [local_settings.PROJECT_DOMAIN]
+SESSION_SAVE_EVERY_REQUEST = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Custom
     'raven.contrib.django.raven_compat',
     'rosetta',
     'social_django',
@@ -58,19 +54,18 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Custom
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 # Logging
-RAVEN_CONFIG = {
-    'dsn': local_settings.RAVEN_DSN,
-    'release': raven.fetch_git_sha(local_settings.GIT_ROOT),
-}
 if not DEBUG:  # pragma: no cover
     LOGGING = {
         'version': 1,
@@ -124,14 +119,17 @@ TEMPLATES = [
         'DIRS': (os.path.join(BASE_DIR, 'templates'), ),
         'OPTIONS': {
             'context_processors': (
-                'django.contrib.auth.context_processors.auth',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
                 'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                # Custom
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
-                'django.template.context_processors.request',
+                # social_django
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ),
             'loaders': [
                 ('django.template.loaders.cached.Loader', [
@@ -175,8 +173,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 AUTH_USER_MODEL = 'ghcontrib.User'
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.github.GithubOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    # Custom
+    'social_core.backends.github.GithubOAuth2',
 )
 
 # Internationalization
@@ -196,6 +195,24 @@ USE_TZ = True
 # Login
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+# --== Module settings ==--
+
+# raven
+RAVEN_CONFIG = {
+    'dsn': local_settings.RAVEN_DSN,
+    'release': raven.fetch_git_sha(local_settings.GIT_ROOT),
+}
+
+# django-debug-toolbar
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+    # django-debug-toolbar-template-timings
+    'template_timings_panel.panels.TemplateTimings.TemplateTimings',
+]
 
 # --== Project settings ==--
 
