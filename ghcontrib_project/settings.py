@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'raven.contrib.django.raven_compat',
     'admin_reorder',
     'rosetta',
+    'google_analytics',
     'social_django',
     'menu',
     'ghcontrib',
@@ -132,6 +133,8 @@ TEMPLATES = [
                 # social_django
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                # GHContrib
+                'ghcontrib.context_processors.variables',
             ),
             'loaders': [
                 ('django.template.loaders.cached.Loader', [
@@ -198,7 +201,12 @@ USE_TZ = True
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-# --== Module settings ==--
+# --== Modules settings ==--
+#django-google-analytics-app
+GOOGLE_ANALYTICS = {
+    'google_analytics_id': local_settings.GOOGLE_ANALYTICS_ID,
+}
+
 #django-modeladmin-reorder
 ADMIN_REORDER = (
     {

@@ -17,3 +17,4 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
+GOOGLE_ANALYTICS_ID = ''

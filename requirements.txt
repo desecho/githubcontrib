@@ -5,6 +5,10 @@ django-simple-menu==1.2.1
 social-auth-app-django==2.1.0
 django-rosetta==0.8.1
 
+# django-google-analytics-app==4.1.0
+# Open PR - https://github.com/praekelt/django-google-analytics/pull/38 - Django 2 support
+-e git+https://github.com/desecho/django-google-analytics.git@django2#egg=django-google-analytics
+
 # django-modeladmin-reorder==0.2
 # Django 2 support is only available in master
 -e git+https://github.com/mishbahr/django-modeladmin-reorder.git@fb40efa6d3d0668f3323aaca8e5c4486c0ffdd7b#egg=django-modeladmin-reorder

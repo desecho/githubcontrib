@@ -50,6 +50,7 @@ urlpatterns += [
         name='javascript-catalog'),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^rosetta/', include('rosetta.urls')),
+    url(r'^djga/', include('google_analytics.urls')),
     # -------------------------------------------------------------------------------------------
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^my-repositories/$', MyReposView.as_view(), name='my_repos'),
