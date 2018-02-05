@@ -1,8 +1,8 @@
-"""URL Configuration."""
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth.views import login
+from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
 from ghcontrib.views.ghcontrib import (
@@ -19,6 +19,8 @@ from ghcontrib.views.user import (
     SavePreferencesView,
     logout_view,
 )
+
+"""URL Configuration."""
 
 admin.autodiscover()
 
@@ -41,7 +43,7 @@ urlpatterns += [
     url(r'^save-preferences/$', SavePreferencesView.as_view(), name='save_preferences'),
 
     # Services
-    url(r'^admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     url('', include('social_django.urls', namespace='social')),
     url(r'^jsi18n/$',
         JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'),
