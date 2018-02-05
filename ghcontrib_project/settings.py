@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Custom
     'raven.contrib.django.raven_compat',
+    'admin_reorder',
     'rosetta',
     'social_django',
     'menu',
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
@@ -197,6 +199,17 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 # --== Module settings ==--
+#django-modeladmin-reorder
+ADMIN_REORDER = (
+    {
+        'app': 'ghcontrib',
+        'models': ('ghcontrib.User', 'ghcontrib.Repo', 'ghcontrib.Commit')
+    },
+    {
+        'app': 'social_django',
+        'models': ('social_django.UserSocialAuth', )
+    },
+)
 
 # raven
 RAVEN_CONFIG = {
