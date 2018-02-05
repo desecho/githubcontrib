@@ -1,3 +1,4 @@
+"""URL Configuration."""
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -19,8 +20,6 @@ from ghcontrib.views.user import (
     SavePreferencesView,
     logout_view,
 )
-
-"""URL Configuration."""
 
 admin.autodiscover()
 

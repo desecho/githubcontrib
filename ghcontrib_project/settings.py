@@ -202,12 +202,12 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 # --== Modules settings ==--
-#django-google-analytics-app
+# django-google-analytics-app
 GOOGLE_ANALYTICS = {
     'google_analytics_id': local_settings.GOOGLE_ANALYTICS_ID,
 }
 
-#django-modeladmin-reorder
+# django-modeladmin-reorder
 ADMIN_REORDER = (
     {
         'app': 'ghcontrib',
