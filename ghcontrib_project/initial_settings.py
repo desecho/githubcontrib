@@ -18,3 +18,4 @@ DATABASES = {
     }
 }
 GOOGLE_ANALYTICS_ID = ''
+ADMIN_EMAIL = ''

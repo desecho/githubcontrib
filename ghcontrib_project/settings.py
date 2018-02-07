@@ -237,6 +237,8 @@ DEBUG_TOOLBAR_PANELS = [
 
 # --== Project settings ==--
 
+ADMIN_EMAIL = local_settings.ADMIN_EMAIL
+
 # API Keys
 GITHUB_API_KEY = local_settings.GITHUB_API_KEY
 
