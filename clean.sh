@@ -7,3 +7,5 @@ yapf -ri ghcontrib ghcontrib_project
 isort -rc ghcontrib ghcontrib_project
 csscomb ghcontrib/static/style.css
 eslint ghcontrib/static/js/*  --fix
+find ghcontrib/static/js -type f -name "*.js" -exec js-beautify -r {} \;
+find . -type f -name "*.json" -not -path "./node_modules/*" -not -path "./ghcontrib/static/vendor/*" -exec js-beautify -r {} \;
