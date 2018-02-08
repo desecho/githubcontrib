@@ -1,22 +1,21 @@
-[
-{
+[{
     "model": "ghcontrib.commit",
     "pk": 1,
     "fields": {
-        "repo": 1,
-        "url": "https://github.com/jieter/django-tables2/commit/360b29c5948c1f9bada618c30897e380e21a4f0a",
-        "date": "2017-03-06T12:30:58Z",
-        "message": "Regression fix - revert commit 05d8d1d260fe1cfe61a89ef0ae09c78513022f3c (#423)"
+      "repo": 1,
+      "url": "https://github.com/jieter/django-tables2/commit/360b29c5948c1f9bada618c30897e380e21a4f0a",
+      "date": "2017-03-06T12:30:58Z",
+      "message": "Regression fix - revert commit 05d8d1d260fe1cfe61a89ef0ae09c78513022f3c (#423)"
     }
-},
-{
+  },
+  {
     "model": "ghcontrib.commit",
     "pk": 2,
     "fields": {
-        "repo": 2,
-        "url": "https://github.com/python-social-auth/social-core/commit/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f",
-        "date": "2017-04-16T08:39:32Z",
-        "message": "Speed up authorization process for VKAppOAuth2\nUse first api request provided immediately instead of creating a new one."
+      "repo": 2,
+      "url": "https://github.com/python-social-auth/social-core/commit/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f",
+      "date": "2017-04-16T08:39:32Z",
+      "message": "Speed up authorization process for VKAppOAuth2\nUse first api request provided immediately instead of creating a new one."
     }
-}
+  }
 ]
