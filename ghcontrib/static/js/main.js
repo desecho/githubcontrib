@@ -2,7 +2,7 @@ function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie != '') {
     const cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
+    for (let i = 0; i < cookies.length; i++) {
       const cookie = jQuery.trim(cookies[i]);
       // Does this cookie string begin with the name we want?
       if (cookie.substring(0, name.length + 1) == (name + '=')) {
@@ -21,17 +21,17 @@ function csrfSafeMethod(method) {
 
 function displayMessage(message) {
   return $.jGrowl(message);
-};
+}
 
 const csrftoken = getCookie('csrftoken');
 
 $.ajaxSetup({
-  crossDomain: false,  // obviate need for sameOrigin test
+  crossDomain: false, // obviate need for sameOrigin test
   beforeSend: function(xhr, settings) {
     if (!csrfSafeMethod(settings.type)) {
-      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      xhr.setRequestHeader('X-CSRFToken', csrftoken);
     }
-  }
+  },
 });
 
 const headers = {

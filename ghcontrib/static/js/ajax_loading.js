@@ -1,8 +1,8 @@
-$(function(){
-  $(document).ajaxStart(function(){
+$(function() {
+  $(document).ajaxStart(function() {
     mprogress.start();
   });
-  $(document).ajaxStop(function(){
+  $(document).ajaxStop(function() {
     mprogress.end();
   });
 });

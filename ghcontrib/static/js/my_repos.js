@@ -1,28 +1,28 @@
 app.factory('DeleteRepo', ['$resource', function($resource) {
   return $resource(urlDeleteRepo, {}, {
-    post: {method: 'POST', headers: headers}
+    post: {method: 'POST', headers: headers},
   });
 }]);
 
 app.factory('AddRepo', ['$resource', function($resource) {
   return $resource(urlAddRepo, {}, {
-    post: {method: 'POST', headers: headers}
+    post: {method: 'POST', headers: headers},
   });
 }]);
 
 app.factory('LoadCommitData', ['$resource', function($resource) {
   return $resource(urlLoadCommitData, {}, {
-    post: {method: 'POST', headers: headers}
+    post: {method: 'POST', headers: headers},
   });
 }]);
 
 app.controller('MyReposController', ['$scope', 'DeleteRepo', 'AddRepo', 'LoadCommitData',
-function ($scope, DeleteRepo, AddRepo, LoadCommitData) {
-  $scope.deleteRepo = function($event){
+function($scope, DeleteRepo, AddRepo, LoadCommitData) {
+  $scope.deleteRepo = function($event) {
     const element = $event.target;
-    const id = $(element).data('id')
-    DeleteRepo.post($.param({id: id}), function(response){
-      $scope.repos = $scope.repos.filter(function(repo){
+    const id = $(element).data('id');
+    DeleteRepo.post($.param({id: id}), function(response) {
+      $scope.repos = $scope.repos.filter(function(repo) {
         if (response.status === 'success') {
           if (repo.id != id) {
             return id;
@@ -31,43 +31,43 @@ function ($scope, DeleteRepo, AddRepo, LoadCommitData) {
           displayMessage(response.error);
         }
       });
-    }, function(){
+    }, function() {
       displayMessage(gettext('Error deleting repository'));
     });
   };
 
-  $scope.addRepo = function(){
-    AddRepo.post($.param({name: $scope.name}), function(response){
+  $scope.addRepo = function() {
+    AddRepo.post($.param({name: $scope.name}), function(response) {
       if (response.status === 'success') {
-        $scope.repos.push({id: response.id, name: $scope.name})
+        $scope.repos.push({id: response.id, name: $scope.name});
         $scope.name = '';
       } else {
         displayMessage(response.error);
       }
-    }, function(){
+    }, function() {
       displayMessage(gettext('Error adding repository'));
     });
   };
 
-  $scope.loadCommitData = function(){
-    LoadCommitData.post($.param({name: $scope.name}), function(response){
+  $scope.loadCommitData = function() {
+    LoadCommitData.post($.param({name: $scope.name}), function(response) {
       if (response.status !== 'success') {
         displayMessage(response.error);
       }
-    }, function(){
+    }, function() {
       displayMessage(gettext('Error loading commit data'));
     });
   };
 }]);
 
-function loadRepos(){
-  var scope = angular.element($('#my-repos-controller')).scope();
-  scope.$apply(function(){
+function loadRepos() {
+  let scope = angular.element($('#my-repos-controller')).scope();
+  scope.$apply(function() {
     scope.repos = repos;
   });
   $('#repos').show();
 }
 
-$(function(){
+$(function() {
   loadRepos();
 });
