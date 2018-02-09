@@ -24,7 +24,7 @@ class HomeView(TemplateAnonymousView):
 class ContribsView(TemplateAnonymousView):
     template_name = 'contribs.html'
 
-    def get_context_data(self, username):
+    def get_context_data(self, username):  # pylint: disable=no-self-use
         user = get_object_or_404(User, username=username)
         return {'repos': user.repos.all(), 'username': user.username}
 

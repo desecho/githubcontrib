@@ -4,6 +4,7 @@ import github
 import requests
 from dateutil import parser
 from django.conf import settings
+# pylint: disable=no-name-in-module
 from github.GithubException import UnknownObjectException
 
 
@@ -14,7 +15,7 @@ class Github:
     HEADERS = {'Accept': 'application/vnd.github.cloak-preview', 'Authorization': settings.GITHUB_API_KEY}
 
     def __init__(self):
-        self.gh = github.Github(settings.GITHUB_API_KEY)
+        self.gh = github.Github(settings.GITHUB_API_KEY)  # pylint: disable=too-many-function-args
 
     def repo_exists(self, repo: str) -> bool:
         username, repo = repo.split('/')

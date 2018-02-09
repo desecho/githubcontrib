@@ -1,6 +1,7 @@
 import github
 import requests
 from flexmock import flexmock
+# pylint: disable=no-name-in-module
 from github.GithubException import UnknownObjectException
 
 from ghcontrib.github import Github
