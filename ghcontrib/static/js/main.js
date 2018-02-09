@@ -51,6 +51,17 @@ angular.module('app').directive('ngEnter', function() {
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }
+
+  angular.module('app').controller('MenuController', MenuController);
+
+  function MenuController() {
+    let vm = this;
+    vm.changeLanguage = function(){
+      angular.element('#language-form').submit();
+    }
+  }
+
+
 })();
 
 let vars = {}; // eslint-disable-line no-unused-vars
