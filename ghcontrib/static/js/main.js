@@ -56,12 +56,10 @@ angular.module('app').directive('ngEnter', function() {
 
   function MenuController() {
     let vm = this;
-    vm.changeLanguage = function(){
+    vm.changeLanguage = function() {
       angular.element('#language-form').submit();
-    }
+    };
   }
-
-
 })();
 
 let vars = {}; // eslint-disable-line no-unused-vars

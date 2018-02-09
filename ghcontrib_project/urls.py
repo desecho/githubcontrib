@@ -44,9 +44,7 @@ urlpatterns += [
     # Services
     path('admin/', admin.site.urls),
     path('', include('social_django.urls', namespace='social')),
-    path('jsi18n/',
-        JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'),
-        name='javascript-catalog'),
+    path('jsi18n/', JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'), name='javascript-catalog'),
     path('i18n/', include('django.conf.urls.i18n')),
     path('rosetta/', include('rosetta.urls')),
     path('djga/', include('google_analytics.urls')),
