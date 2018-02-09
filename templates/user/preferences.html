@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-  <div ng-controller="PreferencesController">
+  <div ng-controller="PreferencesController as model">
     <form class="form-horizontal" id="preferences">
       <legend>{% trans 'Settings' %}</legend>
       <br>
@@ -14,8 +14,8 @@
           {% get_available_languages as LANGUAGES %}
           {% get_language_info_list for LANGUAGES as languages %}
           {% for language in languages %}
-            <label class="radio">
-              <input type="radio" ng-click="savePreferences(true)" name="lang" value="{{ language.code }}"
+            <label class="radio mr-2 col-form-label">
+              <input type="radio" ng-click="model.savePreferences(true)" name="lang" value="{{ language.code }}"
                 {% ifequal user.language language.code %} checked {% endifequal %}> {{ language.name_local }}
             </label>
           {% endfor %}
@@ -27,7 +27,8 @@
 
 {% block js %}
   <script>
-    const urlSavePreferences = '{% url 'save_preferences' %}';
+    'use strict';
+    urls.urlSavePreferences = '{% url 'save_preferences' %}';
   </script>
   <script src="{% static 'js/preferences.js' %}"></script>
 {% endblock %}

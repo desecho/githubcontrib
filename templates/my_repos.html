@@ -5,17 +5,17 @@
 
 {% block content %}
 
-  <div id="my-repos-controller" ng-controller="MyReposController">
+  <div id="my-repos-controller" ng-controller="MyReposController as model" ng-init="model.loadRepos()">
 
-    <input ng-model="name" type="text" class="form-control col-3" placeholder="user/project">
+    <input ng-model="model.name" type="text" class="form-control col-3" placeholder="user/project" ng-enter="model.addRepo()">
     <br>
-    <button type="submit" class="btn btn-primary col-3" ng-click="addRepo()">{% trans 'Add' %}</button>
+    <button type="submit" class="btn btn-primary col-3" ng-click="model.addRepo()">{% trans 'Add' %}</button>
     <button type="submit" class="btn btn-primary col-3"
-            ng-click="loadCommitData()">{% trans 'Load / Update commits' %}</button>
+            ng-click="model.loadCommitData()">{% trans 'Load / Update commits' %}</button>
     <br><br>
 
-    <div id="repos" style="display: none">
-      <div ng-repeat="repo in repos">[[ repo.name ]] <a href="javascript:void(0)" ng-click="deleteRepo($event)"><i
+    <div id="repos" style="display: none;">
+      <div ng-repeat="repo in model.repos">[[ repo.name ]] <a href="javascript:void(0)" ng-click="model.deleteRepo($event)"><i
         data-id="[[ repo.id ]]" class="fa fa-trash"></i></a></div>
     </div>
 
@@ -24,10 +24,11 @@
 
 {% block js %}
   <script>
-    const urlDeleteRepo = '{% url 'delete_repo' %}';
-    const urlAddRepo = '{% url 'add_repo' %}';
-    const urlLoadCommitData = '{% url 'load_commit_data' %}';
-    const repos = $.parseJSON('{{ repos|safe }}');
+    'use strict';
+    urls.urlDeleteRepo = '{% url 'delete_repo' %}';
+    urls.urlAddRepo = '{% url 'add_repo' %}';
+    urls.urlLoadCommitData = '{% url 'load_commit_data' %}';
+    vars.repos = angular.fromJson('{{ repos|safe }}');
   </script>
   <script src="{% static 'js/my_repos.js' %}"></script>
 {% endblock %}

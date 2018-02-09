@@ -1,25 +1,33 @@
-app.factory('SavePreferences', ['$resource', function($resource) {
-  return $resource(urlSavePreferences, {}, {
-    post: {
-      method: 'POST',
-      headers: headers
-    },
-  });
-}]);
+'use strict';
 
-app.controller('PreferencesController', ['$scope', 'SavePreferences',
-  function($scope, SavePreferences) {
-    $scope.savePreferences = function(reload) {
+(function() {
+  angular.module('app').factory('SavePreferences', SavePreferencesFactory);
+  SavePreferencesFactory.$inject = ['$resource'];
+
+  function SavePreferencesFactory($resource) {
+    return $resource(urls.urlSavePreferences, {}, {
+      post: {
+        method: 'POST',
+      },
+    });
+  }
+
+  angular.module('app').controller('PreferencesController', PreferencesController);
+  PreferencesController.$inject = ['SavePreferences', 'appFactory'];
+
+  function PreferencesController(SavePreferences, appFactory) {
+    let vm = this;
+    vm.savePreferences = function(reload) {
       const preferences = {
-        language: $('input:radio[name=lang]:checked').val()
+        language: angular.element('input:radio[name=lang]:checked')[0].value,
       };
-      SavePreferences.post($.param(preferences), function() {
+      SavePreferences.post(angular.element.param(preferences), function() {
         if (reload) {
           location.reload();
         }
       }, function() {
-        displayMessage(gettext('Error saving settings'));
+        appFactory.displayMessage(gettext('Error saving settings'));
       });
     };
   }
-]);
+})();

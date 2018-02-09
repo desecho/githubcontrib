@@ -29,6 +29,10 @@ ajv@^5.2.3, ajv@^5.3.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
+angular-cookies@^1.6.9:
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.6.9.tgz#7cadddab1eda8a2fce6901d19e651be5cd320758"
+
 angular-loading-bar@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/angular-loading-bar/-/angular-loading-bar-0.9.0.tgz#37ef52c25f102c216e7b3cdfd2fc5a5df9628e45"
@@ -574,10 +578,6 @@ mkdirp@^0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
-
-mprogress@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/mprogress/-/mprogress-0.1.1.tgz#1135daa480329106c4f749e9118d89d2fe3f98a1"
 
 ms@2.0.0:
   version "2.0.0"

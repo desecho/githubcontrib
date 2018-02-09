@@ -1,92 +1,97 @@
-app.factory('DeleteRepo', ['$resource', function($resource) {
-  return $resource(urlDeleteRepo, {}, {
-    post: {
-      method: 'POST',
-      headers: headers
-    },
-  });
-}]);
+'use strict';
 
-app.factory('AddRepo', ['$resource', function($resource) {
-  return $resource(urlAddRepo, {}, {
-    post: {
-      method: 'POST',
-      headers: headers
-    },
-  });
-}]);
+(function() {
+  angular.module('app').factory('DeleteRepo', DeleteRepoFactory);
+  DeleteRepoFactory.$inject = ['$resource'];
 
-app.factory('LoadCommitData', ['$resource', function($resource) {
-  return $resource(urlLoadCommitData, {}, {
-    post: {
-      method: 'POST',
-      headers: headers
-    },
-  });
-}]);
+  function DeleteRepoFactory($resource) {
+    return $resource(urls.urlDeleteRepo, {}, {
+      post: {
+        method: 'POST',
+      },
+    });
+  }
 
-app.controller('MyReposController', ['$scope', 'DeleteRepo', 'AddRepo', 'LoadCommitData',
-  function($scope, DeleteRepo, AddRepo, LoadCommitData) {
-    $scope.deleteRepo = function($event) {
+  angular.module('app').factory('AddRepo', AddRepoFactory);
+  AddRepoFactory.$inject = ['$resource'];
+
+  function AddRepoFactory($resource) {
+    return $resource(urls.urlAddRepo, {}, {
+      post: {
+        method: 'POST',
+      },
+    });
+  }
+
+  angular.module('app').factory('LoadCommitData', LoadCommitDataFactory);
+  LoadCommitDataFactory.$inject = ['$resource'];
+
+  function LoadCommitDataFactory($resource) {
+    return $resource(urls.urlLoadCommitData, {}, {
+      post: {
+        method: 'POST',
+      },
+    });
+  }
+
+  angular.module('app').controller('MyReposController', MyReposController);
+  MyReposController.$inject = ['DeleteRepo', 'AddRepo', 'LoadCommitData', 'appFactory'];
+
+  function MyReposController(DeleteRepo, AddRepo, LoadCommitData, appFactory) {
+    const vm = this;
+    vm.deleteRepo = function($event) {
       const element = $event.target;
-      const id = $(element).data('id');
-      DeleteRepo.post($.param({
-        id: id
+      const id = angular.element(element).data('id');
+      DeleteRepo.post(angular.element.param({
+        id: id,
       }), function(response) {
-        $scope.repos = $scope.repos.filter(function(repo) {
+        vm.repos = vm.repos.filter(function(repo) {
           if (response.status === 'success') {
             if (repo.id != id) {
               return id;
             }
           } else {
-            displayMessage(response.error);
+            appFactory.displayMessage(response.error);
           }
         });
       }, function() {
-        displayMessage(gettext('Error deleting repository'));
+        appFactory.displayMessage(gettext('Error deleting repository'));
       });
     };
 
-    $scope.addRepo = function() {
-      AddRepo.post($.param({
-        name: $scope.name
+    vm.addRepo = function() {
+      AddRepo.post(angular.element.param({
+        name: vm.name,
       }), function(response) {
         if (response.status === 'success') {
-          $scope.repos.push({
+          vm.repos.push({
             id: response.id,
-            name: $scope.name
+            name: vm.name,
           });
-          $scope.name = '';
+          vm.name = '';
         } else {
-          displayMessage(response.error);
+          appFactory.displayMessage(response.error);
         }
       }, function() {
-        displayMessage(gettext('Error adding repository'));
+        appFactory.displayMessage(gettext('Error adding repository'));
       });
     };
 
-    $scope.loadCommitData = function() {
-      LoadCommitData.post($.param({
-        name: $scope.name
+    vm.loadCommitData = function() {
+      LoadCommitData.post(angular.element.param({
+        name: vm.name,
       }), function(response) {
         if (response.status !== 'success') {
-          displayMessage(response.error);
+          appFactory.displayMessage(response.error);
         }
       }, function() {
-        displayMessage(gettext('Error loading commit data'));
+        appFactory.displayMessage(gettext('Error loading commit data'));
       });
     };
+
+    vm.loadRepos = function() {
+      vm.repos = vars.repos;
+      angular.element('#repos').show();
+    };
   }
-]);
-
-function loadRepos() {
-  let scope = angular.element($('#my-repos-controller')).scope();
-  scope.$apply(function() {
-    scope.repos = repos;
-  });
-  $('#repos').show();
-}
-
-$(function() {
-  loadRepos();
-});
+})();
