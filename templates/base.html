@@ -30,12 +30,6 @@
   Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>.
 </footer>
 <script src="{% url 'javascript-catalog' %}"></script>
-{% get_current_language as LANGUAGE_CODE %}
-<script>
-  'use strict';
-  const language = '{{ LANGUAGE_CODE }}';
-</script>
-
 <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/jgrowl/jquery.jgrowl.min.js' %}"></script>
 <script src="{% static 'vendor/tether/dist/js/tether.min.js' %}"></script>
