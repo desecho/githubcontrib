@@ -9,7 +9,12 @@
 
   function MyReposController(DeleteRepo, AddRepo, LoadCommitData, appFactory) {
     const vm = this;
-    vm.deleteRepo = function($event) {
+    vm.deleteRepo = deleteRepo;
+    vm.addRepo = addRepo;
+    vm.loadCommitData = loadCommitData;
+    vm.loadRepos = loadRepos;
+
+    function deleteRepo($event) {
       const element = $event.target;
       const id = angular.element(element).data('id');
       DeleteRepo.post(angular.element.param({
@@ -27,9 +32,9 @@
       }, function() {
         appFactory.displayMessage(gettext('Error deleting repository'));
       });
-    };
+    }
 
-    vm.addRepo = function() {
+    function addRepo() {
       AddRepo.post(angular.element.param({
         name: vm.name,
       }), function(response) {
@@ -45,9 +50,9 @@
       }, function() {
         appFactory.displayMessage(gettext('Error adding repository'));
       });
-    };
+    }
 
-    vm.loadCommitData = function() {
+    function loadCommitData() {
       LoadCommitData.post(angular.element.param({
         name: vm.name,
       }), function(response) {
@@ -57,11 +62,11 @@
       }, function() {
         appFactory.displayMessage(gettext('Error loading commit data'));
       });
-    };
+    }
 
-    vm.loadRepos = function() {
+    function loadRepos() {
       vm.repos = vars.repos;
       angular.element('#repos').show();
-    };
+    }
   }
 })();
