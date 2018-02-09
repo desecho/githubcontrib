@@ -41,9 +41,6 @@ class Github:
         params = urllib.parse.unquote(params)
         # We can't use requests' params argument because of this - https://github.com/requests/requests/issues/2701
         r = requests.get(f'{self.BASE_URL}/search/commits?{params}', headers=self.HEADERS)
-        url = (f'{self.BASE_URL}/search/commits?access_token={settings.GITHUB_API_KEY}&'
-               f'q=author:{username}+repo:{repo}+sort:author-date-desc&'
-               f'per_page={self.MAX_NUMBER_OF_ITEMS}&page={page}')
         commits = r.json()['items']
         commits_total += commits
         if len(commits) == self.MAX_NUMBER_OF_ITEMS:
