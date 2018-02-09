@@ -15,8 +15,7 @@
     <br><br>
 
     <div id="repos" style="display: none;">
-      <div ng-repeat="repo in model.repos">[[ repo.name ]] <a href="javascript:void(0)" ng-click="model.deleteRepo($event)"><i
-        data-id="[[ repo.id ]]" class="fa fa-trash"></i></a></div>
+      <div ng-repeat="repo in model.repos">[[ repo.name ]] <a href="javascript:void(0)" ng-click="model.deleteRepo(repo)"><i class="fa fa-trash"></i></a></div>
     </div>
 
   </div>

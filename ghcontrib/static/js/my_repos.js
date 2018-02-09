@@ -14,21 +14,20 @@
     vm.loadCommitData = loadCommitData;
     vm.loadRepos = loadRepos;
 
-    function deleteRepo($event) {
-      const element = $event.target;
-      const id = angular.element(element).data('id');
+    function deleteRepo(repo) {
+      const id = repo.id;
       DeleteRepo.post(angular.element.param({
-        id: id,
+        id: repo.id,
       }), function(response) {
-        vm.repos = vm.repos.filter(function(repo) {
-          if (response.status === 'success') {
+        if (response.status === 'success') {
+          vm.repos = vm.repos.filter(function(repo) {
             if (repo.id != id) {
-              return id;
+              return repo;
             }
-          } else {
-            appFactory.displayMessage(response.error);
-          }
-        });
+          });
+        } else {
+          appFactory.displayMessage(response.error);
+        }
       }, function() {
         appFactory.displayMessage(gettext('Error deleting repository'));
       });
