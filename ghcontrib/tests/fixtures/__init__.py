@@ -26,7 +26,7 @@ username = 'user'
 repo = f'{username}/project'
 commits1_output = {'total_count': 1, 'incomplete_results': False, 'items': commits1_items}
 
-url_page1 = 'https://api.github.com/search/commits?access_token=token&q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1'
-url_page2 = 'https://api.github.com/search/commits?access_token=token&q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2'
+url_page1 = 'https://api.github.com/search/commits?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1'
+url_page2 = 'https://api.github.com/search/commits?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2'
 commits2_output_page1 = {'total_count': 101, 'incomplete_results': False, 'items': commits2_items_page1}
 commits2_output_page2 = {'total_count': 101, 'incomplete_results': False, 'items': commits2_items_page2}
