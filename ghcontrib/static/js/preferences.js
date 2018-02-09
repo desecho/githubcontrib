@@ -1,23 +1,26 @@
 'use strict';
 
 (function() {
-  createPostResource('SavePreferences', urls.urlSavePreferences);
+  createPostResource('savePreferences', urls.urlSavePreferences);
   angular.module('app').controller('PreferencesController', PreferencesController);
-  PreferencesController.$inject = ['SavePreferences', 'appFactory'];
+  PreferencesController.$inject = ['savePreferences', 'appFactory'];
 
-  function PreferencesController(SavePreferences, appFactory) {
+  function PreferencesController(savePreferences, appFactory) {
     let vm = this;
-    vm.savePreferences = function(reload) {
+    vm.save = save;
+    vm.language = vars.language;
+
+    function save(reload) {
       const preferences = {
-        language: angular.element('input:radio[name=lang]:checked')[0].value,
+        language: vm.language,
       };
-      SavePreferences.post(angular.element.param(preferences), function() {
+      savePreferences.post(angular.element.param(preferences), function() {
         if (reload) {
           location.reload();
         }
       }, function() {
         appFactory.displayMessage(gettext('Error saving settings'));
       });
-    };
+    }
   }
 })();
