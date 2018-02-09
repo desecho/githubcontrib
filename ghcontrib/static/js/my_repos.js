@@ -1,39 +1,9 @@
 'use strict';
 
 (function() {
-  angular.module('app').factory('DeleteRepo', DeleteRepoFactory);
-  DeleteRepoFactory.$inject = ['$resource'];
-
-  function DeleteRepoFactory($resource) {
-    return $resource(urls.urlDeleteRepo, {}, {
-      post: {
-        method: 'POST',
-      },
-    });
-  }
-
-  angular.module('app').factory('AddRepo', AddRepoFactory);
-  AddRepoFactory.$inject = ['$resource'];
-
-  function AddRepoFactory($resource) {
-    return $resource(urls.urlAddRepo, {}, {
-      post: {
-        method: 'POST',
-      },
-    });
-  }
-
-  angular.module('app').factory('LoadCommitData', LoadCommitDataFactory);
-  LoadCommitDataFactory.$inject = ['$resource'];
-
-  function LoadCommitDataFactory($resource) {
-    return $resource(urls.urlLoadCommitData, {}, {
-      post: {
-        method: 'POST',
-      },
-    });
-  }
-
+  createPostResource('DeleteRepo', urls.urlDeleteRepo);
+  createPostResource('AddRepo', urls.urlAddRepo);
+  createPostResource('LoadCommitData', urls.urlLoadCommitData);
   angular.module('app').controller('MyReposController', MyReposController);
   MyReposController.$inject = ['DeleteRepo', 'AddRepo', 'LoadCommitData', 'appFactory'];
 

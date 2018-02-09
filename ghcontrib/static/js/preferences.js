@@ -1,17 +1,7 @@
 'use strict';
 
 (function() {
-  angular.module('app').factory('SavePreferences', SavePreferencesFactory);
-  SavePreferencesFactory.$inject = ['$resource'];
-
-  function SavePreferencesFactory($resource) {
-    return $resource(urls.urlSavePreferences, {}, {
-      post: {
-        method: 'POST',
-      },
-    });
-  }
-
+  createPostResource('SavePreferences', urls.urlSavePreferences);
   angular.module('app').controller('PreferencesController', PreferencesController);
   PreferencesController.$inject = ['SavePreferences', 'appFactory'];
 

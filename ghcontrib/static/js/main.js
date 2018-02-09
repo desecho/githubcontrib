@@ -52,5 +52,19 @@ angular.module('app').directive('ngEnter', function() {
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }
 })();
+
 let vars = {}; // eslint-disable-line no-unused-vars
 let urls = {}; // eslint-disable-line no-unused-vars
+
+function createPostResource(name, url) { // eslint-disable-line no-unused-vars
+  angular.module('app').factory(name, factory);
+  factory.$inject = ['$resource'];
+
+  function factory($resource) {
+    return $resource(url, {}, {
+      post: {
+        method: 'POST',
+      },
+    });
+  }
+}
