@@ -1,3 +1,5 @@
+import urllib
+
 import github
 import requests
 from dateutil import parser
@@ -9,7 +11,7 @@ class Github:
     # The limit is set by GitHub
     MAX_NUMBER_OF_ITEMS = 100
     BASE_URL = 'https://api.github.com'
-    HEADERS = {'Accept': 'application/vnd.github.cloak-preview'}
+    HEADERS = {'Accept': 'application/vnd.github.cloak-preview', 'Authorization': settings.GITHUB_API_KEY}
 
     def __init__(self):
         self.gh = github.Github(settings.GITHUB_API_KEY)
@@ -30,10 +32,18 @@ class Github:
 
     def _load_commits(self, username, repo, page, commits_total):
         # Use sort filter here because we want to make sure we can use pagination consistently.
+        params = {
+            'q': f'author:{username}+repo:{repo}+sort:author-date-desc',
+            'per_page': self.MAX_NUMBER_OF_ITEMS,
+            'page': page,
+        }
+        params = urllib.parse.urlencode(params)
+        params = urllib.parse.unquote(params)
+        # We can't use requests' params argument because of this - https://github.com/requests/requests/issues/2701
+        r = requests.get(f'{self.BASE_URL}/search/commits?{params}', headers=self.HEADERS)
         url = (f'{self.BASE_URL}/search/commits?access_token={settings.GITHUB_API_KEY}&'
                f'q=author:{username}+repo:{repo}+sort:author-date-desc&'
                f'per_page={self.MAX_NUMBER_OF_ITEMS}&page={page}')
-        r = requests.get(url, headers=self.HEADERS)
         commits = r.json()['items']
         commits_total += commits
         if len(commits) == self.MAX_NUMBER_OF_ITEMS:
