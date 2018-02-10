@@ -25,3 +25,7 @@ footer {
   grid-row-end: 3;
   text-align: right;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}

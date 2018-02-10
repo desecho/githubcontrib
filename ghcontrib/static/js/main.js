@@ -24,10 +24,10 @@ angular.module('app').directive('ngEnter', function() {
 });
 
 (function() {
-  angular.module('app').factory('MyResourceInterceptor', MyResourceInterceptor);
-  MyResourceInterceptor.$inject = ['$cookies'];
+  angular.module('app').factory('appResourceInterceptor', appResourceInterceptor);
+  appResourceInterceptor.$inject = ['$cookies'];
 
-  function MyResourceInterceptor($cookies) {
+  function appResourceInterceptor($cookies) {
     return {
       request: function(config) {
         const headers = {
@@ -45,7 +45,7 @@ angular.module('app').directive('ngEnter', function() {
   config.$inject = ['$httpProvider', '$interpolateProvider', '$resourceProvider'];
 
   function config($httpProvider, $interpolateProvider, $resourceProvider) {
-    $httpProvider.interceptors.push('MyResourceInterceptor');
+    $httpProvider.interceptors.push('appResourceInterceptor');
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
     // Don't strip trailing slashes from calculated URLs
@@ -56,9 +56,11 @@ angular.module('app').directive('ngEnter', function() {
 
   function MenuController() {
     let vm = this;
-    vm.changeLanguage = function() {
+    vm.changeLanguage = changeLanguage;
+
+    function changeLanguage() {
       angular.element('#language-form').submit();
-    };
+    }
   }
 })();
 

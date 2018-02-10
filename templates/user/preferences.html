@@ -8,15 +8,14 @@
     <form class="form-horizontal" id="preferences">
       <legend>{% trans 'Settings' %}</legend>
       <br>
-      <div class="form-group row">
+      <div class="form-group row" ng-cloak>
         <label class="col-form-label col-sm-2" for="lang">{% trans 'Language' %}:</label>
         <div class="col-sm-10">
           {% get_available_languages as LANGUAGES %}
           {% get_language_info_list for LANGUAGES as languages %}
           {% for language in languages %}
             <label class="radio mr-2 col-form-label">
-              <input type="radio" ng-model="preferences.language" ng-change="preferences.save(true)" name="lang" value="{{ language.code }}"
-                {% ifequal user.language language.code %} checked {% endifequal %}> {{ language.name_local }}
+              <input type="radio" ng-model="preferences.language" ng-change="preferences.save(true)" name="lang" value="{{ language.code }}"> {{ language.name_local }}
             </label>
           {% endfor %}
         </div>

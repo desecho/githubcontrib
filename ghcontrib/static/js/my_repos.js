@@ -1,13 +1,26 @@
 'use strict';
 
-(function() {
-  createPostResource('DeleteRepo', urls.urlDeleteRepo);
-  createPostResource('AddRepo', urls.urlAddRepo);
-  createPostResource('LoadCommitData', urls.urlLoadCommitData);
-  angular.module('app').controller('MyReposController', MyReposController);
-  MyReposController.$inject = ['DeleteRepo', 'AddRepo', 'LoadCommitData', 'appFactory'];
+createPostResource('DeleteRepo', urls.urlDeleteRepo);
+createPostResource('AddRepo', urls.urlAddRepo);
 
-  function MyReposController(DeleteRepo, AddRepo, LoadCommitData, appFactory) {
+(function() {
+  angular.module('app').factory('commitData', factory);
+  factory.$inject = ['$resource'];
+
+  function factory($resource) {
+    return $resource(urls.urlLoadCommitData, {}, {
+      load: {
+        method: 'POST',
+      },
+    });
+  }
+})();
+
+(function() {
+  angular.module('app').controller('MyReposController', MyReposController);
+  MyReposController.$inject = ['DeleteRepo', 'AddRepo', 'commitData', 'appFactory'];
+
+  function MyReposController(DeleteRepo, AddRepo, commitData, appFactory) {
     const vm = this;
     vm.deleteRepo = deleteRepo;
     vm.addRepo = addRepo;
@@ -52,9 +65,7 @@
     }
 
     function loadCommitData() {
-      LoadCommitData.post(angular.element.param({
-        name: vm.name,
-      }), function(response) {
+      commitData.load({}, function(response) {
         if (response.status !== 'success') {
           appFactory.displayMessage(response.error);
         }
