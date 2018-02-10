@@ -20,9 +20,9 @@
 
 (function() {
   angular.module('app').factory('repoDataservice', factory);
-  factory.$inject = ['repoService', 'appFactory'];
+  factory.$inject = ['repoService', 'growl'];
 
-  function factory(repoService, appFactory) {
+  function factory(repoService, growl) {
     return {
       deleteRepo: deleteRepo,
       addRepo: addRepo,
@@ -35,12 +35,13 @@
 
       function deleteRepoSuccess(response) {
         if (response.status !== 'success') {
-          appFactory.displayMessage(response.error);
+          growl.error(response.message);
+          throw new Error();
         }
       }
 
       function deleteRepoFail() {
-        appFactory.displayMessage(gettext('Error deleting repository'));
+        growl.error(gettext('Error deleting repository'));
       }
     }
 
@@ -56,12 +57,13 @@
             name: name,
           };
         } else {
-          appFactory.displayMessage(response.error);
+          growl.general(response.message, undefined, response.messageType);
+          throw new Error();
         }
       }
 
       function addRepoFail() {
-        appFactory.displayMessage(gettext('Error adding repository'));
+        growl.error(gettext('Error adding repository'));
       }
     }
   }
@@ -83,9 +85,9 @@
 
 (function() {
   angular.module('app').factory('commitDataDataservice', factory);
-  factory.$inject = ['commitDataService', 'appFactory'];
+  factory.$inject = ['commitDataService', 'growl'];
 
-  function factory(commitDataService, appFactory) {
+  function factory(commitDataService, growl) {
     return {
       loadCommitData: loadCommitData,
     };
@@ -94,13 +96,15 @@
       return commitDataService.load({}, loadCommitDataSuccess, loadCommitDataFail);
 
       function loadCommitDataSuccess(response) {
-        if (response.status !== 'success') {
-          appFactory.displayMessage(response.error);
+        if (response.status === 'success') {
+          growl.success(gettext('Commit data has been updated'));
+        } else {
+          growl.error(response.message);
         }
       }
 
       function loadCommitDataFail() {
-        appFactory.displayMessage(gettext('Error loading commit data'));
+        growl.error(gettext('Error loading commit data'));
       }
     }
   }

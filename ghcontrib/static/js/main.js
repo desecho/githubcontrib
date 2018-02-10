@@ -1,27 +1,6 @@
 'use strict';
 
-$.jGrowl.defaults.closerTemplate = '<div>' + gettext('Close all notifications') + '</div>';
-
-angular.module('app', ['ngResource', 'angular-loading-bar', 'ngCookies']);
-angular.module('app').factory('appFactory', function() {
-  return {
-    displayMessage: function(message) {
-      return $.jGrowl(message);
-    },
-  };
-});
-angular.module('app').directive('ngEnter', function() {
-  return function(scope, element, attrs) {
-    element.bind('keydown keypress', function(event) {
-      if (event.which === 13) {
-        scope.$apply(function() {
-          scope.$eval(attrs.ngEnter);
-        });
-        event.preventDefault();
-      }
-    });
-  };
-});
+angular.module('app', ['ngResource', 'angular-loading-bar', 'ngCookies', 'angular-growl']);
 
 (function() {
   angular.module('app').factory('appResourceInterceptor', appResourceInterceptor);
@@ -42,14 +21,19 @@ angular.module('app').directive('ngEnter', function() {
   }
 
   angular.module('app').config(config);
-  config.$inject = ['$httpProvider', '$interpolateProvider', '$resourceProvider'];
+  config.$inject = ['$httpProvider', '$interpolateProvider', '$resourceProvider', 'growlProvider'];
 
-  function config($httpProvider, $interpolateProvider, $resourceProvider) {
+  function config($httpProvider, $interpolateProvider, $resourceProvider, growlProvider) {
     $httpProvider.interceptors.push('appResourceInterceptor');
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
+
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
+
+    growlProvider.globalTimeToLive(2000);
+    growlProvider.globalDisableCountDown(true);
+    growlProvider.globalDisableIcons(true);
   }
 
   angular.module('app').controller('MenuController', MenuController);

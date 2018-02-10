@@ -1,6 +1,6 @@
 'use strict';
 (function() {
-  angular.module('app').factory('preferences', factory);
+  angular.module('app').factory('preferencesService', factory);
   factory.$inject = ['$resource'];
 
   function factory($resource) {
@@ -14,20 +14,20 @@
 
 (function() {
   angular.module('app').factory('preferencesDataservice', factory);
-  factory.$inject = ['preferences', 'appFactory'];
+  factory.$inject = ['preferencesService', 'growl'];
 
-  function factory(preferences, appFactory) {
+  function factory(preferencesService, growl) {
     return {
       save: save,
     };
 
     function save(language) {
-      return preferences.save(angular.element.param({
+      return preferencesService.save(angular.element.param({
         language: language,
       }), function() {}, saveFail);
 
       function saveFail() {
-        appFactory.displayMessage(gettext('Error saving settings'));
+        growl.error(gettext('Error saving settings'));
       }
     }
   }
@@ -35,7 +35,7 @@
 
 (function() {
   angular.module('app').controller('PreferencesController', PreferencesController);
-  PreferencesController.$inject = ['preferencesDataservice', 'appFactory'];
+  PreferencesController.$inject = ['preferencesDataservice'];
 
   function PreferencesController(preferencesDataservice) {
     let vm = this;

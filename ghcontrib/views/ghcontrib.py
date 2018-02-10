@@ -54,7 +54,7 @@ class RepoView(AjaxView):
                 if not user.repos.filter(name=name).exists():
                     repo_id = Repo.objects.create(name=name, user=user).pk
                     return self.success(id=repo_id)
-                return self.fail(_('Repository already exists'))
+                return self.fail(_('Repository already exists'), self.MESSAGE_WARNING)
             return self.fail(_('Repository not found'))
         return self.fail(_('Repository name is incorrect'))
 
