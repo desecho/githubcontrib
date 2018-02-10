@@ -1,5 +1,4 @@
 'use strict';
-
 (function() {
   angular.module('app').factory('preferences', factory);
   factory.$inject = ['$resource'];
@@ -14,22 +13,41 @@
 })();
 
 (function() {
-  angular.module('app').controller('PreferencesController', PreferencesController);
-  PreferencesController.$inject = ['preferences', 'appFactory'];
+  angular.module('app').factory('preferencesDataservice', factory);
+  factory.$inject = ['preferences', 'appFactory'];
 
-  function PreferencesController(preferences, appFactory) {
+  function factory(preferences, appFactory) {
+    return {
+      save: save,
+    };
+
+    function save(language) {
+      return preferences.save(angular.element.param({
+        language: language,
+      }), function() {}, saveFail);
+
+      function saveFail() {
+        appFactory.displayMessage(gettext('Error saving settings'));
+      }
+    }
+  }
+})();
+
+(function() {
+  angular.module('app').controller('PreferencesController', PreferencesController);
+  PreferencesController.$inject = ['preferencesDataservice', 'appFactory'];
+
+  function PreferencesController(preferencesDataservice) {
     let vm = this;
     vm.save = save;
     vm.language = vars.language;
 
     function save(reload) {
-      preferences.save(angular.element.param(), function() {
+      preferencesDataservice.save(vm.language).$promise.then(function() {
         if (reload) {
           location.reload();
         }
-      }, function() {
-        appFactory.displayMessage(gettext('Error saving settings'));
-      });
+      }).catch(function() {});
     }
   }
 })();
