@@ -51,7 +51,7 @@ urlpatterns += [
     path('', HomeView.as_view(), name='home'),
     path('my-repositories/', MyReposView.as_view(), name='my_repos'),
     path('my-contributions/', MyContribsView.as_view(), name='my_contribs'),
-    re_path('repository/(?P<repo_id>\d+)/', RepoView.as_view(), name='delete_repo'),
+    re_path(r'repository/(?P<repo_id>\d+)/', RepoView.as_view(), name='delete_repo'),
     path('repository/', RepoView.as_view(), name='repo'),
     path('load-commit-data/', LoadCommitDataView.as_view(), name='load_commit_data'),
     # This route has to be in the end
