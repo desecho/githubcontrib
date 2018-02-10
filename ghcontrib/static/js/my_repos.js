@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  angular.module('app').factory('repo', factory);
+  angular.module('app').factory('repoService', factory);
   factory.$inject = ['$resource'];
 
   function factory($resource) {
@@ -20,16 +20,16 @@
 
 (function() {
   angular.module('app').factory('repoDataservice', factory);
-  factory.$inject = ['repo', 'appFactory'];
+  factory.$inject = ['repoService', 'appFactory'];
 
-  function factory(repo, appFactory) {
+  function factory(repoService, appFactory) {
     return {
       deleteRepo: deleteRepo,
       addRepo: addRepo,
     };
 
     function deleteRepo(repoId) {
-      return repo.delete({
+      return repoService.delete({
         id: repoId,
       }, deleteRepoSuccess, deleteRepoFail);
 
@@ -45,7 +45,7 @@
     }
 
     function addRepo(name) {
-      return repo.add(angular.element.param({
+      return repoService.add(angular.element.param({
         name: name,
       }), addRepoSuccess, addRepoFail);
 
@@ -69,7 +69,7 @@
 
 
 (function() {
-  angular.module('app').factory('commitData', factory);
+  angular.module('app').factory('commitDataService', factory);
   factory.$inject = ['$resource'];
 
   function factory($resource) {
@@ -83,15 +83,15 @@
 
 (function() {
   angular.module('app').factory('commitDataDataservice', factory);
-  factory.$inject = ['commitData', 'appFactory'];
+  factory.$inject = ['commitDataService', 'appFactory'];
 
-  function factory(commitData, appFactory) {
+  function factory(commitDataService, appFactory) {
     return {
       loadCommitData: loadCommitData,
     };
 
     function loadCommitData() {
-      return commitData.load({}, loadCommitDataSuccess, loadCommitDataFail);
+      return commitDataService.load({}, loadCommitDataSuccess, loadCommitDataFail);
 
       function loadCommitDataSuccess(response) {
         if (response.status !== 'success') {
