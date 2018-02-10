@@ -1,7 +1,22 @@
 'use strict';
 
-createPostResource('DeleteRepo', urls.urlDeleteRepo);
-createPostResource('AddRepo', urls.urlAddRepo);
+(function() {
+  angular.module('app').factory('repo', factory);
+  factory.$inject = ['$resource'];
+
+  function factory($resource) {
+    return $resource(urls.urlRepo + ':id/', {
+      id: '@id',
+    }, {
+      add: {
+        method: 'POST',
+      },
+      delete: {
+        method: 'DELETE',
+      },
+    });
+  }
+})();
 
 (function() {
   angular.module('app').factory('commitData', factory);
@@ -18,23 +33,22 @@ createPostResource('AddRepo', urls.urlAddRepo);
 
 (function() {
   angular.module('app').controller('MyReposController', MyReposController);
-  MyReposController.$inject = ['DeleteRepo', 'AddRepo', 'commitData', 'appFactory'];
+  MyReposController.$inject = ['repo', 'commitData', 'appFactory'];
 
-  function MyReposController(DeleteRepo, AddRepo, commitData, appFactory) {
+  function MyReposController(repo, commitData, appFactory) {
     const vm = this;
     vm.deleteRepo = deleteRepo;
     vm.addRepo = addRepo;
     vm.loadCommitData = loadCommitData;
-    vm.loadRepos = loadRepos;
+    vm.repos = vars.repos;
 
-    function deleteRepo(repo) {
-      const id = repo.id;
-      DeleteRepo.post(angular.element.param({
-        id: repo.id,
-      }), function(response) {
+    function deleteRepo(repoId) {
+      repo.delete({
+        id: repoId,
+      }, function(response) {
         if (response.status === 'success') {
           vm.repos = vm.repos.filter(function(repo) {
-            if (repo.id != id) {
+            if (repo.id != repoId) {
               return repo;
             }
           });
@@ -47,7 +61,7 @@ createPostResource('AddRepo', urls.urlAddRepo);
     }
 
     function addRepo() {
-      AddRepo.post(angular.element.param({
+      repo.add(angular.element.param({
         name: vm.name,
       }), function(response) {
         if (response.status === 'success') {
@@ -72,11 +86,6 @@ createPostResource('AddRepo', urls.urlAddRepo);
       }, function() {
         appFactory.displayMessage(gettext('Error loading commit data'));
       });
-    }
-
-    function loadRepos() {
-      vm.repos = vars.repos;
-      angular.element('#repos').show();
     }
   }
 })();

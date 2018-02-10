@@ -1,20 +1,29 @@
 'use strict';
 
 (function() {
-  createPostResource('savePreferences', urls.urlSavePreferences);
-  angular.module('app').controller('PreferencesController', PreferencesController);
-  PreferencesController.$inject = ['savePreferences', 'appFactory'];
+  angular.module('app').factory('preferences', factory);
+  factory.$inject = ['$resource'];
 
-  function PreferencesController(savePreferences, appFactory) {
+  function factory($resource) {
+    return $resource(urls.urlSavePreferences, {}, {
+      save: {
+        method: 'POST',
+      },
+    });
+  }
+})();
+
+(function() {
+  angular.module('app').controller('PreferencesController', PreferencesController);
+  PreferencesController.$inject = ['preferences', 'appFactory'];
+
+  function PreferencesController(preferences, appFactory) {
     let vm = this;
     vm.save = save;
     vm.language = vars.language;
 
     function save(reload) {
-      const preferences = {
-        language: vm.language,
-      };
-      savePreferences.post(angular.element.param(preferences), function() {
+      preferences.save(angular.element.param(), function() {
         if (reload) {
           location.reload();
         }

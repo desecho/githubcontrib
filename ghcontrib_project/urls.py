@@ -3,17 +3,16 @@ from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import login
-from django.urls import path
+from django.urls import path, re_path
 from django.views.i18n import JavaScriptCatalog
 
 from ghcontrib.views.ghcontrib import (
-    AddRepoView,
     ContribsView,
-    DeleteRepoView,
     HomeView,
     LoadCommitDataView,
     MyContribsView,
     MyReposView,
+    RepoView,
 )
 from ghcontrib.views.user import (
     PreferencesView,
@@ -49,12 +48,12 @@ urlpatterns += [
     path('rosetta/', include('rosetta.urls')),
     path('djga/', include('google_analytics.urls')),
     # -------------------------------------------------------------------------------------------
-    path(r'', HomeView.as_view(), name='home'),
-    path(r'my-repositories/', MyReposView.as_view(), name='my_repos'),
-    path(r'my-contributions/', MyContribsView.as_view(), name='my_contribs'),
-    path(r'delete-repository/', DeleteRepoView.as_view(), name='delete_repo'),
-    path(r'add-repository/', AddRepoView.as_view(), name='add_repo'),
-    path(r'load-commit-data/', LoadCommitDataView.as_view(), name='load_commit_data'),
+    path('', HomeView.as_view(), name='home'),
+    path('my-repositories/', MyReposView.as_view(), name='my_repos'),
+    path('my-contributions/', MyContribsView.as_view(), name='my_contribs'),
+    re_path('repository/(?P<repo_id>\d+)/', RepoView.as_view(), name='delete_repo'),
+    path('repository/', RepoView.as_view(), name='repo'),
+    path('load-commit-data/', LoadCommitDataView.as_view(), name='load_commit_data'),
     # This route has to be in the end
-    path(r'<str:username>/', ContribsView.as_view(), name='contribs'),
+    path('<str:username>/', ContribsView.as_view(), name='contribs'),
 ]

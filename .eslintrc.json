@@ -63,7 +63,6 @@
     "gettext": false,
     "retinajs": false,
     "urls": false,
-    "vars": false,
-    "createPostResource": false
+    "vars": false
   }
 }

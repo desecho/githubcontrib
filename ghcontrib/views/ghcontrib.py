@@ -45,7 +45,7 @@ class MyReposView(TemplateView):
         return kwargs
 
 
-class AddRepoView(AjaxView):
+class RepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         name = self.request.POST['name']
         if re.match('.+/.+', name) is not None:
@@ -58,12 +58,13 @@ class AddRepoView(AjaxView):
             return self.fail(_('Repository not found'))
         return self.fail(_('Repository name is incorrect'))
 
-
-class DeleteRepoView(AjaxView):
-    def post(self, *args, **kwargs):  # pylint: disable=unused-argument
-        id_ = self.request.POST['id']
+    def delete(self, *args, **kwargs):  # pylint: disable=unused-argument
+        try:
+            repo_id = kwargs['repo_id']
+        except KeyError:
+            return self.render_bad_request_response()
         user = self.request.user
-        repos = user.repos.filter(pk=id_)
+        repos = user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
         else:

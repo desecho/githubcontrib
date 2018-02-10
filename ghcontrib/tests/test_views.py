@@ -91,7 +91,7 @@ class ReposTestCase(BaseTestLoginCase):
         }])
 
 
-class AddRepoTestCase(BaseTestLoginCase):
+class RepoTestCase(BaseTestLoginCase):
     fixtures = [
         'users.json',
         'repos.json',
@@ -100,7 +100,7 @@ class AddRepoTestCase(BaseTestLoginCase):
     def setUp(self):
         super().setUp()
         self.github_mock = flexmock(spec=Github)
-        self.url = reverse('add_repo')
+        self.url = reverse('repo')
 
     def test_add_repo_wrong_name(self):
         response = self.client.post(self.url, {'name': 'something'})
@@ -125,26 +125,24 @@ class AddRepoTestCase(BaseTestLoginCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'error': 'Repository already exists', 'status': 'fail'})
 
-
-class DeleteRepoTestCase(BaseTestLoginCase):
-    fixtures = [
-        'users.json',
-        'repos.json',
-    ]
-
     def test_delete_repo(self):
-        url = reverse('delete_repo')
-        response = self.client.post(url, {'id': '1'})
+        url = reverse('delete_repo', args=(1, ))
+        response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'status': 'success'})
         repos = list(self.user.repos.all().values_list('pk', flat=True))
         self.assertListEqual(repos, [2])
 
     def test_delete_repo_does_not_exist(self):
-        url = reverse('delete_repo')
-        response = self.client.post(url, {'id': '5'})
+        url = reverse('delete_repo', args=(5, ))
+        response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'status': 'fail', 'error': 'Repository not found'})
+
+    def test_delete_repo_bad_request(self):
+        url = reverse('repo')
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 400)
 
 
 class LoadCommitDataTestCase(BaseTestLoginCase):
