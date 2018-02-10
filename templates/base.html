@@ -10,8 +10,10 @@
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link href="{% static 'vendor/bootstrap/dist/css/bootstrap.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/tether/dist/css/tether.min.css' %}" rel="stylesheet">
+
   <link href="{% static 'vendor/angular-loading-bar/build/loading-bar.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/angular-growl-v2/build/angular-growl.min.css' %}" rel="stylesheet">
+
   <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
   <link href="{% static 'style.css' %}" rel="stylesheet">
   {% block head %}{% endblock %}
@@ -33,11 +35,13 @@
 <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/tether/dist/js/tether.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
 <script src="{% static 'vendor/angular/angular.js' %}"></script>
 <script src="{% static 'vendor/angular-loading-bar/build/loading-bar.min.js' %}"></script>
 <script src="{% static 'vendor/angular-resource/angular-resource.min.js' %}"></script>
 <script src="{% static 'vendor/angular-cookies/angular-cookies.min.js' %}"></script>
 <script src="{% static 'vendor/angular-growl-v2/build/angular-growl.min.js' %}"></script>
+
 <script src="{% static 'js/main.js' %}"></script>
 {% include 'includes/google_analytics.html' %}
 {% block js %}{% endblock %}
