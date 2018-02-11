@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-08 23:20-0500\n"
-"PO-Revision-Date: 2018-02-08 23:22-0456\n"
+"POT-Creation-Date: 2018-02-10 20:48-0500\n"
+"PO-Revision-Date: 2018-02-10 20:50-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,22 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: ghcontrib/static/js/main.js:3
-msgid "Close all notifications"
-msgstr "Закрыть все оповещения"
-
-#: ghcontrib/static/js/my_repos.js:58
+#: ghcontrib/static/js/my_repos.js:44
 msgid "Error deleting repository"
 msgstr "Ошибка удаления репозитория"
 
-#: ghcontrib/static/js/my_repos.js:76
+#: ghcontrib/static/js/my_repos.js:66
 msgid "Error adding repository"
 msgstr "Ошибка добавления репозитория"
 
-#: ghcontrib/static/js/my_repos.js:88
+#: ghcontrib/static/js/my_repos.js:100
+msgid "Commit data has been updated"
+msgstr "Данные по коммитам были обновлены"
+
+#: ghcontrib/static/js/my_repos.js:107
 msgid "Error loading commit data"
 msgstr "Ошибка загрузки данный по коммитам"
 
-#: ghcontrib/static/js/preferences.js:29
+#: ghcontrib/static/js/preferences.js:31
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
+
+#~ msgid "Close all notifications"
+#~ msgstr "Закрыть все оповещения"
