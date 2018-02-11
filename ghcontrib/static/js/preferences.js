@@ -25,9 +25,9 @@
     function save(language) {
       return preferencesService.save(angular.element.param({
         language: language,
-      }), function() {}, saveFail);
+      }), function() {}, fail);
 
-      function saveFail() {
+      function fail() {
         growl.error(gettext('Error saving settings'));
       }
     }
@@ -39,7 +39,7 @@
   PreferencesController.$inject = ['preferencesDataservice'];
 
   function PreferencesController(preferencesDataservice) {
-    let vm = this;
+    const vm = this;
     vm.save = save;
     vm.language = vars.language;
 

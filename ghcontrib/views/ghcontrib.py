@@ -60,8 +60,8 @@ class RepoView(AjaxView):
 
     def delete(self, *args, **kwargs):  # pylint: disable=unused-argument
         try:
-            repo_id = kwargs['repo_id']
-        except KeyError:
+            repo_id = int(kwargs['id'])
+        except (KeyError, ValueError):
             return self.render_bad_request_response()
         user = self.request.user
         repos = user.repos.filter(pk=repo_id)

@@ -39,7 +39,7 @@ angular.module('app', ['ngResource', 'angular-loading-bar', 'ngCookies', 'angula
   angular.module('app').controller('MenuController', MenuController);
 
   function MenuController() {
-    let vm = this;
+    const vm = this;
     vm.changeLanguage = changeLanguage;
 
     function changeLanguage() {

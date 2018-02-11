@@ -29,6 +29,11 @@ SECRET_KEY = local_settings.SECRET_KEY
 ALLOWED_HOSTS = [local_settings.PROJECT_DOMAIN]
 SESSION_SAVE_EVERY_REQUEST = True
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

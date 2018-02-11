@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
-
-{% load i18n %}
-{% load static %}
+{% load i18n static %}
 
 {% block content %}
   <div ng-controller="PreferencesController as preferences">
-    <form class="form-horizontal" id="preferences">
+    <form class="form-horizontal">
       <legend>{% trans 'Settings' %}</legend>
       <br>
       <div class="form-group row" ng-cloak>
@@ -23,12 +21,13 @@
     </form>
   </div>
 {% endblock %}
-{% get_current_language as LANGUAGE_CODE %}
+
 {% block js %}
   <script>
     'use strict';
+
     urls.urlSavePreferences = '{% url 'save_preferences' %}';
-    vars.language = '{{ LANGUAGE_CODE }}';
+    vars.language = '{{ user.language }}';
   </script>
   <script src="{% static 'js/preferences.js' %}"></script>
 {% endblock %}

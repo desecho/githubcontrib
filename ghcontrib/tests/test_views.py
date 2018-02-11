@@ -126,7 +126,7 @@ class RepoTestCase(BaseTestLoginCase):
         self.assertEqual(self.get_json(response), {'error': 'Repository already exists', 'status': 'fail'})
 
     def test_delete_repo(self):
-        url = reverse('delete_repo', args=(1, ))
+        url = reverse('repo', args=(1, ))
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'status': 'success'})
@@ -134,7 +134,7 @@ class RepoTestCase(BaseTestLoginCase):
         self.assertListEqual(repos, [2])
 
     def test_delete_repo_does_not_exist(self):
-        url = reverse('delete_repo', args=(5, ))
+        url = reverse('repo', args=(5, ))
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'status': 'fail', 'error': 'Repository not found'})
