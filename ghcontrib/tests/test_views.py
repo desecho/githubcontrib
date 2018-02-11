@@ -105,7 +105,8 @@ class RepoTestCase(BaseTestLoginCase):
     def test_add_repo_wrong_name(self):
         response = self.client.post(self.url, {'name': 'something'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.get_json(response), {'status': 'fail', 'error': 'Repository name is incorrect'})
+        expected_response = {'status': 'fail', 'message': 'Repository name is incorrect', 'messageType': 'error'}
+        self.assertEqual(self.get_json(response), expected_response)
 
     def test_add_repo_success(self):
         self.github_mock.should_receive('repo_exists').and_return(True)
@@ -117,13 +118,15 @@ class RepoTestCase(BaseTestLoginCase):
         self.github_mock.should_receive('repo_exists').and_return(False)
         response = self.client.post(self.url, {'name': repo})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.get_json(response), {'status': 'fail', 'error': 'Repository not found'})
+        expected_response = {'status': 'fail', 'message': 'Repository not found', 'messageType': 'error'}
+        self.assertEqual(self.get_json(response), expected_response)
 
     def test_add_repo_exists(self):
         self.github_mock.should_receive('repo_exists').and_return(True)
         response = self.client.post(self.url, {'name': 'jieter/django-tables2'})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.get_json(response), {'error': 'Repository already exists', 'status': 'fail'})
+        expected_response = {'status': 'fail', 'message': 'Repository already exists', 'messageType': 'warning'}
+        self.assertEqual(self.get_json(response), expected_response)
 
     def test_delete_repo(self):
         url = reverse('repo', args=(1, ))
@@ -137,7 +140,8 @@ class RepoTestCase(BaseTestLoginCase):
         url = reverse('repo', args=(5, ))
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.get_json(response), {'status': 'fail', 'error': 'Repository not found'})
+        expected_response = {'status': 'fail', 'message': 'Repository not found', 'messageType': 'error'}
+        self.assertEqual(self.get_json(response), expected_response)
 
     def test_delete_repo_bad_request(self):
         url = reverse('repo')
@@ -172,11 +176,12 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         self.github_mock.should_receive('get_commit_data').and_return(None)
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            self.get_json(response), {
-                'error': 'Repository jieter/django-tables2 not found',
-                'status': 'fail'
-            })
+        expected_response = {
+            'status': 'fail',
+            'message': 'Repository jieter/django-tables2 not found',
+            'messageType': 'error'
+        }
+        self.assertEqual(self.get_json(response), expected_response)
 
 
 class LogoutTestCase(BaseTestLoginCase):
