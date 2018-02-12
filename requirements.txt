@@ -4,6 +4,7 @@ django-braces==1.12.0
 django-simple-menu==1.2.1
 social-auth-app-django==2.1.0
 django-rosetta==0.8.1
+django-tqdm==0.0.3
 
 # django-google-analytics-app==4.1.0
 # Open PR - https://github.com/praekelt/django-google-analytics/pull/38 - Django 2 support

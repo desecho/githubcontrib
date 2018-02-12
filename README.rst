@@ -5,6 +5,9 @@ GitHubContrib
 
 The web application on Python/Django, jQuery, Bootstrap. It allows you to have a profile page with your opensource contributions.
 
+See more documentation_.
+
+
 Installation instructions
 ----------------------------
 
@@ -27,3 +30,4 @@ Development
    :target: https://travis-ci.org/desecho/ghcontrib
 
 .. _ansible-playbook-server: https://github.com/desecho/ansible-playbook-server
+.. _documentation: https://github.com/desecho/ghcontrib/blob/master/doc.rst
