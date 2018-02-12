@@ -29,3 +29,8 @@ footer {
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+.avatar {
+  border-radius: 15px;
+  float: right;
+}

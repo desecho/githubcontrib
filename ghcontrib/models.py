@@ -12,6 +12,8 @@ def activate_user_language_preference(request, lang):
 
 class User(AbstractUser):
     language = models.CharField(max_length=2, choices=settings.LANGUAGES, default='en')
+    avatar = models.URLField(null=True, blank=True)
+    loaded_initial_data = models.BooleanField(default=False)
 
 
 class Repo(models.Model):
