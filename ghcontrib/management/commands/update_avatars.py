@@ -1,6 +1,7 @@
 from django_tqdm import BaseCommand
 
 from ghcontrib.github import Github
+from ghcontrib.models import User
 
 
 class Command(BaseCommand):
