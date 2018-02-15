@@ -31,7 +31,7 @@ class Commit(models.Model):
     repo = models.ForeignKey(Repo, models.CASCADE, related_name='commits')
     url = models.URLField()
     date = models.DateTimeField()
-    message = models.CharField(max_length=255)
+    message = models.TextField()
 
     def __str__(self):
         return f'{self.repo} - {self.message}'
