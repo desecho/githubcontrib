@@ -17,8 +17,7 @@ class PreferencesView(TemplateView):
 class SavePreferencesView(AjaxView):
     def post(self, request):
         try:
-            POST = request.POST
-            language = POST['language']
+            language = request.POST['language']
         except KeyError:
             return self.render_bad_request_response()
 
