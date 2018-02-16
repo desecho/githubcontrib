@@ -3,7 +3,7 @@ GitHubContrib
 
 |Build Status| |Requirements Status| |Codecov|
 
-The web application on Python/Django, jQuery, Bootstrap. It allows you to have a profile page with your opensource contributions.
+The web application on Python/Django, Bootstrap. It allows you to have a profile page with your opensource contributions.
 
 See more documentation_.
 

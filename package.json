@@ -19,8 +19,7 @@
     "eslint": "latest",
     "eslint-config-angular": "latest",
     "eslint-config-google": "latest",
-    "eslint-plugin-angular": "latest",
-    "eslint-plugin-jquery": "latest"
+    "eslint-plugin-angular": "latest"
   },
   "scripts": {
     "jslint": "eslint",
