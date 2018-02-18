@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint:recommended", "google", "angular"],
+  "extends": ["eslint:recommended", "google", "plugin:vue/recommended"],
   "rules": {
     "require-jsdoc": 0,
     "max-len": ["error", {
@@ -8,12 +8,16 @@
   },
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "globals": {
     "gettext": false,
-    "retinajs": false,
     "urls": false,
-    "vars": false
+    "vars": false,
+    "vm": false
+  },
+  "parserOptions": {
+    "sourceType": "module"
   }
 }

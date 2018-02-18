@@ -10,6 +10,9 @@ env
 .cache
 local_settings.py
 db.sqlite3
-ghcontrib/static/vendor/
+ghcontrib/static/js/*
+ghcontrib/static/css/*
+ghcontrib/static/font/*
 .pytest_cache/
 node_modules
+yarn-error.log

@@ -3,7 +3,7 @@ GitHubContrib
 
 |Build Status| |Requirements Status| |Codecov|
 
-The web application on Python/Django, Bootstrap. It allows you to have a profile page with your opensource contributions.
+The web application on Django_ 2, Vue.js_ 2, Bootstrap_ 4. It allows you to have a profile page with your opensource contributions.
 
 See more documentation_.
 
@@ -31,3 +31,6 @@ Development
 
 .. _ansible-playbook-server: https://github.com/desecho/ansible-playbook-server
 .. _documentation: https://github.com/desecho/ghcontrib/blob/master/doc.rst
+.. _Vue.js: https://vuejs.org/
+.. _Bootstrap: https://getbootstrap.com/
+.. _Django: https://www.djangoproject.com/

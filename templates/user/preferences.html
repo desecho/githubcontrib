@@ -2,18 +2,18 @@
 {% load i18n static %}
 
 {% block content %}
-  <div ng-controller="PreferencesController as preferences">
+  <div>
     <form class="form-horizontal">
       <legend>{% trans 'Settings' %}</legend>
       <br>
-      <div class="form-group row" ng-cloak>
+      <div class="form-group row">
         <label class="col-form-label col-sm-2" for="lang">{% trans 'Language' %}:</label>
-        <div class="col-sm-10">
+        <div class="col-sm-10" v-cloak>
           {% get_available_languages as LANGUAGES %}
           {% get_language_info_list for LANGUAGES as languages %}
           {% for language in languages %}
             <label class="radio mr-2 col-form-label">
-              <input type="radio" ng-model="preferences.language" ng-change="preferences.save(true)" name="lang"
+              <input v-model="language" v-on:change="savePreferences" type="radio" name="lang"
                      value="{{ language.code }}"> {{ language.name_local }}
             </label>
           {% endfor %}
