@@ -20,7 +20,7 @@ module.exports = {
     init: path.join(jsPath, 'init.js'),
     setAxiosSettings: path.join(jsPath, 'set_axios_settings.js'),
     myRepos: path.join(jsPath, 'my_repos.js'),
-    style: path.join(basePath, 'style', 'style.scss'),
+    style: path.join(basePath, 'styles', 'styles.scss'),
     vendor: vendorPackages,
   },
   watchOptions: {

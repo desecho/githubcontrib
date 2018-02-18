@@ -9,7 +9,7 @@ yapf -ri ghcontrib/tests/*.py ghcontrib/views ghcontrib/*.py ghcontrib_project
 
 # We want to run isort after yapf to make sure isort lint pass.
 isort -rc ghcontrib ghcontrib_project
-csscomb ghcontrib/style/*
+csscomb ghcontrib/styles/*
 ./eslint.sh
 find . -type f -name "*.js" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -exec js-beautify -r {} \;
 find . -type f -name "*.json" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -exec js-beautify -r {} \;
