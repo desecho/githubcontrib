@@ -9,11 +9,11 @@ window.vars = {
   flashOptions: {
     timeout: 1500,
     important: true,
-  },
-  delimiters: ['[[', ']]'],
+  }
 };
 window.urls = {};
 
+Vue.options.delimiters = ['[[', ']]'];
 Vue.use(VueFlashMessage);
 Vue.use(VueCookie);
 
