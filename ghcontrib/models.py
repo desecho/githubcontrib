@@ -15,6 +15,10 @@ class User(AbstractUser):
     avatar = models.URLField(null=True, blank=True)
     loaded_initial_data = models.BooleanField(default=False)
 
+    @property
+    def github_profile_url(self):
+        return f'https://github.com/{self.username}'
+
 
 class Repo(models.Model):
     user = models.ForeignKey(User, models.CASCADE, related_name='repos')

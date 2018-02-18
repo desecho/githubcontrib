@@ -2,10 +2,12 @@
 {% load i18n static %}
 
 {% block content %}
-  <img class="avatar" src="{{ user.avatar }}" width="100" height="100" alt="{% trans 'Avatar' %}" />
+  <a href="{{ user.github_profile_url }}" target="_blank">
+    <img class="avatar" src="{{ user.avatar }}" width="100" height="100" alt="{% trans 'Avatar' %}" />
+  </a>
   <h3>
     {{ user.username }}
-    <a href="https://github.com/{{ user.username }}" target="_blank"><i class="fa fa-github"></i></a>
+    <a href="{{ user.github_profile_url }}" target="_blank"><i class="fa fa-github"></i></a>
   </h3>
   <br>
   {% for repo in repos %}
