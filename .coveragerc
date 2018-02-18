@@ -4,7 +4,8 @@ omit =
     ghcontrib/tests/*
     ghcontrib/migrations/*
     /tmp/*
-    /usr/lib/*
+    /usr/*
+    /opt/*
 
 [report]
 exclude_lines =
@@ -21,4 +22,5 @@ omit =
     ghcontrib/tests/*
     ghcontrib/migrations/*
     /tmp/*
-    /usr/lib/*
+    /usr/*
+    /opt/*
