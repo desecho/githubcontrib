@@ -1,15 +1,3 @@
 @import 'utils';
 @import 'main';
-
-/* My repos */
-
-.repo {
-  font-weight: bold;
-}
-
-/* Contributions */
-
-.avatar {
-  border-radius: 15px;
-  float: right;
-}
+@import 'contribs';
