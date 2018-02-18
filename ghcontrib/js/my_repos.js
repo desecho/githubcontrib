@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import axios from 'axios';
+import param from './helpers';
 
 
 window.vm = new Vue({
@@ -27,9 +28,9 @@ window.vm = new Vue({
     },
     addRepo: function() {
       const vm = this;
-      let params = new URLSearchParams();
-      params.append('name', vm.name);
-      axios.post(urls.urlRepo, params).then(function(response) {
+      axios.post(urls.urlRepo, param({
+        name: vm.name
+      })).then(function(response) {
         if (response.data.status === 'success') {
           vm.repos.push({
             id: response.data.id,
@@ -45,9 +46,7 @@ window.vm = new Vue({
     },
     loadCommitData: function() {
       const vm = this;
-      let params = new URLSearchParams();
-      params.append('name', vm.name);
-      axios.post(urls.urlLoadCommitData, params).then(function(response) {
+      axios.post(urls.urlLoadCommitData, param({name: vm.name})).then(function(response) {
         if (response.data.status === 'success') {
           vm.flash(gettext('Commit data has been updated'), 'success', vars.flashOptions);
         } else {
