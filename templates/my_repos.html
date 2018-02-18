@@ -4,7 +4,8 @@
 {% block content %}
   <div>
     <form v-on:submit.prevent="addRepo">
-      <input required v-model="name" type="text" pattern=".+/.+" title="user/project" class="form-control form-control col-sm-5 col-md-4"
+      <input required v-model="name" type="text" pattern=".+/.+" title="user/project"
+             class="form-control form-control col-sm-5 col-md-4"
              placeholder="user/project">
       <br>
       <button type="submit" class="btn btn-primary form-control col-sm-5 col-md-4">{% trans 'Add' %}</button>
@@ -15,7 +16,7 @@
     <br><br>
     <div v-cloak>
       <div v-for="repo in repos">[[ repo.name ]] <a href="javascript:void(0)"
-                                                   v-on:click="deleteRepo(repo.id)"><i
+                                                    v-on:click="deleteRepo(repo.id)"><i
         class="fa fa-trash"></i></a></div>
     </div>
   </div>
