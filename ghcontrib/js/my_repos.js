@@ -17,15 +17,11 @@ window.vm = new Vue({
       const url = urls.urlRepo + id + '/';
       axios.delete(url).then(function(response) {
         if (response.data.status === 'success') {
-          vm.repos = vm.repos.filter(function(repo) {
-            if (repo.id != id) {
-              return repo;
-            }
-          });
+          vm.repos = vm.repos.filter(repo => repo.id != id);
         } else {
           vm.flash(response.data.message, 'error', vars.flashOptions);
         }
-      }).catch(function(r) {
+      }).catch(function() {
         vm.flash(gettext('Error deleting repository'), 'error', vars.flashOptions);
       });
     },
@@ -43,7 +39,7 @@ window.vm = new Vue({
         } else {
           vm.flash(response.data.message, response.data.messageType, vars.flashOptions);
         }
-      }).catch(function(response) {
+      }).catch(function() {
         vm.flash(gettext('Error adding repository'), 'error', vars.flashOptions);
       });
     },
@@ -57,7 +53,7 @@ window.vm = new Vue({
         } else {
           vm.flash(response.data.message, 'error', vars.flashOptions);
         }
-      }).catch(function(response) {
+      }).catch(function() {
         vm.flash(gettext('Error loading commit data'), 'error', vars.flashOptions);
       });
     },
