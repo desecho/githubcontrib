@@ -53,7 +53,7 @@ class ContributionsTestCase(BaseTestLoginCase):
             response = self.client.get(url, follow=True)
         repos = list(response.context_data['repos'].values_list('pk', flat=True))
         self.assertListEqual(repos, [1, 2])
-        self.assertEqual(response.context_data['username'], username)
+        self.assertEqual(response.context_data['user'].username, username)
 
     def test_contribs(self):
         self.contribs('contribs')
