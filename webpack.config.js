@@ -8,8 +8,10 @@ const loaderFontOptions = {
   outputPath: 'font/',
 };
 const vendorPackages = ['font-awesome-webpack', 'vue-flash-message/dist/vue-flash-message.min.css',
-  'bootstrap/dist/css/bootstrap.min.css', 'axios-progress-bar/dist/nprogress.css',
+  'bootstrap/dist/css/bootstrap.min.css', 'bootstrap/dist/js/bootstrap.min.js',
+  'axios-progress-bar/dist/nprogress.css', 'popper.js/dist/umd/popper.min.js'
 ];
+
 
 module.exports = {
   entry: {
@@ -72,6 +74,7 @@ module.exports = {
       'jQuery': 'jquery',
       'window.jQuery': 'jquery',
       'Tether': 'tether',
+      'Popper': 'popper.js',
       'window.Tether': 'tether',
       'Alert': 'exports-loader?Alert!bootstrap/js/dist/alert',
       'Button': 'exports-loader?Button!bootstrap/js/dist/button',
