@@ -1,3 +1,4 @@
 #!/bin/bash
 
-yarn build -p
+yarn install
+yarn build
