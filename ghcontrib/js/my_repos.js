@@ -57,7 +57,7 @@ window.vm = new Vue({
       params.append('name', vm.name);
       axios.post(urls.urlLoadCommitData, params).then(function(response) {
         if (response.data.status === 'success') {
-          vm.flash(gettext('Commit data has been updated'), 'success');
+          vm.flash(gettext('Commit data has been updated'), 'success', vars.flashOptions);
         } else {
           vm.flash(response.data.message, 'error', vars.flashOptions);
         }
