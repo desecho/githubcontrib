@@ -6,11 +6,11 @@ import {
 import axios from 'axios';
 
 (function() {
-  loadProgressBar();
-
   if (window.vm == null) {
     return;
   }
+
+  loadProgressBar();
   const headers = {
     'X-CSRFToken': vm.$cookies.get('csrftoken'),
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

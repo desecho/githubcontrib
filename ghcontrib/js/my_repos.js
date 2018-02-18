@@ -1,16 +1,12 @@
 'use strict';
 
 import Vue from 'vue';
-import VueFlashMessage from 'vue-flash-message';
-import VueCookie from 'vue-cookies';
 import axios from 'axios';
 
-Vue.use(VueFlashMessage);
-Vue.use(VueCookie);
 
 window.vm = new Vue({
   el: '#app',
-  delimiters: ['[[', ']]'],
+  delimiters: vars.delimiters,
   data: {
     repos: vars.repos,
     name: '',

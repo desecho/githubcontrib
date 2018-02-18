@@ -18,7 +18,7 @@ module.exports = {
   entry: {
     preferences: path.join(jsPath, 'preferences.js'),
     init: path.join(jsPath, 'init.js'),
-    setHeaders: path.join(jsPath, 'set_headers.js'),
+    setAxiosSettings: path.join(jsPath, 'set_axios_settings.js'),
     myRepos: path.join(jsPath, 'my_repos.js'),
     style: path.join(basePath, 'style', 'style.scss'),
     vendor: vendorPackages,
