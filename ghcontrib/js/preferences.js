@@ -7,7 +7,6 @@ import param from './helpers';
 
 window.vm = new Vue({
   el: '#app',
-  delimiters: vars.delimiters,
   data: {
     language: vars.language,
   },
