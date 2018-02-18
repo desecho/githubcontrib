@@ -10,3 +10,5 @@ def load_user_data(backend, user, **kwargs):  # pylint: disable=unused-argument
     user.avatar = gh_user.avatar_url
     user.loaded_initial_data = True
     user.save()
+
+    return None

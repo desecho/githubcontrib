@@ -27,6 +27,8 @@ class ContribHomeTestCase(BaseTestLoginCase):
 
 class ContributionsTestCase(BaseTestLoginCase):
     """
+    Tests for contributions.
+
     Dumpdata commands:
     manage dumpdata ghcontrib.Repo --indent 4 > ghcontrib/fixtures/repos.json
     manage dumpdata ghcontrib.Commit --indent 4 > ghcontrib/fixtures/commits.json
