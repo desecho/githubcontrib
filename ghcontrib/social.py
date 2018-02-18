@@ -1,5 +1,6 @@
 from ghcontrib.github import Github
 
+
 def load_user_data(backend, user, **kwargs):  # pylint: disable=unused-argument
     if user.loaded_initial_data:
         return None
