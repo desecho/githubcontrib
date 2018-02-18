@@ -16,3 +16,12 @@ window.urls = {};
 
 Vue.use(VueFlashMessage);
 Vue.use(VueCookie);
+
+new Vue({
+  el: '#menu',
+  methods: {
+    changeLanguage: function() {
+      document.getElementById('language-form').submit();
+    },
+  },
+});
