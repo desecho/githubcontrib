@@ -5,11 +5,8 @@ import {
 } from 'axios-progress-bar';
 import axios from 'axios';
 
-(function() {
-  if (window.vm == null) {
-    return;
-  }
 
+function setAxiosSettings() {
   loadProgressBar();
   const headers = {
     'X-CSRFToken': vm.$cookies.get('csrftoken'),
@@ -17,4 +14,9 @@ import axios from 'axios';
     'X-Requested-With': 'XMLHttpRequest',
   };
   axios.defaults.headers.common = headers;
-})();
+}
+
+
+if (window.vm) {
+  setAxiosSettings();
+}
