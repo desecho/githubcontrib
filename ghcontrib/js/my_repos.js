@@ -2,7 +2,7 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import param from './helpers';
+import { param } from './helpers';
 
 
 window.vm = new Vue({
@@ -13,23 +13,24 @@ window.vm = new Vue({
   },
   methods: {
     deleteRepo: function(id) {
-      const vm = this;
-      const url = urls.urlRepo + id + '/';
-      axios.delete(url).then(function(response) {
+      function success(response) {
         if (response.data.status === 'success') {
-          vm.repos = vm.repos.filter(repo => repo.id != id);
+          vm.repos = vm.repos.filter((repo) => repo.id != id);
         } else {
           vm.flash(response.data.message, 'error', vars.flashOptions);
         }
-      }).catch(function() {
+      }
+
+      function fail() {
         vm.flash(gettext('Error deleting repository'), 'error', vars.flashOptions);
-      });
+      }
+
+      const vm = this;
+      const url = urls.urlRepo + id + '/';
+      axios.delete(url).then(success).catch(fail);
     },
     addRepo: function() {
-      const vm = this;
-      axios.post(urls.urlRepo, param({
-        name: vm.name
-      })).then(function(response) {
+      function success(response) {
         if (response.data.status === 'success') {
           vm.repos.push({
             id: response.data.id,
@@ -39,21 +40,35 @@ window.vm = new Vue({
         } else {
           vm.flash(response.data.message, response.data.messageType, vars.flashOptions);
         }
-      }).catch(function() {
+      }
+
+      function fail() {
         vm.flash(gettext('Error adding repository'), 'error', vars.flashOptions);
+      }
+
+      const vm = this;
+      const data = param({
+        name: vm.name,
       });
+      axios.post(urls.urlRepo, data).then(success).catch(fail);
     },
     loadCommitData: function() {
-      const vm = this;
-      axios.post(urls.urlLoadCommitData, param({name: vm.name})).then(function(response) {
+      function success(response) {
         if (response.data.status === 'success') {
           vm.flash(gettext('Commit data has been updated'), 'success', vars.flashOptions);
         } else {
           vm.flash(response.data.message, 'error', vars.flashOptions);
         }
-      }).catch(function() {
+      }
+
+      function fail() {
         vm.flash(gettext('Error loading commit data'), 'error', vars.flashOptions);
-      });
+      }
+
+      const vm = this;
+      axios.post(urls.urlLoadCommitData, param({
+        name: vm.name,
+      })).then(success).catch(fail);
     },
   },
 });

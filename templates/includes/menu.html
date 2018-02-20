@@ -36,7 +36,7 @@
       {% else %}
         {% get_current_language as LANGUAGE_CODE %}
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)" v-on:click="changeLanguage">{% if LANGUAGE_CODE == 'en' %}
+          <a class="nav-link" href="javascript:void(0)" @click="changeLanguage">{% if LANGUAGE_CODE == 'en' %}
             Русский{% else %}English{% endif %}</a>
         </li>
         <form id="language-form" action="{% url 'set_language' %}" method="post">

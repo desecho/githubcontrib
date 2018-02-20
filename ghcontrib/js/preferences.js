@@ -2,7 +2,7 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import param from './helpers';
+import { param } from './helpers';
 
 
 window.vm = new Vue({
@@ -13,7 +13,9 @@ window.vm = new Vue({
   methods: {
     savePreferences: function() {
       const vm = this;
-      axios.post(urls.urlSavePreferences, param({language: vm.language})).then(function() {
+      axios.post(urls.urlSavePreferences, param({
+        language: vm.language,
+      })).then(function() {
         location.reload();
       }).catch(function() {
         vm.flash(gettext('Error saving settings'), 'error', vars.flashOptions);
