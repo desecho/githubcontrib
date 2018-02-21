@@ -2,7 +2,9 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import { param } from './helpers';
+import {
+  param
+} from './helpers';
 
 
 window.vm = new Vue({
