@@ -30,8 +30,8 @@ class ContributionsTestCase(BaseTestLoginCase):
     Tests for contributions.
 
     Dumpdata commands:
-    manage dumpdata ghcontrib.Repo --indent 4 > ghcontrib/fixtures/repos.json
-    manage dumpdata ghcontrib.Commit --indent 4 > ghcontrib/fixtures/commits.json
+    manage dumpdata ghcontrib.Repo --indent 2 > ghcontrib/fixtures/repos.json
+    manage dumpdata ghcontrib.Commit --indent 2 > ghcontrib/fixtures/commits.json
 
     User actions in fixtures:
     neo:
