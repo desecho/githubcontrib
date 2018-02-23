@@ -1,4 +1,4 @@
-from ghcontrib.github import Github
+from .github import Github
 
 
 def load_user_data(backend, user, **kwargs):  # pylint: disable=unused-argument
