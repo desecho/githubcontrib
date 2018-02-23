@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-12 00:13-0500\n"
+"POT-Creation-Date: 2018-02-23 00:41-0500\n"
 "PO-Revision-Date: 2018-02-10 20:50-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,23 +21,23 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: ghcontrib/static/js/my_repos.js:44
+#: ghcontrib/js/my_repos.js:27
 msgid "Error deleting repository"
 msgstr "Ошибка удаления репозитория"
 
-#: ghcontrib/static/js/my_repos.js:66
+#: ghcontrib/js/my_repos.js:48
 msgid "Error adding repository"
 msgstr "Ошибка добавления репозитория"
 
-#: ghcontrib/static/js/my_repos.js:100
+#: ghcontrib/js/my_repos.js:60
 msgid "Commit data has been updated"
 msgstr "Данные по коммитам были обновлены"
 
-#: ghcontrib/static/js/my_repos.js:107
+#: ghcontrib/js/my_repos.js:67
 msgid "Error loading commit data"
 msgstr "Ошибка загрузки данный по коммитам"
 
-#: ghcontrib/static/js/preferences.js:31
+#: ghcontrib/js/preferences.js:23
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
 

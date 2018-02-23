@@ -3,10 +3,10 @@ import re
 
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
-from ..github import Github
-from ..models import Commit, Repo, User
+from ghcontrib.github import Github
+from ghcontrib.models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
@@ -49,8 +49,11 @@ class RepoView(AjaxView):
     def post(self, *args, **kwargs):  # pylint: disable=unused-argument
         name = self.request.POST['name']
         if re.match('.+/.+', name) is not None:
+            user = self.request.user
+            username, __ = name.split('/')
+            if username == user.username:
+                return self.fail(_('You cannot add your own repository'), self.MESSAGE_WARNING)
             if Github().repo_exists(name):
-                user = self.request.user
                 if not user.repos.filter(name=name).exists():
                     repo_id = Repo.objects.create(name=name, user=user).pk
                     return self.success(id=repo_id)
