@@ -110,6 +110,16 @@ class RepoTestCase(BaseTestLoginCase):
         expected_response = {'status': 'fail', 'message': 'Repository name is incorrect', 'messageType': 'error'}
         self.assertEqual(self.get_json(response), expected_response)
 
+    def test_add_repo_own(self):
+        response = self.client.post(self.url, {'name': 'neo/blah'})
+        self.assertEqual(response.status_code, 200)
+        expected_response = {
+            'status': 'fail',
+            'message': 'You cannot add your own repository',
+            'messageType': 'warning'
+        }
+        self.assertEqual(self.get_json(response), expected_response)
+
     def test_add_repo_success(self):
         self.github_mock.should_receive('repo_exists').and_return(True)
         response = self.client.post(self.url, {'name': repo})
