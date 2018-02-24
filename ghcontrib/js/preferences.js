@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import {
-  param
+  param,
 } from './helpers';
 
 

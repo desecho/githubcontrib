@@ -2,6 +2,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 from ghcontrib.models import activate_user_language_preference
+
 from .mixins import AjaxView, TemplateView
 
 
