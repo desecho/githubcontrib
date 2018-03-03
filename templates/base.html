@@ -14,12 +14,12 @@
   <title>{% block title %}GitHubContrib{% endblock %}</title>
 </head>
 <body>
-<div id="app">
+<div>
+{% include 'includes/menu.html' %}
+<div id="app" class="container-fluid mt-3">
   <flash-message class="flashpool"></flash-message>
-  {% include 'includes/menu.html' %}
-  <div class="container-fluid mt-3">
-    {% block content %}{% endblock %}
-  </div>
+  {% block content %}{% endblock %}
+</div>
 </div>
 <footer class="container-fluid py-3">
   Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>.
