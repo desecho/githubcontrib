@@ -1,5 +1,5 @@
 # Django
-Django==2.0.2
+Django==2.0.3
 django-braces==1.12.0
 django-simple-menu==1.2.1
 social-auth-app-django==2.1.0
