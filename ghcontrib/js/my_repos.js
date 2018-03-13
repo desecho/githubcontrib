@@ -28,7 +28,7 @@ window.vm = new Vue({
       }
 
       const vm = this;
-      const url = urls.urlRepo + id + '/';
+      const url = urls.repo + id + '/';
       axios.delete(url).then(success).catch(fail);
     },
     addRepo: function() {
@@ -52,7 +52,7 @@ window.vm = new Vue({
       const data = param({
         name: vm.name,
       });
-      axios.post(urls.urlRepo, data).then(success).catch(fail);
+      axios.post(urls.repo, data).then(success).catch(fail);
     },
     loadCommitData: function() {
       function success(response) {
@@ -68,7 +68,7 @@ window.vm = new Vue({
       }
 
       const vm = this;
-      axios.post(urls.urlLoadCommitData, param({
+      axios.post(urls.loadCommitData, param({
         name: vm.name,
       })).then(success).catch(fail);
     },

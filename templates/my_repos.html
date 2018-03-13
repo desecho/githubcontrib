@@ -26,8 +26,8 @@
   <script>
     'use strict';
 
-    urls.urlRepo = '{% url 'repo' %}';
-    urls.urlLoadCommitData = '{% url 'load_commit_data' %}';
+    urls.repo = '{% url 'repo' %}';
+    urls.loadCommitData = '{% url 'load_commit_data' %}';
     vars.repos = JSON.parse('{{ repos|safe }}');
   </script>
   <script src="{% static 'js/myRepos.js' %}"></script>
