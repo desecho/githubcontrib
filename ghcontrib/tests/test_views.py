@@ -7,7 +7,7 @@ from ghcontrib.github import Github
 from ghcontrib.models import Commit
 
 from .base import BaseTestLoginCase
-from .fixtures import commits_jieter, commits_python_social_auth, repo
+from .conftest import commits_jieter, commits_python_social_auth, repo, username
 
 
 class ContribHomeTestCase(BaseTestLoginCase):
@@ -122,13 +122,13 @@ class RepoTestCase(BaseTestLoginCase):
 
     def test_add_repo_success(self):
         self.github_mock.should_receive('repo_exists').and_return(True)
-        response = self.client.post(self.url, {'name': repo})
+        response = self.client.post(self.url, {'name': repo(username())})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {'status': 'success', 'id': 3})
 
     def test_add_repo_repo_not_found(self):
         self.github_mock.should_receive('repo_exists').and_return(False)
-        response = self.client.post(self.url, {'name': repo})
+        response = self.client.post(self.url, {'name': repo(username())})
         self.assertEqual(response.status_code, 200)
         expected_response = {'status': 'fail', 'message': 'Repository not found', 'messageType': 'error'}
         self.assertEqual(self.get_json(response), expected_response)
@@ -174,9 +174,9 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
 
     def test_load_commit_data_success(self):
         self.github_mock.should_receive('get_commit_data').with_args(
-            'neo', 'jieter/django-tables2').and_return(commits_jieter)
+            'neo', 'jieter/django-tables2').and_return(commits_jieter())
         self.github_mock.should_receive('get_commit_data').with_args(
-            'neo', 'python-social-auth/social-core').and_return(commits_python_social_auth)
+            'neo', 'python-social-auth/social-core').and_return(commits_python_social_auth())
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         commits = Commit.objects.filter(repo__user=self.user)

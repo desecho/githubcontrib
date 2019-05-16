@@ -1,4 +1,4 @@
-commits1_items = [{
+commits1_items_data = [{
     'url':
     'https://api.github.com/repos/python-social-auth/social-core/commits/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f',
     'sha':
@@ -190,7 +190,7 @@ commits1_items = [{
     16.871347
 }]
 
-commits2_items_page1 = [{
+commits2_items_page1_data = [{
     'url':
     'https://api.github.com/repos/desecho/movies/commits/277d45d267cdf20414385235415f2f8059660968',
     'sha':
@@ -18391,7 +18391,7 @@ commits2_items_page1 = [{
     'score':
     14.22022
 }]
-commits2_items_page2 = [{
+commits2_items_page2_data = [{
     'url':
     'https://api.github.com/repos/desecho/movies/commits/a4d6733503ada0a6c7ee0aafdce1bebbe63a4d95',
     'sha':
@@ -36410,4 +36410,3 @@ commits2_items_page2 = [{
     'score':
     14.22022
 }]
-commits2_items_total = commits2_items_page1 + commits2_items_page2

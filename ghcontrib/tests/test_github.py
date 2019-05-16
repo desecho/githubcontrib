@@ -1,54 +1,29 @@
-import github
-import requests
 from flexmock import flexmock
 # pylint: disable=no-name-in-module
 from github.GithubException import UnknownObjectException
 
-from ghcontrib.github import Github
 
-from .fixtures import (
-    commits1_output,
-    commits2_output_page1,
-    commits2_output_page2,
-    commits_python_social_auth,
-    repo,
-    url_page1,
-    url_page2,
-    username,
-)
-from .fixtures.commit_items import commits1_items, commits2_items_total
-
-github_mock = flexmock(spec=github.Github)
-ghcontrib_github_mock = flexmock(spec=Github)
-user_mock = flexmock()
-repo_mock = flexmock()
-repo_mock.owner = flexmock()
-repo_mock.owner.login = '123'
-
-gh = Github()
-
-
-def test_repo_exists_wrong_user():
+def test_repo_exists_wrong_user(repo, github_mock, gh):
     github_mock.should_receive('get_user').and_raise(UnknownObjectException(None, None))
     result = gh.repo_exists(repo)
     assert result is False
 
 
-def test_repo_exists_wrong_repo():
+def test_repo_exists_wrong_repo(repo, github_mock, user_mock, gh):
     github_mock.should_receive('get_user').and_return(user_mock)
     user_mock.should_receive('get_repo').and_raise(UnknownObjectException(None, None))
     result = gh.repo_exists(repo)
     assert result is False
 
 
-def test_repo_exists_user_mismatch():
+def test_repo_exists_user_mismatch(repo, github_mock, user_mock, repo_mock, gh):
     github_mock.should_receive('get_user').and_return(user_mock)
     user_mock.should_receive('get_repo').and_return(repo_mock)
     result = gh.repo_exists(repo)
     assert result is False
 
 
-def test_repo_exists_success():
+def test_repo_exists_success(repo, username, github_mock, user_mock, repo_mock, gh):
     github_mock.should_receive('get_user').and_return(user_mock)
     repo_mock.owner.login = username
     user_mock.should_receive('get_repo').and_return(repo_mock)
@@ -56,9 +31,9 @@ def test_repo_exists_success():
     assert result is True
 
 
-def test_load_commits_one_page():
+def test_load_commits_one_page(ghcontrib_github_mock, gh, commits1_items, repo, commits1_output, username,
+                               requests_mock):
     ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
-    requests_mock = flexmock(spec=requests)
     response_mock = flexmock()
     response_mock.should_receive('json').and_return(commits1_output)
     requests_mock.should_receive('get').and_return(response_mock)
@@ -66,9 +41,9 @@ def test_load_commits_one_page():
     assert result == commits1_items
 
 
-def test_load_commits_two_pages():
+def test_load_commits_two_pages(commits2_items_total, url_page1, url_page2, commits2_output_page1, gh,
+                                commits2_output_page2, requests_mock, ghcontrib_github_mock):
     ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
-    requests_mock = flexmock(spec=requests)
     response_mock_page1 = flexmock()
     response_mock_page1.should_receive('json').and_return(commits2_output_page1)
     requests_mock.should_receive('get').with_args(url_page1, headers=gh.HEADERS).and_return(response_mock_page1)
@@ -80,13 +55,14 @@ def test_load_commits_two_pages():
     assert result == commits2_items_total
 
 
-def test_get_commit_data_fail():
+def test_get_commit_data_fail(repo, username, ghcontrib_github_mock, gh):
     ghcontrib_github_mock.should_receive('repo_exists').and_return(False)
     result = gh.get_commit_data(username, repo)
     assert result is None
 
 
-def test_get_commit_data_success():
+def test_get_commit_data_success(repo, username, ghcontrib_github_mock, commits1_items, commits_python_social_auth,
+                                 gh):
     ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
     ghcontrib_github_mock.should_receive('_load_commits').and_return(commits1_items)
     result = gh.get_commit_data(username, repo)
