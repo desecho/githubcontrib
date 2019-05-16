@@ -4,7 +4,7 @@
 flexmock>=0.10.2
 
 # Pytest
-pytest==3.7.0
+pytest>4.0.0
 pytest-cov>=1.8
 pytest-sugar>=0.7.0
 pytest-mock>=1.6.0
@@ -20,7 +20,7 @@ pylint>=1.7.1
 tox>=2.7.0
 isort>=4.2
 flake8>=2.2.5
-bandit>=1.4.0
+bandit<1.6.0
 pydiatra>=0.11.2
 safety>=1.6.1
 pydocstyle>=2.1.1

@@ -1,14 +1,24 @@
-import datetime
-
-import requests
-from dateutil.tz import tzoffset
-import pytest
 import github
+import pytest
+import requests
 from flexmock import flexmock
 
 from ghcontrib.github import Github
 
-from .data.commit_items import commits1_items_data, commits2_items_page1_data, commits2_items_page2_data
+from .data.commit_items import (
+    commits1_items_data,
+    commits2_items_page1_data,
+    commits2_items_page2_data,
+)
+from .fixtures import (
+    commits_python_social_auth as commits_python_social_auth_fixture,
+    repo as repo_fixture,
+)
+
+
+@pytest.fixture
+def commits_python_social_auth():
+    return commits_python_social_auth_fixture
 
 
 @pytest.fixture
@@ -32,34 +42,13 @@ def commits2_items_total(commits2_items_page1, commits2_items_page2):
 
 
 @pytest.fixture
-def commits_jieter():
-    return [{
-        'url': 'https://github.com/jieter/django-tables2/commit/360b29c5948c1f9bada618c30897e380e21a4f0a',
-        'date': datetime.datetime(2017, 3, 6, 13, 30, 58, tzinfo=tzoffset(None, 3600)),
-        'message': 'Regression fix - revert commit 05d8d1d260fe1cfe61a89ef0ae09c78513022f3c (#423)'
-    }]
-
-
-@pytest.fixture
-def commits_python_social_auth():
-    return [{
-        'url':
-        'https://github.com/python-social-auth/social-core/commit/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f',
-        'date':
-        datetime.datetime(2017, 4, 16, 4, 39, 32, tzinfo=tzoffset(None, -14400)),
-        'message':
-        'Speed up authorization process for VKAppOAuth2\nUse first api request provided immediately instead of creating a new one.'
-    }]
-
-
-@pytest.fixture
 def username():
     return 'username'
 
 
 @pytest.fixture
-def repo(username):
-    return f'{username}/project'
+def repo():
+    return repo_fixture
 
 
 @pytest.fixture
@@ -69,12 +58,14 @@ def commits1_output(commits1_items):
 
 @pytest.fixture
 def url_page1():
-    return 'https://api.github.com/search/commits?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1'
+    return ('https://api.github.com/search/commits'
+            '?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1')
 
 
 @pytest.fixture
 def url_page2():
-    return 'https://api.github.com/search/commits?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2'
+    return ('https://api.github.com/search/commits'
+            '?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2')
 
 
 @pytest.fixture
