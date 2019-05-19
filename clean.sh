@@ -11,5 +11,5 @@ yapf -ri ghcontrib/tests/*.py ghcontrib/views ghcontrib/*.py ghcontrib_project
 isort -rc ghcontrib ghcontrib_project
 csscomb ghcontrib/styles/*
 ./eslint.sh
-find . -type f -name "*.js" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -exec js-beautify -r {} \;
-find . -type f -name "*.json" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -exec js-beautify -r {} \;
+find . -type f -name "*.js" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -not -path "./env/*" -exec js-beautify -r {} \;
+find . -type f -name "*.json" -not -path "./node_modules/*" -not -path "./ghcontrib/static/*" -not -path "./env/*" -exec js-beautify -r {} \;
