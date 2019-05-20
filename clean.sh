@@ -4,6 +4,7 @@
 autoflake --remove-all-unused-imports --in-place -r ghcontrib ghcontrib_project
 
 yapf -ri ghcontrib/tests/*.py ghcontrib/views ghcontrib/*.py ghcontrib_project
+unify -ri ghcontrib ghcontrib_project
 # This command takes a long time.
 # yapf -ri ghcontrib/tests/fixtures/*.py
 
