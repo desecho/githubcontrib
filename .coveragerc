@@ -1,8 +1,8 @@
 [run]
 branch = True
 omit =
-    ghcontrib/tests/*
-    ghcontrib/migrations/*
+    githubcontrib/tests/*
+    githubcontrib/migrations/*
     /tmp/*
     /usr/*
     /opt/*
@@ -19,8 +19,8 @@ ignore_errors = True
 show_missing = True
 
 omit =
-    ghcontrib/tests/*
-    ghcontrib/migrations/*
+    githubcontrib/tests/*
+    githubcontrib/migrations/*
     /tmp/*
     /usr/*
     /opt/*

@@ -1,5 +1,5 @@
 [{
-    "model": "ghcontrib.commit",
+    "model": "githubcontrib.commit",
     "pk": 1,
     "fields": {
       "repo": 1,
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "ghcontrib.commit",
+    "model": "githubcontrib.commit",
     "pk": 2,
     "fields": {
       "repo": 2,

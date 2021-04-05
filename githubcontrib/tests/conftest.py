@@ -3,7 +3,7 @@ import pytest
 import requests
 from flexmock import flexmock
 
-from ghcontrib.github import Github
+from githubcontrib.github import Github
 
 from .data.commit_items import (
     commits1_items_data,
@@ -89,7 +89,7 @@ def requests_mock():
 
 
 @pytest.fixture
-def ghcontrib_github_mock():
+def githubcontrib_github_mock():
     return flexmock(spec=Github)
 
 

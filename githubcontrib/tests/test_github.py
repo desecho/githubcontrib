@@ -31,9 +31,9 @@ def test_repo_exists_success(repo, username, github_mock, user_mock, repo_mock, 
     assert result is True
 
 
-def test_load_commits_one_page(ghcontrib_github_mock, gh, commits1_items, repo, commits1_output, username,
+def test_load_commits_one_page(githubcontrib_github_mock, gh, commits1_items, repo, commits1_output, username,
                                requests_mock):
-    ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
+    githubcontrib_github_mock.should_receive('repo_exists').and_return(True)
     response_mock = flexmock()
     response_mock.should_receive('json').and_return(commits1_output)
     requests_mock.should_receive('get').and_return(response_mock)
@@ -42,8 +42,8 @@ def test_load_commits_one_page(ghcontrib_github_mock, gh, commits1_items, repo, 
 
 
 def test_load_commits_two_pages(commits2_items_total, url_page1, url_page2, commits2_output_page1, gh,
-                                commits2_output_page2, requests_mock, ghcontrib_github_mock):
-    ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
+                                commits2_output_page2, requests_mock, githubcontrib_github_mock):
+    githubcontrib_github_mock.should_receive('repo_exists').and_return(True)
     response_mock_page1 = flexmock()
     response_mock_page1.should_receive('json').and_return(commits2_output_page1)
     requests_mock.should_receive('get').with_args(url_page1, headers=gh.HEADERS).and_return(response_mock_page1)
@@ -55,15 +55,15 @@ def test_load_commits_two_pages(commits2_items_total, url_page1, url_page2, comm
     assert result == commits2_items_total
 
 
-def test_get_commit_data_fail(repo, username, ghcontrib_github_mock, gh):
-    ghcontrib_github_mock.should_receive('repo_exists').and_return(False)
+def test_get_commit_data_fail(repo, username, githubcontrib_github_mock, gh):
+    githubcontrib_github_mock.should_receive('repo_exists').and_return(False)
     result = gh.get_commit_data(username, repo)
     assert result is None
 
 
-def test_get_commit_data_success(repo, username, ghcontrib_github_mock, commits1_items, commits_python_social_auth,
+def test_get_commit_data_success(repo, username, githubcontrib_github_mock, commits1_items, commits_python_social_auth,
                                  gh):
-    ghcontrib_github_mock.should_receive('repo_exists').and_return(True)
-    ghcontrib_github_mock.should_receive('_load_commits').and_return(commits1_items)
+    githubcontrib_github_mock.should_receive('repo_exists').and_return(True)
+    githubcontrib_github_mock.should_receive('_load_commits').and_return(commits1_items)
     result = gh.get_commit_data(username, repo)
     assert result == commits_python_social_auth

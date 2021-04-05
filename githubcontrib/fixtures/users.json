@@ -1,5 +1,5 @@
 [{
-    "model": "ghcontrib.user",
+    "model": "githubcontrib.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$36000$DulYS9u6Fdpr$rl5RWgXK2p4j4TVZGbYELw7JXxJ50D82HkP2AhGuLa8=",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "ghcontrib.user",
+    "model": "githubcontrib.user",
     "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$36000$A7U2ayUWU5RN$MXoM0figkwnkbJU+2U/cl1/OuKYsoNgmqXkFFB0So9k=",
@@ -37,7 +37,7 @@
     }
   },
   {
-    "model": "ghcontrib.user",
+    "model": "githubcontrib.user",
     "pk": 3,
     "fields": {
       "password": "pbkdf2_sha256$36000$RlbeWDmwyYyr$RIoI8IulNIjI0EQT8u2bZRHgxqr0t9Yf4LtFnWO/29E=",
@@ -56,7 +56,7 @@
     }
   },
   {
-    "model": "ghcontrib.user",
+    "model": "githubcontrib.user",
     "pk": 4,
     "fields": {
       "password": "pbkdf2_sha256$36000$RlbeWDmwyYyr$RIoI8IulNIjI0EQT8u2bZRHgxqr0t9Yf4LtFnWO/29E=",

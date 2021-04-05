@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ghcontrib', '0007_user_loaded_initial_data'),
+        ('githubcontrib', '0007_user_loaded_initial_data'),
     ]
 
     operations = [

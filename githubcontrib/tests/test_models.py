@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ghcontrib.models import Commit
+from githubcontrib.models import Commit
 
 
 class BaseTestCase(TestCase):

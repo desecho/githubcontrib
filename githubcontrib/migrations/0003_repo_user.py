@@ -10,7 +10,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ghcontrib', '0002_repo'),
+        ('githubcontrib', '0002_repo'),
     ]
 
     operations = [

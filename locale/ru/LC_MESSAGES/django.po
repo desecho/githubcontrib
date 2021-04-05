@@ -21,35 +21,35 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: ghcontrib/menus.py:12 templates/home.html:5
+#: githubcontrib/menus.py:12 templates/home.html:5
 msgid "Users"
 msgstr "Пользователи"
 
-#: ghcontrib/menus.py:13
+#: githubcontrib/menus.py:13
 msgid "My Contributions"
 msgstr "Мои Контрибуции"
 
-#: ghcontrib/menus.py:14
+#: githubcontrib/menus.py:14
 msgid "My Repositories"
 msgstr "Мои Репозитории"
 
-#: ghcontrib/views/ghcontrib.py:55
+#: githubcontrib/views/githubcontrib.py:55
 msgid "You cannot add your own repository"
 msgstr "Вы не можете добавить ваш собственный репозиторий"
 
-#: ghcontrib/views/ghcontrib.py:60
+#: githubcontrib/views/githubcontrib.py:60
 msgid "Repository already exists"
 msgstr "Репозиторий уже существует"
 
-#: ghcontrib/views/ghcontrib.py:61 ghcontrib/views/ghcontrib.py:74
+#: githubcontrib/views/githubcontrib.py:61 githubcontrib/views/githubcontrib.py:74
 msgid "Repository not found"
 msgstr "Репозиторий не найден"
 
-#: ghcontrib/views/ghcontrib.py:62
+#: githubcontrib/views/githubcontrib.py:62
 msgid "Repository name is incorrect"
 msgstr "Имя репозитория не верно"
 
-#: ghcontrib/views/ghcontrib.py:87
+#: githubcontrib/views/githubcontrib.py:87
 #, python-brace-format
 msgid "Repository {name} not found"
 msgstr "Репозиторий {name} не найден"

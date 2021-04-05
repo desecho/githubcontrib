@@ -1,3 +1,3 @@
 #!/bin/bash
 
-eslint ./*.js ghcontrib/js/*  --fix
+eslint ./*.js githubcontrib/js/*  --fix

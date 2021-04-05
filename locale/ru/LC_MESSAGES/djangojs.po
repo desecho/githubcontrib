@@ -21,23 +21,23 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: ghcontrib/js/my_repos.js:27
+#: githubcontrib/js/my_repos.js:27
 msgid "Error deleting repository"
 msgstr "Ошибка удаления репозитория"
 
-#: ghcontrib/js/my_repos.js:48
+#: githubcontrib/js/my_repos.js:48
 msgid "Error adding repository"
 msgstr "Ошибка добавления репозитория"
 
-#: ghcontrib/js/my_repos.js:60
+#: githubcontrib/js/my_repos.js:60
 msgid "Commit data has been updated"
 msgstr "Данные по коммитам были обновлены"
 
-#: ghcontrib/js/my_repos.js:67
+#: githubcontrib/js/my_repos.js:67
 msgid "Error loading commit data"
 msgstr "Ошибка загрузки данный по коммитам"
 
-#: ghcontrib/js/preferences.js:23
+#: githubcontrib/js/preferences.js:23
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
 

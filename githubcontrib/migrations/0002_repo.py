@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ghcontrib', '0001_initial'),
+        ('githubcontrib', '0001_initial'),
     ]
 
     operations = [

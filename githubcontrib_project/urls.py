@@ -6,7 +6,7 @@ from django.contrib.auth import login
 from django.urls import path, re_path
 from django.views.i18n import JavaScriptCatalog
 
-from ghcontrib.views.ghcontrib import (
+from githubcontrib.views.githubcontrib import (
     ContribsView,
     HomeView,
     LoadCommitDataView,
@@ -14,7 +14,7 @@ from ghcontrib.views.ghcontrib import (
     MyReposView,
     RepoView,
 )
-from ghcontrib.views.user import (
+from githubcontrib.views.user import (
     PreferencesView,
     SavePreferencesView,
     logout_view,
@@ -43,7 +43,7 @@ urlpatterns += [
     # Services
     path('admin/', admin.site.urls),
     path('', include('social_django.urls', namespace='social')),
-    path('jsi18n/', JavaScriptCatalog.as_view(packages=('ghcontrib', ), domain='djangojs'), name='javascript-catalog'),
+    path('jsi18n/', JavaScriptCatalog.as_view(packages=('githubcontrib', ), domain='djangojs'), name='javascript-catalog'),
     path('i18n/', include('django.conf.urls.i18n')),
     path('rosetta/', include('rosetta.urls')),
     path('djga/', include('google_analytics.urls')),

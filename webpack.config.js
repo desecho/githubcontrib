@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const basePath = path.resolve(__dirname, 'ghcontrib');
+const basePath = path.resolve(__dirname, 'githubcontrib');
 const jsPath = path.join(basePath, 'js');
 const loaderFontOptions = {
   outputPath: 'font/',

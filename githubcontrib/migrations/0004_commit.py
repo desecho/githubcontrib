@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ghcontrib', '0003_repo_user'),
+        ('githubcontrib', '0003_repo_user'),
     ]
 
     operations = [
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('message', models.CharField(max_length=255)),
                 ('repo',
                  models.ForeignKey(
-                     on_delete=django.db.models.deletion.CASCADE, related_name='commits', to='ghcontrib.Repo')),
+                     on_delete=django.db.models.deletion.CASCADE, related_name='commits', to='githubcontrib.Repo')),
             ],
         ),
     ]

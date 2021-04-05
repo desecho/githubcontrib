@@ -3,8 +3,8 @@ import json
 from django.urls import reverse
 from flexmock import flexmock
 
-from ghcontrib.github import Github
-from ghcontrib.models import Commit
+from githubcontrib.github import Github
+from githubcontrib.models import Commit
 
 from .base import BaseTestLoginCase
 from .fixtures import commits_jieter, commits_python_social_auth, repo
@@ -30,8 +30,8 @@ class ContributionsTestCase(BaseTestLoginCase):
     Tests for contributions.
 
     Dumpdata commands:
-    manage dumpdata ghcontrib.Repo --indent 2 > ghcontrib/fixtures/repos.json
-    manage dumpdata ghcontrib.Commit --indent 2 > ghcontrib/fixtures/commits.json
+    manage dumpdata githubcontrib.Repo --indent 2 > githubcontrib/fixtures/repos.json
+    manage dumpdata githubcontrib.Commit --indent 2 > githubcontrib/fixtures/commits.json
 
     User actions in fixtures:
     neo:

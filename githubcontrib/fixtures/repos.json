@@ -1,5 +1,5 @@
 [{
-    "model": "ghcontrib.repo",
+    "model": "githubcontrib.repo",
     "pk": 1,
     "fields": {
       "user": 2,
@@ -7,7 +7,7 @@
     }
   },
   {
-    "model": "ghcontrib.repo",
+    "model": "githubcontrib.repo",
     "pk": 2,
     "fields": {
       "user": 2,

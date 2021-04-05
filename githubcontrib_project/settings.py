@@ -23,8 +23,8 @@ DEBUG = local_settings.DEBUG
 INTERNAL_IPS = local_settings.INTERNAL_IPS
 
 DATABASES = local_settings.DATABASES
-WSGI_APPLICATION = 'ghcontrib_project.wsgi.application'
-ROOT_URLCONF = 'ghcontrib_project.urls'
+WSGI_APPLICATION = 'githubcontrib_project.wsgi.application'
+ROOT_URLCONF = 'githubcontrib_project.urls'
 SECRET_KEY = local_settings.SECRET_KEY
 ALLOWED_HOSTS = [local_settings.PROJECT_DOMAIN]
 SESSION_SAVE_EVERY_REQUEST = True
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'google_analytics',
     'social_django',
     'menu',
-    'ghcontrib',
+    'githubcontrib',
 ]
 if DEBUG:  # pragma: no cover
     INSTALLED_APPS += [
@@ -138,8 +138,8 @@ TEMPLATES = [
                 # social_django
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
-                # GHContrib
-                'ghcontrib.context_processors.variables',
+                # githubcontrib
+                'githubcontrib.context_processors.variables',
             ),
             'loaders': [
                 ('django.template.loaders.cached.Loader', [
@@ -181,7 +181,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL = 'ghcontrib.User'
+AUTH_USER_MODEL = 'githubcontrib.User'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     # Custom
@@ -215,8 +215,8 @@ GOOGLE_ANALYTICS = {
 # django-modeladmin-reorder
 ADMIN_REORDER = (
     {
-        'app': 'ghcontrib',
-        'models': ('ghcontrib.User', 'ghcontrib.Repo', 'ghcontrib.Commit')
+        'app': 'githubcontrib',
+        'models': ('githubcontrib.User', 'githubcontrib.Repo', 'githubcontrib.Commit')
     },
     {
         'app': 'social_django',
@@ -285,7 +285,7 @@ SOCIAL_AUTH_PIPELINE = (
 
     # Custom
     # We do this only if the user get's created for the first time.
-    'ghcontrib.social.load_user_data',
+    'githubcontrib.social.load_user_data',
 )
 SOCIAL_AUTH_GITHUB_KEY = local_settings.SOCIAL_AUTH_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = local_settings.SOCIAL_AUTH_GITHUB_SECRET
