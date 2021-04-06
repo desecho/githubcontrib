@@ -1,0 +1,7 @@
+src/githubcontrib/static
+venv
+node_modules
+.tox
+.github
+.vscode
+static

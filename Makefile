@@ -84,6 +84,7 @@ bootstrap: install-deps yarn-install-locked create-venv create-db migrate yarn-b
 ## Create env files
 create-env-files:
 	cp -n env_template.sh env.sh
+	cp -n env_docker_template.sh env_docker.sh
 	cp -n db_env_prod_template.sh db_env_prod.sh
 #------------------------------------
 
@@ -303,4 +304,29 @@ endif
 prod-load-db:
 	source db_env_prod.sh && \
 	gunzip -c ${PROD_LOAD_DB_ARGS} | mysql -u$$DB_USER -p"$$DB_PASSWORD" -h$$DB_HOST -Dgithubcontrib
+#------------------------------------
+
+
+#------------------------------------
+# Docker commands
+#------------------------------------
+
+.PHONY: docker-build
+## Run docker-build | Docker
+docker-build:
+	docker build -t githubcontrib .
+
+TMP_ENV_DOCKER := $(shell mktemp)
+
+.PHONY: docker-run
+## Run docker-run
+docker-run:
+	sed 's/export //g' env_docker.sh > ${TMP_ENV_DOCKER}
+	docker run --add-host host.docker.internal:host-gateway --env-file ${TMP_ENV_DOCKER} -p 8000:8000 githubcontrib
+
+.PHONY: docker-sh
+## Run docker shell
+docker-sh:
+	sed 's/export //g' env_docker.sh > ${TMP_ENV_DOCKER}
+	docker run -ti --env-file ${TMP_ENV_DOCKER} githubcontrib sh
 #------------------------------------

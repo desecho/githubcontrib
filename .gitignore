@@ -22,3 +22,4 @@ env.sh
 /static
 /media
 db_env_prod.sh
+env_docker.sh

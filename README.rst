@@ -24,6 +24,15 @@ Run ``make format`` to format all the code.
 
 Run ``make help`` to get a list of all available commands.
 
+Run in Docker:
+
+1. Edit ``env_docker.sh``
+
+Note: static files are not served in docker so you will need to put a URL to your static files there in ``STATIC_URL`` variable.
+
+2. Run ``make docker-build``
+3. Run ``make docker-run``
+
 Production
 ----------------------------
 To use production commands edit ``db_env_prod.sh``.
