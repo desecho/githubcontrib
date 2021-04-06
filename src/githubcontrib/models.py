@@ -6,8 +6,8 @@ from django.dispatch import receiver
 from django.utils.translation import LANGUAGE_SESSION_KEY
 
 
-def activate_user_language_preference(request, lang):
-    request.session[LANGUAGE_SESSION_KEY] = lang
+def activate_user_language_preference(request, language):
+    request.session[LANGUAGE_SESSION_KEY] = language
 
 
 class User(AbstractUser):
@@ -25,7 +25,7 @@ class Repo(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     class Meta:
         ordering = ["name"]
@@ -45,5 +45,5 @@ class Commit(models.Model):
 
 
 @receiver(user_logged_in)
-def lang(**kwargs):
+def language_(**kwargs):
     activate_user_language_preference(kwargs["request"], kwargs["user"].language)

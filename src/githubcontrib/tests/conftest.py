@@ -1,3 +1,5 @@
+# pylint: disable=redefined-outer-name
+
 import github
 import pytest
 import requests

@@ -1,3 +1,5 @@
+# pylint: disable=too-many-lines
+
 commits1_items_data = [
     {
         "url": "https://api.github.com/repos/python-social-auth/social-core/commits/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f",
