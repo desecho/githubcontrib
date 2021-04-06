@@ -3,7 +3,7 @@
 Django==2.0.13
 django-braces==1.13.0
 django-simple-menu==1.2.1
-social-auth-app-django==3.1.0
+social-auth-app-django==4.0.0
 django-rosetta==0.9.3
 django-tqdm==0.0.3
 django-modeladmin-reorder==0.3.1

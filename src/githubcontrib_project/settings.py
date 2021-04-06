@@ -1,33 +1,39 @@
-# -*- coding: utf-8 -*-
-"""Django settings for GithubContrib project."""
+"""Django settings for GitHubContrib project."""
 
-import os
-import os.path as op
-import sys
+from os import getenv
+from os.path import abspath, dirname, join
 
-import raven
+# Custom
+IS_DEV = bool(getenv("IS_DEV"))
+COLLECT_STATIC = bool(getenv("COLLECT_STATIC"))
+SRC_DIR = dirname(dirname(abspath(__file__)))
+PROJECT_DIR = dirname(SRC_DIR)
 
-try:
-    import local_settings
-except ImportError:
-    try:
-        from . import initial_settings as local_settings
-    except ImportError:  # pragma: no cover
-        print('No initial settings!')
-        sys.exit()
+# Debug
+DEBUG = bool(getenv("DEBUG"))
+INTERNAL_IPS = [getenv("INTERNAL_IP")]
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ADMIN_EMAIL = getenv("ADMIN_EMAIL")
+SECRET_KEY = getenv("SECRET_KEY")
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "githubcontrib",
+        "USER": getenv("DB_USER"),
+        "PASSWORD": getenv("DB_PASSWORD"),
+        "HOST": getenv("DB_HOST"),
+        "OPTIONS": {
+            "charset": "utf8mb4",
+        },
+    }
+}
 
-# Debugging
-DEBUG = local_settings.DEBUG
-INTERNAL_IPS = local_settings.INTERNAL_IPS
-
-DATABASES = local_settings.DATABASES
 WSGI_APPLICATION = 'githubcontrib_project.wsgi.application'
 ROOT_URLCONF = 'githubcontrib_project.urls'
-SECRET_KEY = local_settings.SECRET_KEY
-ALLOWED_HOSTS = [local_settings.PROJECT_DOMAIN]
 SESSION_SAVE_EVERY_REQUEST = True
+SITE_ID = 1
+
+ALLOWED_HOSTS = [getenv("PROJECT_DOMAIN")]
 
 CACHES = {
     'default': {
@@ -124,7 +130,7 @@ if not DEBUG:  # pragma: no cover
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': (os.path.join(BASE_DIR, 'templates'), ),
+        "DIRS": (join(SRC_DIR, "templates"),),
         'OPTIONS': {
             'context_processors': (
                 'django.template.context_processors.debug',
@@ -159,12 +165,17 @@ if DEBUG:  # pragma: no cover
     ]
 
 # Static files
-STATIC_ROOT = op.join(local_settings.PROJECT_ROOT, 'static')
-STATIC_URL = '/static/'
+if IS_DEV:
+    STATICFILES_DIRS = (join(SRC_DIR, "moviesapp", "static"), join(PROJECT_DIR, "static"))
+    STATIC_ROOT = None
+else:
+    STATIC_ROOT = join(PROJECT_DIR, "static")
+
+STATIC_URL = getenv("STATIC_URL", "/static/")
 
 # Media files
-MEDIA_ROOT = op.join(local_settings.PROJECT_ROOT, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = join(PROJECT_DIR, "media")
+MEDIA_URL = "/media/"
 
 # Authentification
 AUTH_PASSWORD_VALIDATORS = [
@@ -196,7 +207,7 @@ LANGUAGES = (
     ('en', 'English'),
     ('ru', 'Русский'),
 )
-LOCALE_PATHS = (op.join(local_settings.PROJECT_ROOT, 'project', 'locale'), )
+LOCALE_PATHS = (join(SRC_DIR, "locale"),)
 
 # Timezone
 TIME_ZONE = 'US/Eastern'
@@ -208,9 +219,7 @@ LOGIN_URL = '/login/'
 
 # --== Modules settings ==--
 # django-google-analytics-app
-GOOGLE_ANALYTICS = {
-    'google_analytics_id': local_settings.GOOGLE_ANALYTICS_ID,
-}
+GOOGLE_ANALYTICS = {"google_analytics_id": getenv("GOOGLE_ANALYTICS_ID")}
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (
@@ -225,10 +234,7 @@ ADMIN_REORDER = (
 )
 
 # raven
-RAVEN_CONFIG = {
-    'dsn': local_settings.RAVEN_DSN,
-    'release': raven.fetch_git_sha(local_settings.GIT_ROOT),
-}
+RAVEN_CONFIG = {"dsn": getenv("RAVEN_DSN")}
 
 # django-debug-toolbar
 DEBUG_TOOLBAR_PANELS = [
@@ -287,18 +293,8 @@ SOCIAL_AUTH_PIPELINE = (
     # We do this only if the user get's created for the first time.
     'githubcontrib.social.load_user_data',
 )
-SOCIAL_AUTH_GITHUB_KEY = local_settings.SOCIAL_AUTH_GITHUB_KEY
-SOCIAL_AUTH_GITHUB_SECRET = local_settings.SOCIAL_AUTH_GITHUB_SECRET
-
-# --== Project settings ==--
-
-ADMIN_EMAIL = local_settings.ADMIN_EMAIL
+SOCIAL_AUTH_GITHUB_KEY = getenv("SOCIAL_AUTH_GITHUB_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = getenv("SOCIAL_AUTH_GITHUB_SECRET")
 
 # API Keys
-GITHUB_API_KEY = local_settings.GITHUB_API_KEY
-
-# This is here to fix the problem with static files on dev
-try:
-    from local_settings2 import *  # noqa pylint: disable=wildcard-import
-except ImportError:
-    pass
+GITHUB_API_KEY = getenv("GITHUB_API_KEY")

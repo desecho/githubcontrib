@@ -2,17 +2,23 @@ __pycache__
 .tox
 *.pyc
 
+# OS X meta data
 ._*
 .DS_Store
+
 .coverage
 .idea
-env
-.cache
-local_settings.py
-db.sqlite3
-githubcontrib/static/js/*
-githubcontrib/static/css/*
-githubcontrib/static/font/*
-.pytest_cache/
+.vscode
 node_modules
+.cache
+.pytest_cache/
 yarn-error.log
+package-lock.json
+src/githubcontrib/static/js/
+src/githubcontrib/static/font/
+src/githubcontrib/static/css/
+venv
+env.sh
+/static
+/media
+db_env_prod.sh
