@@ -1,6 +1,7 @@
 # Django
-# As of 16.5.19 we can't install versions 2.2.1 or 2.1.8 because django-google-analytics-app does not support it
-Django==2.0.13
+Django==2.2.19
+
+# Django related packages
 django-braces==1.13.0
 django-simple-menu==1.2.1
 social-auth-app-django==4.0.0
