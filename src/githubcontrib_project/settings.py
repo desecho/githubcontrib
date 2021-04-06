@@ -31,7 +31,6 @@ DATABASES = {
 WSGI_APPLICATION = "githubcontrib_project.wsgi.application"
 ROOT_URLCONF = "githubcontrib_project.urls"
 SESSION_SAVE_EVERY_REQUEST = True
-SITE_ID = 1
 
 ALLOWED_HOSTS = [getenv("PROJECT_DOMAIN")]
 
