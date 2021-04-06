@@ -43,7 +43,7 @@ def commits2_items_total(commits2_items_page1, commits2_items_page2):
 
 @pytest.fixture
 def username():
-    return 'username'
+    return "username"
 
 
 @pytest.fixture
@@ -53,29 +53,41 @@ def repo():
 
 @pytest.fixture
 def commits1_output(commits1_items):
-    return {'total_count': 1, 'incomplete_results': False, 'items': commits1_items}
+    return {"total_count": 1, "incomplete_results": False, "items": commits1_items}
 
 
 @pytest.fixture
 def url_page1():
-    return ('https://api.github.com/search/commits'
-            '?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1')
+    return (
+        "https://api.github.com/search/commits"
+        "?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1"
+    )
 
 
 @pytest.fixture
 def url_page2():
-    return ('https://api.github.com/search/commits'
-            '?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2')
+    return (
+        "https://api.github.com/search/commits"
+        "?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2"
+    )
 
 
 @pytest.fixture
 def commits2_output_page1(commits2_items_page1):
-    return {'total_count': 101, 'incomplete_results': False, 'items': commits2_items_page1}
+    return {
+        "total_count": 101,
+        "incomplete_results": False,
+        "items": commits2_items_page1,
+    }
 
 
 @pytest.fixture
 def commits2_output_page2(commits2_items_page2):
-    return {'total_count': 101, 'incomplete_results': False, 'items': commits2_items_page2}
+    return {
+        "total_count": 101,
+        "incomplete_results": False,
+        "items": commits2_items_page2,
+    }
 
 
 @pytest.fixture
@@ -102,7 +114,7 @@ def user_mock():
 def repo_mock():
     repo = flexmock()
     repo.owner = flexmock()
-    repo.owner.login = '123'
+    repo.owner.login = "123"
     return repo
 
 

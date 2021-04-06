@@ -5,7 +5,7 @@ from githubcontrib.models import User
 
 
 class Command(BaseCommand):
-    help = 'Updates avatars'
+    help = "Updates avatars"
 
     def handle(self, *args, **options):  # pylint: disable=unused-argument
         gh = Github().gh

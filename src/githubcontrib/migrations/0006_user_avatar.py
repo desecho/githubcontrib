@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('githubcontrib', '0005_auto_20180203_2223'),
+        ("githubcontrib", "0005_auto_20180203_2223"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='avatar',
+            model_name="user",
+            name="avatar",
             field=models.URLField(blank=True, null=True),
         ),
     ]

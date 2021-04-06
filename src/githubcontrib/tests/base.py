@@ -6,16 +6,16 @@ from django.test import TestCase
 
 class BaseTestCase(TestCase):
     fixtures = [
-        'users.json',
+        "users.json",
     ]
-    USER_USERNAME = 'neo'
-    USER_PASSWORD = 'password'
+    USER_USERNAME = "neo"
+    USER_PASSWORD = "password"
     # Superuser - admin/adminpassword
     # Another user - fox/password
 
     @staticmethod
     def get_content(response):
-        return response.content.decode('utf-8')
+        return response.content.decode("utf-8")
 
     def get_json(self, response):
         return json.loads(self.get_content(response))
@@ -36,7 +36,7 @@ class BaseTestCase(TestCase):
 
     @property
     def is_authenticated(self):
-        return '_auth_user_id' in self.client.session.keys()
+        return "_auth_user_id" in self.client.session.keys()
 
 
 class BaseTestLoginCase(BaseTestCase):

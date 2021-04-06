@@ -11,39 +11,39 @@ def activate_user_language_preference(request, lang):
 
 
 class User(AbstractUser):
-    language = models.CharField(max_length=2, choices=settings.LANGUAGES, default='en')
+    language = models.CharField(max_length=2, choices=settings.LANGUAGES, default="en")
     avatar = models.URLField(null=True, blank=True)
     loaded_initial_data = models.BooleanField(default=False)
 
     @property
     def github_profile_url(self):
-        return f'https://github.com/{self.username}'
+        return f"https://github.com/{self.username}"
 
 
 class Repo(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, related_name='repos')
+    user = models.ForeignKey(User, models.CASCADE, related_name="repos")
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
 
 class Commit(models.Model):
-    repo = models.ForeignKey(Repo, models.CASCADE, related_name='commits')
+    repo = models.ForeignKey(Repo, models.CASCADE, related_name="commits")
     url = models.URLField()
     date = models.DateTimeField()
     message = models.TextField()
 
     def __str__(self):
-        return f'{self.repo} - {self.message}'
+        return f"{self.repo} - {self.message}"
 
     class Meta:
-        ordering = ['-date']
+        ordering = ["-date"]
 
 
 @receiver(user_logged_in)
 def lang(**kwargs):
-    activate_user_language_preference(kwargs['request'], kwargs['user'].language)
+    activate_user_language_preference(kwargs["request"], kwargs["user"].language)
