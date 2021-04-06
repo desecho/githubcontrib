@@ -209,7 +209,7 @@ build:
 format:
 	${SOURCE_CMDS} && \
 	autoflake --remove-all-unused-imports --in-place -r src && \
-	isort -rc src && \
+	isort src && \
 	black .
 	yarn run csscomb src/githubcontrib/styles/*
 	yarn run eslint ./*.js src/githubcontrib/js/* --fix
