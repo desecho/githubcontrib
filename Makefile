@@ -292,6 +292,12 @@ prod-create-db:
 	source db_env_prod.sh && \
 	scripts/create_db.sh
 
+.PHONY: prod-drop-db
+## Drop prod db
+prod-drop-db:
+	source db_env_prod.sh && \
+	scripts/drop_db.sh
+
 ifeq (prod-load-db,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
   PROD_LOAD_DB_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
