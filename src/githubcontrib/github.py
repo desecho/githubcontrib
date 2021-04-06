@@ -19,9 +19,7 @@ class Github:
     }
 
     def __init__(self):
-        self.gh = github.Github(
-            settings.GITHUB_API_KEY
-        )  # pylint: disable=too-many-function-args
+        self.gh = github.Github(settings.GITHUB_API_KEY)  # pylint: disable=too-many-function-args
 
     def repo_exists(self, repo: str) -> bool:
         username, repo = repo.split("/")
@@ -47,9 +45,7 @@ class Github:
         params = urllib.parse.urlencode(params)
         params = urllib.parse.unquote(params)
         # We can't use requests' params argument because of this - https://github.com/requests/requests/issues/2701
-        r = requests.get(
-            f"{self.BASE_URL}/search/commits?{params}", headers=self.HEADERS
-        )
+        r = requests.get(f"{self.BASE_URL}/search/commits?{params}", headers=self.HEADERS)
         commits = r.json()["items"]
         commits_total += commits
         if len(commits) == self.MAX_NUMBER_OF_ITEMS:

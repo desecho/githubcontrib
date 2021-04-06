@@ -14,6 +14,4 @@ Menu.add_item(
     "main",
     MenuItem(_("My Contributions"), reverse("my_contribs"), check=is_authenticated),
 )
-Menu.add_item(
-    "main", MenuItem(_("My Repositories"), reverse("my_repos"), check=is_authenticated)
-)
+Menu.add_item("main", MenuItem(_("My Repositories"), reverse("my_repos"), check=is_authenticated))

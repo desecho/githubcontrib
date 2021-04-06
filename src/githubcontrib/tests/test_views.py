@@ -15,18 +15,14 @@ class ContribHomeTestCase(BaseTestLoginCase):
         url = reverse("home")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertListEqual(
-            list(response.context_data["usernames"]), ["fox", "ironman"]
-        )
+        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman"])
 
     def test_home_anonymous(self):
         self.client.logout()
         url = reverse("home")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertListEqual(
-            list(response.context_data["usernames"]), ["fox", "ironman", "neo"]
-        )
+        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman", "neo"])
 
 
 class ContributionsTestCase(BaseTestLoginCase):
@@ -193,9 +189,9 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         self.url = reverse("load_commit_data")
 
     def test_load_commit_data_success(self):
-        self.github_mock.should_receive("get_commit_data").with_args(
-            "neo", "jieter/django-tables2"
-        ).and_return(commits_jieter)
+        self.github_mock.should_receive("get_commit_data").with_args("neo", "jieter/django-tables2").and_return(
+            commits_jieter
+        )
         self.github_mock.should_receive("get_commit_data").with_args(
             "neo", "python-social-auth/social-core"
         ).and_return(commits_python_social_auth)

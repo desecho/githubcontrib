@@ -41,9 +41,7 @@ class MyReposView(TemplateView):
     template_name = "my_repos.html"
 
     def get_context_data(self, **kwargs):
-        repos = [
-            {"id": repo.id, "name": repo.name} for repo in self.request.user.repos.all()
-        ]
+        repos = [{"id": repo.id, "name": repo.name} for repo in self.request.user.repos.all()]
         kwargs["repos"] = json.dumps(repos)
         return kwargs
 
@@ -55,9 +53,7 @@ class RepoView(AjaxView):
             user = self.request.user
             username, __ = name.split("/")
             if username == user.username:
-                return self.fail(
-                    _("You cannot add your own repository"), self.MESSAGE_WARNING
-                )
+                return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
             if Github().repo_exists(name):
                 if not user.repos.filter(name=name).exists():
                     repo_id = Repo.objects.create(name=name, user=user).pk
