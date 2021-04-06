@@ -2,19 +2,16 @@
 Django==2.2.19
 
 # Django related packages
-django-braces==1.13.0
+django-braces==1.14.0
 django-simple-menu==1.2.1
 social-auth-app-django==4.0.0
-django-rosetta==0.9.3
-django-tqdm==0.0.3
+django-rosetta==0.9.6
+django-tqdm==1.0.0
 django-modeladmin-reorder==0.3.1
+django-google-analytics-app==5.0.2
 
-# django-google-analytics-app==4.1.0
-# Open PR - https://github.com/praekelt/django-google-analytics/pull/38 - Django 2 support
--e git+https://github.com/desecho/django-google-analytics.git@django2#egg=django-google-analytics
-
-requests==2.22.0
-python-dateutil==2.8.0
-mysqlclient==1.4.2.post1
+requests==2.25.1
+python-dateutil==2.8.1
+mysqlclient==2.0.3
 raven==6.10.0
-PyGithub==1.43.7
+PyGithub==1.54.1
