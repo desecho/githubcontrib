@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: githubcontrib
+data:
+  PROJECT_DOMAIN: githubcontrib.desecho.org
+  ADMIN_EMAIL: desecho@gmail.com
+  DB_HOST: mysql.desecho.org
+  DB_USER: root
+  STATIC_URL: https://githubcontrib.cdn.desecho.org/
+  GOOGLE_ANALYTICS_ID: UA-655582-8

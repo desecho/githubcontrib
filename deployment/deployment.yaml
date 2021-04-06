@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: githubcontrib
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: githubcontrib
+  template:
+    metadata:
+      labels:
+        app: githubcontrib
+    spec:
+      terminationGracePeriodSeconds: 30
+      restartPolicy: Always
+      containers:
+      - name: githubcontrib
+        image: ghcr.io/desecho/githubcontrib:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: githubcontrib
+        - configMapRef:
+            name: githubcontrib
