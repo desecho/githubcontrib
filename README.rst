@@ -44,8 +44,8 @@ To use production commands edit ``db_env_prod.sh``.
 .. |Codecov| image:: https://codecov.io/gh/desecho/githubcontrib/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/desecho/githubcontrib
 
-.. |Build Status| image:: https://travis-ci.org/desecho/githubcontrib.svg?branch=master
-   :target: https://travis-ci.org/desecho/githubcontrib
+.. |Build Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
+   :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
 
 .. _documentation: https://github.com/desecho/githubcontrib/blob/master/doc.rst
 .. _Vue.js: https://vuejs.org/
