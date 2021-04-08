@@ -39,6 +39,9 @@ Production
 ----------------------------
 To use production commands edit ``db_env_prod.sh``.
 
+Fonts used
+----------------------------
+* Orbitron_ for logo
 
 .. |Requirements Status| image:: https://requires.io/github/desecho/githubcontrib/requirements.svg?branch=master
    :target: https://requires.io/github/desecho/githubcontrib/requirements/?branch=master
@@ -55,3 +58,4 @@ To use production commands edit ``db_env_prod.sh``.
 .. _Django: https://www.djangoproject.com/
 .. _ubuntu-vm: https://github.com/desecho/ubuntu-vm
 .. _mysql-docker: https://github.com/desecho/mysql-docker
+.. _Orbitron: https://fonts.google.com/specimen/Orbitron
