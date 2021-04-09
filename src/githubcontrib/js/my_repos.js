@@ -19,12 +19,12 @@ window.vm = new Vue({
         if (response.data.status === 'success') {
           vm.repos = vm.repos.filter((repo) => repo.id != id);
         } else {
-          vm.flash(response.data.message, 'error', vars.flashOptions);
+          vm.flashError(response.data.message);
         }
       }
 
       function fail() {
-        vm.flash(gettext('Error deleting repository'), 'error', vars.flashOptions);
+        vm.flashError(gettext('Error deleting repository'));
       }
 
       const vm = this;
@@ -40,12 +40,12 @@ window.vm = new Vue({
           });
           vm.name = '';
         } else {
-          vm.flash(response.data.message, response.data.messageType, vars.flashOptions);
+          vm.flash(response.data.message, response.data.messageType);
         }
       }
 
       function fail() {
-        vm.flash(gettext('Error adding repository'), 'error', vars.flashOptions);
+        vm.flashError(gettext('Error adding repository'));
       }
 
       const vm = this;
@@ -57,14 +57,14 @@ window.vm = new Vue({
     loadCommitData: function() {
       function success(response) {
         if (response.data.status === 'success') {
-          vm.flash(gettext('Commit data has been updated'), 'success', vars.flashOptions);
+          vm.flashSuccess(gettext('Commit data has been updated'));
         } else {
-          vm.flash(response.data.message, 'error', vars.flashOptions);
+          vm.flashError(response.data.message);
         }
       }
 
       function fail() {
-        vm.flash(gettext('Error loading commit data'), 'error', vars.flashOptions);
+        vm.flashError(gettext('Error loading commit data'));
       }
 
       const vm = this;

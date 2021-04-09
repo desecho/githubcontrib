@@ -5,16 +5,16 @@ import VueFlashMessage from 'vue-flash-message';
 import VueCookie from 'vue-cookies';
 
 
-window.vars = {
-  flashOptions: {
-    timeout: 1500,
-    important: true,
-  },
-};
+window.vars = {};
 window.urls = {};
 
 Vue.options.delimiters = ['[[', ']]'];
-Vue.use(VueFlashMessage);
+Vue.use(VueFlashMessage, {
+  messageOptions: {
+    timeout: 1500,
+    important: true,
+  },
+});
 Vue.use(VueCookie);
 
 new Vue({
