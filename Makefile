@@ -267,7 +267,7 @@ createsuperuser:
 ## Run makemigrations command
 makemigrations:
 	${SOURCE_CMDS} && \
-	${MANAGE_CMD} makemigrations
+	${MANAGE_CMD} makemigrations githubcontrib
 
 ifeq (manage,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
