@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     # Custom
     "raven.contrib.django.raven_compat",
     "admin_reorder",
@@ -60,6 +59,9 @@ if DEBUG:  # pragma: no cover
         "debug_toolbar",
         "template_timings_panel",
     ]
+
+if DEBUG or COLLECT_STATIC:
+    INSTALLED_APPS.append("django.contrib.staticfiles")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -164,7 +166,7 @@ if DEBUG:  # pragma: no cover
 # Static files
 if IS_DEV:
     STATICFILES_DIRS = (
-        join(SRC_DIR, "moviesapp", "static"),
+        join(SRC_DIR, "githubcontrib", "static"),
         join(PROJECT_DIR, "static"),
     )
     STATIC_ROOT = None
