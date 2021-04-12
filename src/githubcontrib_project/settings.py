@@ -177,6 +177,10 @@ STATIC_URL = getenv("STATIC_URL", "/static/")
 MEDIA_ROOT = join(PROJECT_DIR, "media")
 MEDIA_URL = "/media/"
 
+# Security
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 # Authentification
 AUTH_PASSWORD_VALIDATORS = [
     {
