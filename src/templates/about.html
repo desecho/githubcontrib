@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}{% trans 'About GitHubContrib' %}{% endblock %}
+
+{% block content %}
+  <legend>{% trans 'About GitHubContrib' %}</legend>
+  {% blocktrans %}
+    <p>
+      GitHubContrib allows you to have a profile page with your open-source contributions.<br>
+      You can only add repositories that don't belong to you.
+    </p>
+    <p>If you have any issues, questions or feedback email me at <a href="mailto:desecho@gmail.com">desecho@gmail.com</a>.</p>
+    <p>Development:<br>
+      The <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a> is used in GitHubContrib.<br>
+      The source code is available on GitHub — <a href="https://github.com/desecho/githubcontrib" target="_blank">GitHubContrib</a>.
+    </p>
+  {% endblocktrans %}
+{% endblock %}

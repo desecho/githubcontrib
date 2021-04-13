@@ -11,6 +11,10 @@ from githubcontrib.models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
+class AboutView(TemplateAnonymousView):
+    template_name = "about.html"
+
+
 class HomeView(TemplateAnonymousView):
     template_name = "home.html"
 

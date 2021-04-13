@@ -8,77 +8,123 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 00:40-0500\n"
-"PO-Revision-Date: 2018-02-23 00:37-0456\n"
+"POT-Creation-Date: 2021-04-13 03:02-0400\n"
+"PO-Revision-Date: 2021-04-13 03:03-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Translated-Using: django-rosetta 0.8.1\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Translated-Using: django-rosetta 0.9.6\n"
 
-#: githubcontrib/menus.py:12 templates/home.html:5
+#: src/githubcontrib/menus.py:10 src/templates/home.html:4
 msgid "Users"
 msgstr "Пользователи"
 
-#: githubcontrib/menus.py:13
+#: src/githubcontrib/menus.py:13
 msgid "My Contributions"
 msgstr "Мои Контрибуции"
 
-#: githubcontrib/menus.py:14
+#: src/githubcontrib/menus.py:15
 msgid "My Repositories"
 msgstr "Мои Репозитории"
 
-#: githubcontrib/views/githubcontrib.py:55
+#: src/githubcontrib/views/githubcontrib.py:59
 msgid "You cannot add your own repository"
 msgstr "Вы не можете добавить ваш собственный репозиторий"
 
-#: githubcontrib/views/githubcontrib.py:60
+#: src/githubcontrib/views/githubcontrib.py:64
 msgid "Repository already exists"
 msgstr "Репозиторий уже существует"
 
-#: githubcontrib/views/githubcontrib.py:61 githubcontrib/views/githubcontrib.py:74
+#: src/githubcontrib/views/githubcontrib.py:65
+#: src/githubcontrib/views/githubcontrib.py:78
 msgid "Repository not found"
 msgstr "Репозиторий не найден"
 
-#: githubcontrib/views/githubcontrib.py:62
+#: src/githubcontrib/views/githubcontrib.py:66
 msgid "Repository name is incorrect"
 msgstr "Имя репозитория не верно"
 
-#: githubcontrib/views/githubcontrib.py:87
+#: src/githubcontrib/views/githubcontrib.py:91
 #, python-brace-format
 msgid "Repository {name} not found"
 msgstr "Репозиторий {name} не найден"
 
-#: templates/contribs.html:6
+#: src/templates/about.html:3 src/templates/about.html:6
+#: src/templates/base.html:24
+msgid "About GitHubContrib"
+msgstr "О GitHubContrib"
+
+#: src/templates/about.html:7
+#| msgid ""
+#| "\n"
+#| "    <p>\n"
+#| "      GitHubContrib allows you to have a profile page with your opensource contributions.<br>\n"
+#| "      You can only add repositories which don't belong to you.\n"
+#| "    </p>\n"
+#| "    <p>If you have any issues, questions or feedback email me at <a href=\"mailto:desecho@gmail.com\">desecho@gmail.com</a>.</p>\n"
+#| "    <p>Development:<br>\n"
+#| "      The <a href=\"https://docs.github.com/en/rest\" target=\"_blank\">GitHub API</a> is used in GitHubContrib<br>\n"
+#| "      The source code is available on GitHub — <a href=\"https://github.com/desecho/githubcontrib\" target=\"_blank\">GitHubContrib</a>.\n"
+#| "    </p>\n"
+#| "  "
+msgid ""
+"\n"
+"    <p>\n"
+"      GitHubContrib allows you to have a profile page with your open-source contributions.<br>\n"
+"      You can only add repositories that don't belong to you.\n"
+"    </p>\n"
+"    <p>If you have any issues, questions or feedback email me at <a href=\"mailto:desecho@gmail.com\">desecho@gmail.com</a>.</p>\n"
+"    <p>Development:<br>\n"
+"      The <a href=\"https://docs.github.com/en/rest\" target=\"_blank\">GitHub API</a> is used in GitHubContrib.<br>\n"
+"      The source code is available on GitHub — <a href=\"https://github.com/desecho/githubcontrib\" target=\"_blank\">GitHubContrib</a>.\n"
+"    </p>\n"
+"  "
+msgstr ""
+"\n"
+"<p>GitHubContrib позволяет вам иметь страницу с вашими open-source контрибуциями.<br>\n"
+"Вы можете добавить только репозитории которые вам не принадлежат.</p>\n"
+"<p>Если у вас есть какие-нибудь проблемы, вопросы или обратная связь, отправьте email по адресу <a href=\"mailto:desecho@gmail.com\">desecho@gmail.com</a>.</p>\n"
+"<p>Разработка:<br>\n"
+"<a href=\"https://docs.github.com/en/rest\" target=\"_blank\">GitHub API</a> был использован в GitHubContrib.<br>\n"
+"Исходный код доступен в GitHub — <a href=\"https://github.com/desecho/githubcontrib\" target=\"_blank\">GitHubContrib</a>.</p>"
+
+#: src/templates/contribs.html:5
 msgid "Avatar"
 msgstr "Аватар"
 
-#: templates/includes/menu.html:8
+#: src/templates/includes/menu.html:8
 msgid "Toggle navigation"
 msgstr "Переключить навигацию"
 
-#: templates/my_repos.html:11
+#: src/templates/my_repos.html:5
+msgid ""
+"Add a repository you contributed to. Then you can load / update commits from"
+" the added repositories."
+msgstr ""
+"Добавьте репозиторий в который вы внесли контрибуцию. Затем вы можете "
+"загрузить / обновить коммиты из добавленных репозиториев."
+
+#: src/templates/my_repos.html:11
 msgid "Add"
 msgstr "Добавить"
 
-#: templates/my_repos.html:15
+#: src/templates/my_repos.html:15
 msgid "Load / Update commits"
 msgstr "Загрузить / Обновить коммиты"
 
-#: templates/user/login.html:7
+#: src/templates/user/login.html:6
 msgid "Log in with"
 msgstr "Вход через"
 
-#: templates/user/preferences.html:7
+#: src/templates/user/preferences.html:6
 msgid "Settings"
 msgstr "Настройки"
 
-#: templates/user/preferences.html:10
+#: src/templates/user/preferences.html:9
 msgid "Language"
 msgstr "Язык"
 

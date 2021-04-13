@@ -7,6 +7,7 @@ from django.urls import path, re_path
 from django.views.i18n import JavaScriptCatalog
 
 from githubcontrib.views.githubcontrib import (
+    AboutView,
     ContribsView,
     HomeView,
     LoadCommitDataView,
@@ -28,6 +29,7 @@ if settings.DEBUG:  # pragma: no cover
     ]
 
 urlpatterns += [
+    path("about/", AboutView.as_view(), name="about"),
     # User
     path("login/", LoginView.as_view(template_name="user/login.html"), name="login"),
     path("logout/", logout_view, name="logout"),

@@ -2,6 +2,7 @@
 
 {% block content %}
   <div>
+    {% trans 'Add a repository you contributed to. Then you can load / update commits from the added repositories.' %}<br><br>
     <form @submit.prevent="addRepo">
       <input required v-model="name" type="text" pattern=".+/.+" title="user/project"
              class="form-control form-control col-sm-5 col-md-4"
