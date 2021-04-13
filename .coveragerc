@@ -3,9 +3,6 @@ branch = True
 omit =
     githubcontrib/tests/*
     githubcontrib/migrations/*
-    /tmp/*
-    /usr/*
-    /opt/*
 
 [report]
 exclude_lines =
@@ -21,6 +18,3 @@ show_missing = True
 omit =
     githubcontrib/tests/*
     githubcontrib/migrations/*
-    /tmp/*
-    /usr/*
-    /opt/*
