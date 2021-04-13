@@ -3,7 +3,7 @@ GitHubContrib
 
 |Build Status| |Requirements Status| |Codecov|
 
-The web application on Django_ 2, Vue.js_ 2, Bootstrap_ 4. It allows you to have a profile page with your opensource contributions.
+The web application on Django_ 3, Vue.js_ 2, Bootstrap_ 4. It allows you to have a profile page with your opensource contributions.
 
 The website is live at https://githubcontrib.desecho.org.
 

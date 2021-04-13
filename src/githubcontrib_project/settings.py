@@ -28,6 +28,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 WSGI_APPLICATION = "githubcontrib_project.wsgi.application"
 ROOT_URLCONF = "githubcontrib_project.urls"
 SESSION_SAVE_EVERY_REQUEST = True
