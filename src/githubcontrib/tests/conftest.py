@@ -7,15 +7,8 @@ from flexmock import flexmock
 
 from githubcontrib.github import Github
 
-from .data.commit_items import (
-    commits1_items_data,
-    commits2_items_page1_data,
-    commits2_items_page2_data,
-)
-from .fixtures import (
-    commits_python_social_auth as commits_python_social_auth_fixture,
-    repo as repo_fixture,
-)
+from .data.commit_items import commits1_items_data, commits2_items_page1_data, commits2_items_page2_data
+from .fixtures import commits_python_social_auth as commits_python_social_auth_fixture, repo as repo_fixture
 
 
 @pytest.fixture

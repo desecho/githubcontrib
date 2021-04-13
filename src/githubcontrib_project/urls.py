@@ -14,11 +14,7 @@ from githubcontrib.views.githubcontrib import (
     MyReposView,
     RepoView,
 )
-from githubcontrib.views.user import (
-    PreferencesView,
-    SavePreferencesView,
-    logout_view,
-)
+from githubcontrib.views.user import PreferencesView, SavePreferencesView, logout_view
 
 admin.autodiscover()
 

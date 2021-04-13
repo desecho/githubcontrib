@@ -1,4 +1,5 @@
-[{
+[
+  {
     "model": "githubcontrib.repo",
     "pk": 1,
     "fields": {
