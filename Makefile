@@ -1,7 +1,12 @@
+PROJECT := githubcontrib
+
+export
+
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
 SOURCE_CMDS := source venv/bin/activate && source env.sh
+
 #------------------------------------
 # Help
 #------------------------------------
@@ -222,6 +227,18 @@ format-json: scripts/jsonlint.sh format
 .PHONY: format-full
 ## Format code
 format-full: format format-json
+
+.PHONY: drop-db
+## Drop db
+drop-db:
+	source env.sh && \
+	scripts/drop_db.sh
+
+.PHONY: load-db
+## Load db from yesterday's backup
+load-db: drop-db create-db
+	source env.sh && \
+	./scripts/load_db.sh
 #------------------------------------
 
 
@@ -303,18 +320,11 @@ prod-drop-db:
 	source db_env_prod.sh && \
 	scripts/drop_db.sh
 
-ifeq (prod-load-db,$(firstword $(MAKECMDGOALS)))
-  # Use the rest as arguments
-  PROD_LOAD_DB_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Turn them into do-nothing targets
-  $(eval $(PROD_LOAD_DB_ARGS):;@:)
-endif
-
 .PHONY: prod-load-db
-## Load db to prod. Usage: [gz_path]
-prod-load-db:
+## Load db to prod from yesterday's backup
+prod-load-db: prod-drop-db prod-create-db
 	source db_env_prod.sh && \
-	gunzip -c ${PROD_LOAD_DB_ARGS} | mysql -u$$DB_USER -p"$$DB_PASSWORD" -h$$DB_HOST -Dgithubcontrib
+	./scripts/load_db.sh
 
 ifeq (prod-manage,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
