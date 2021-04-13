@@ -16,7 +16,7 @@ yarn-error.log
 package-lock.json
 src/githubcontrib/static/js/
 src/githubcontrib/static/font/
-src/githubcontrib/static/css/
+src/githubcontrib/static/*.css
 venv
 env.sh
 /static
