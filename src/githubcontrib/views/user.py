@@ -1,8 +1,6 @@
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-from githubcontrib.models import activate_user_language_preference
-
 from .mixins import AjaxView, TemplateView
 
 
@@ -25,5 +23,4 @@ class SavePreferencesView(AjaxView):
         user = request.user
         user.language = language
         user.save()
-        activate_user_language_preference(request, language)
         return self.success()

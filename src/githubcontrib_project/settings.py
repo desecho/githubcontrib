@@ -66,18 +66,19 @@ if DEBUG or COLLECT_STATIC:
     INSTALLED_APPS.append("django.contrib.staticfiles")
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Custom
-    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.gzip.GZipMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "admin_reorder.middleware.ModelAdminReorder",
+    "githubcontrib.middleware.language_middleware",
 ]
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")

@@ -1,17 +1,10 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.signals import user_logged_in
 from django.db import models
-from django.dispatch import receiver
-from django.utils.translation import LANGUAGE_SESSION_KEY
-
-
-def activate_user_language_preference(request, language):
-    request.session[LANGUAGE_SESSION_KEY] = language
 
 
 class User(AbstractUser):
-    language = models.CharField(max_length=2, choices=settings.LANGUAGES, default="en")
+    language = models.CharField(max_length=2, choices=settings.LANGUAGES, default=settings.LANGUAGE_CODE)
     avatar = models.URLField(null=True, blank=True)
     loaded_initial_data = models.BooleanField(default=False)
 
@@ -42,8 +35,3 @@ class Commit(models.Model):
 
     class Meta:
         ordering = ["-date"]
-
-
-@receiver(user_logged_in)
-def language_(**kwargs):
-    activate_user_language_preference(kwargs["request"], kwargs["user"].language)
