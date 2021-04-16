@@ -168,10 +168,7 @@ if DEBUG:  # pragma: no cover
 
 # Static files
 if IS_DEV:
-    STATICFILES_DIRS = (
-        join(SRC_DIR, "githubcontrib", "static"),
-        join(PROJECT_DIR, "static"),
-    )
+    STATICFILES_DIRS = (join(SRC_DIR, "githubcontrib", "static"),)
     STATIC_ROOT = None
 else:
     STATIC_ROOT = join(PROJECT_DIR, "static")
