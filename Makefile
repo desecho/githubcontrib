@@ -83,7 +83,7 @@ create-db:
 
 .PHONY: bootstrap
 ## Bootstrap project
-bootstrap: install-deps yarn-install-locked create-venv create-db migrate yarn-build collectstatic create-env-files
+bootstrap: install-deps yarn-install-locked create-venv create-env-files create-db migrate yarn-build
 
 .PHONY: create-env-files
 ## Create env files
