@@ -346,12 +346,12 @@ prod-manage:
 DOCKER_ENV_FILE := env_docker
 
 .PHONY: docker-build
-## Run docker-build | Docker
+## Build image | Docker
 docker-build:
 	docker build -t ${PROJECT} .
 
 .PHONY: docker-run
-## Run docker-run
+## Run server in docker
 docker-run:
 	docker-compose up
 
