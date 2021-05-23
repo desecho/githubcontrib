@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: githubcontrib
 data:
-  PROJECT_DOMAIN: githubcontrib.desecho.org
+  PROJECT_DOMAIN: githubcontrib.samarchyan.me
   ADMIN_EMAIL: desecho@gmail.com
-  DB_HOST: mysql.desecho.org
+  DB_HOST: mysql.samarchyan.me
   DB_USER: root
-  STATIC_URL: https://githubcontrib.cdn.desecho.org/
+  STATIC_URL: https://githubcontrib.cdn.samarchyan.me/
   GOOGLE_ANALYTICS_ID: UA-655582-8
