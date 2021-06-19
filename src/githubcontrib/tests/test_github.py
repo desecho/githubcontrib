@@ -1,20 +1,20 @@
 # from flexmock import flexmock
-from github.GithubException import UnknownObjectException
+# from github.GithubException import UnknownObjectException
 
 # pylint: disable=no-name-in-module
 
 
-def test_repo_exists_wrong_user(repo, github_mock, gh):
-    github_mock.should_receive("get_user").and_raise(UnknownObjectException(None, None))
-    result = gh.repo_exists(repo)
-    assert result is False
+# def test_repo_exists_wrong_user(repo, github_mock, gh):
+#     github_mock.should_receive("get_user").and_raise(UnknownObjectException(None, None))
+#     result = gh.repo_exists(repo)
+#     assert result is False
 
 
-def test_repo_exists_wrong_repo(repo, github_mock, user_mock, gh):
-    github_mock.should_receive("get_user").and_return(user_mock)
-    user_mock.should_receive("get_repo").and_raise(UnknownObjectException(None, None))
-    result = gh.repo_exists(repo)
-    assert result is False
+# def test_repo_exists_wrong_repo(repo, github_mock, user_mock, gh):
+#     github_mock.should_receive("get_user").and_return(user_mock)
+#     user_mock.should_receive("get_repo").and_raise(UnknownObjectException(None, None))
+#     result = gh.repo_exists(repo)
+#     assert result is False
 
 
 def test_repo_exists_user_mismatch(repo, github_mock, user_mock, repo_mock, gh):
