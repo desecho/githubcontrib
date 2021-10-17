@@ -3,6 +3,23 @@
 from os import getenv
 from os.path import abspath, dirname, join
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+SENTRY_TRACE_SAMPLING = 0.5
+
+sentry_sdk.init(  # pylint: disable=abstract-class-instantiated
+    dsn=getenv("SENTRY_DSN"),
+    integrations=[DjangoIntegration()],
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=SENTRY_TRACE_SAMPLING,
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+)
+
 # Custom
 IS_DEV = bool(getenv("IS_DEV"))
 COLLECT_STATIC = bool(getenv("COLLECT_STATIC"))
@@ -48,7 +65,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     # Custom
-    "raven.contrib.django.raven_compat",
     "admin_reorder",
     "rosetta",
     "google_analytics",
@@ -82,49 +98,6 @@ MIDDLEWARE = [
 ]
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-
-# Logging
-if not DEBUG:  # pragma: no cover
-    LOGGING = {
-        "version": 1,
-        "disable_existing_loggers": True,
-        "root": {
-            "level": "WARNING",
-            "handlers": ["sentry"],
-        },
-        "formatters": {
-            "verbose": {"format": ("%(levelname)s %(asctime)s %(module)s " "%(process)d %(thread)d %(message)s")},
-        },
-        "handlers": {
-            "sentry": {
-                "level": "ERROR",
-                "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
-                "tags": {"custom-tag": "x"},
-            },
-            "console": {
-                "level": "DEBUG",
-                "class": "logging.StreamHandler",
-                "formatter": "verbose",
-            },
-        },
-        "loggers": {
-            "django.db.backends": {
-                "level": "ERROR",
-                "handlers": ["console"],
-                "propagate": False,
-            },
-            "raven": {
-                "level": "DEBUG",
-                "handlers": ["console"],
-                "propagate": False,
-            },
-            "sentry.errors": {
-                "level": "DEBUG",
-                "handlers": ["console"],
-                "propagate": False,
-            },
-        },
-    }
 
 TEMPLATES = [
     {
@@ -235,9 +208,6 @@ ADMIN_REORDER = (
     },
     {"app": "social_django", "models": ("social_django.UserSocialAuth",)},
 )
-
-# raven
-RAVEN_CONFIG = {"dsn": getenv("RAVEN_DSN")}
 
 # django-debug-toolbar
 DEBUG_TOOLBAR_PANELS = [

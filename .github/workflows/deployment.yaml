@@ -109,7 +109,7 @@ jobs:
             --from-literal=SOCIAL_AUTH_GITHUB_KEY=${{ secrets.SOCIAL_AUTH_GITHUB_KEY }} \
             --from-literal=SOCIAL_AUTH_GITHUB_SECRET=${{ secrets.SOCIAL_AUTH_GITHUB_SECRET }} \
             --from-literal=GITHUB_API_KEY=${{ secrets.GH_API_KEY }} \
-            --from-literal=RAVEN_DSN=${{ secrets.RAVEN_DSN }} \
+            --from-literal=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
             --dry-run=client -o yaml | kubectl apply -f -
           kubectl apply -f deployment/deployment.yaml
           kubectl apply -f deployment/ingress.yaml
