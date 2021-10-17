@@ -1,4 +1,4 @@
-Django==3.2.7
+Django==3.2.8
 
 # Django related packages
 django-braces==1.14.0
