@@ -30,12 +30,15 @@ if settings.DEBUG:  # pragma: no cover
 
 urlpatterns += [
     path("about/", AboutView.as_view(), name="about"),
+    #
     # User
     path("login/", LoginView.as_view(template_name="user/login.html"), name="login"),
     path("logout/", logout_view, name="logout"),
+    #
     # Preferences
     path("preferences/", PreferencesView.as_view(), name="preferences"),
     path("save-preferences/", SavePreferencesView.as_view(), name="save_preferences"),
+    #
     # Services
     path("admin/", admin.site.urls),
     path("", include("social_django.urls", namespace="social")),
