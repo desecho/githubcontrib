@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  {% include 'includes/google_analytics.html' %}
   <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
   <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
   <meta name="viewport"
@@ -23,7 +24,7 @@
 <footer class="container-fluid py-3">
   <a href="{% url 'about' %}">{% trans 'About GitHubContrib' %}</a> | Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>
 </footer>
-{% include 'includes/google_analytics.html' %}
+
 <script src="{% url 'javascript-catalog' %}"></script>
 <script src="{% static 'js/commons.js' %}"></script>
 <script src="{% static 'js/vendor.js' %}"></script>

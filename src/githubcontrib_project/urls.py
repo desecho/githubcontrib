@@ -49,7 +49,6 @@ urlpatterns += [
     ),
     path("i18n/", include("django.conf.urls.i18n")),
     path("rosetta/", include("rosetta.urls")),
-    path("djga/", include("google_analytics.urls")),
     # -------------------------------------------------------------------------------------------
     path("", HomeView.as_view(), name="home"),
     path("my-repositories/", MyReposView.as_view(), name="my_repos"),

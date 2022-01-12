@@ -67,7 +67,6 @@ INSTALLED_APPS = [
     # Custom
     "admin_reorder",
     "rosetta",
-    "google_analytics",
     "social_django",
     "menu",
     "githubcontrib",
@@ -197,8 +196,6 @@ LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
 # --== Modules settings ==--
-# django-google-analytics-app
-GOOGLE_ANALYTICS = {"google_analytics_id": getenv("GOOGLE_ANALYTICS_ID")}
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (
@@ -259,5 +256,9 @@ SOCIAL_AUTH_PIPELINE = (
 SOCIAL_AUTH_GITHUB_KEY = getenv("SOCIAL_AUTH_GITHUB_KEY")
 SOCIAL_AUTH_GITHUB_SECRET = getenv("SOCIAL_AUTH_GITHUB_SECRET")
 
+# --== Project settings ==--
+
 # API Keys
 GITHUB_API_KEY = getenv("GITHUB_API_KEY")
+
+GOOGLE_ANALYTICS_ID = getenv("GOOGLE_ANALYTICS_ID")
