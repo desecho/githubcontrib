@@ -9,7 +9,7 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
+      - name: Cancel previous runs
         uses: styfle/cancel-workflow-action@0.9.0
         with:
           access_token: ${{ github.token }}
@@ -121,5 +121,5 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      - name: Run db migration
+      - name: Run DB migration
         run: make prod-manage migrate
