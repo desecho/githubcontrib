@@ -9,27 +9,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.9.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.9
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 15.x
           registry-url: https://registry.npmjs.org
 
       - name: Install test requirements
         run: |
-          sudo curl https://github.com/mvdan/sh/releases/download/v3.4.0/shfmt_v3.4.0_linux_amd64 -Lo /usr/local/bin/shfmt
+          sudo curl https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64 -Lo /usr/local/bin/shfmt
           sudo chmod +x /usr/local/bin/shfmt
           sudo apt install shellcheck -y
           rm package.json
@@ -40,6 +40,8 @@ jobs:
           npm install jsonlint@1.6.3
           pip install tox
           tox -e py39-requirements
+        env:
+          SHFMT_VERSION: 3.4.3
 
       - name: Run tests
         run: make test

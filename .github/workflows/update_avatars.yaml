@@ -1,20 +1,19 @@
 name: Update avatars
 on: workflow_dispatch
-
 jobs:
   update_avatars:
     name: Update avatars
     runs-on: ubuntu-latest
     steps:
       - name: Install kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v2.0
 
       - name: Configure kubectl
         run: |
           mkdir ~/.kube
           echo $KUBECONFIG > ~/.kube/config
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}  # Done as a variable because doesn't work in place.
 
       - name: Update avatars
         run: make prod-manage update_avatars

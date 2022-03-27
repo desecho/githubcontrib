@@ -1,7 +1,7 @@
 GitHubContrib
 ==========================================================
 
-|Build Status| |Requirements Status| |Codecov|
+|Deployment Status| |Requirements Status| |Codecov|
 
 The web application on Django_ 4, Vue.js_ 2, Bootstrap_ 4. It allows you to have a profile page with your opensource contributions.
 
@@ -38,14 +38,14 @@ Fonts used
 ----------------------------
 * Orbitron_ for logo
 
+.. |Deployment Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
+   :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
+
 .. |Requirements Status| image:: https://requires.io/github/desecho/githubcontrib/requirements.svg?branch=master
    :target: https://requires.io/github/desecho/githubcontrib/requirements/?branch=master
 
 .. |Codecov| image:: https://codecov.io/gh/desecho/githubcontrib/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/desecho/githubcontrib
-
-.. |Build Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
-   :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
 
 .. _documentation: https://github.com/desecho/githubcontrib/blob/master/doc.rst
 .. _Vue.js: https://vuejs.org/
