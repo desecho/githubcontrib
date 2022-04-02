@@ -60,7 +60,7 @@ Backup runs daily with GitHub Actions.
 
 Fonts used
 ----------------------------
-* Orbitron_ for logo
+* Orbitron_ for logo.
 
 .. |Deployment Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
    :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
