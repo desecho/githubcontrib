@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install kubectl
-        uses: azure/setup-kubectl@v2.0
+        uses: azure/setup-kubectl@v2.1
 
       - name: Configure kubectl
         run: |
