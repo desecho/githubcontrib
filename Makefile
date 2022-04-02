@@ -1,25 +1,20 @@
+export
+.DEFAULT_GOAL := help
+
 PROJECT := githubcontrib
 APP := ${PROJECT}
 
-export
-
-.DEFAULT_GOAL := help
-
 SHELL := /bin/bash
 SOURCE_CMDS := source venv/bin/activate && source env.sh
+
 #------------------------------------
 # Help
 #------------------------------------
 TARGET_MAX_CHAR_NUM := 25
 
 # COLORS
-RED     := \033[0;31m
 GREEN   := \033[0;32m
 YELLOW  := \033[0;33m
-BLUE    := \033[0;34m
-MAGENTA := \033[0;35m
-CYAN    := \033[0;36m
-WHITE   := \033[0;37m
 RESET   := \033[0;10m
 
 .PHONY: help
@@ -322,6 +317,28 @@ manage:
 
 
 #------------------------------------
+# Docker commands
+#------------------------------------
+DOCKER_ENV_FILE := env_docker
+
+.PHONY: docker-build
+## Build image | Docker
+docker-build:
+	docker build -t ${PROJECT} .
+
+.PHONY: docker-run
+## Run server in docker
+docker-run:
+	docker-compose up
+
+.PHONY: docker-sh
+## Run docker shell
+docker-sh:
+	docker run -ti --env-file ${DOCKER_ENV_FILE} ${PROJECT} sh
+#------------------------------------
+
+
+#------------------------------------
 # Production commands
 #------------------------------------
 .PHONY: prod-create-db
@@ -353,26 +370,10 @@ endif
 ## Run management command in prod. Usage: [command]
 prod-manage:
 	scripts/run_management_command.sh ${PROD_MANAGE_ARGS}
-#------------------------------------
 
-
-#------------------------------------
-# Docker commands
-#------------------------------------
-DOCKER_ENV_FILE := env_docker
-
-.PHONY: docker-build
-## Build image | Docker
-docker-build:
-	docker build -t ${PROJECT} .
-
-.PHONY: docker-run
-## Run server in docker
-docker-run:
-	docker-compose up
-
-.PHONY: docker-sh
-## Run docker shell
-docker-sh:
-	docker run -ti --env-file ${DOCKER_ENV_FILE} ${PROJECT} sh
+.PHONY: prod-enable-debug
+## Enable debug in prod. It will be reset with the next deployment
+prod-enable-debug:
+	yq eval '.data.DEBUG="True"' deployment/configmap.yaml | kubectl apply -f -
+	kubectl rollout restart "deployment/${PROJECT}"
 #------------------------------------
