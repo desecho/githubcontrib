@@ -25,6 +25,7 @@ IS_DEV = bool(getenv("IS_DEV"))
 COLLECT_STATIC = bool(getenv("COLLECT_STATIC"))
 SRC_DIR = dirname(dirname(abspath(__file__)))
 PROJECT_DIR = dirname(SRC_DIR)
+PROJECT_DOMAIN = getenv("PROJECT_DOMAIN")
 
 # Debug
 DEBUG = bool(getenv("DEBUG"))
@@ -51,7 +52,7 @@ WSGI_APPLICATION = "githubcontrib_project.wsgi.application"
 ROOT_URLCONF = "githubcontrib_project.urls"
 SESSION_SAVE_EVERY_REQUEST = True
 
-ALLOWED_HOSTS = [getenv("PROJECT_DOMAIN")]
+ALLOWED_HOSTS = [PROJECT_DOMAIN]
 
 CACHES = {
     "default": {
@@ -77,7 +78,7 @@ if DEBUG:  # pragma: no cover
         "template_timings_panel",
     ]
 
-if DEBUG or COLLECT_STATIC:
+if IS_DEV or COLLECT_STATIC:
     INSTALLED_APPS.append("django.contrib.staticfiles")
 
 MIDDLEWARE = [
@@ -100,6 +101,7 @@ if DEBUG:  # pragma: no cover
 
 TEMPLATES = [
     {
+        "NAME": "Main",
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": (join(SRC_DIR, "templates"),),
         "OPTIONS": {
@@ -131,8 +133,16 @@ TEMPLATES = [
             "builtins": ["django.templatetags.static", "django.templatetags.i18n"],
         },
     },
+    {
+        "NAME": "Secondary",
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "debug": DEBUG,
+        },
+    },
 ]
-if DEBUG:  # pragma: no cover
+if IS_DEV:  # pragma: no cover
     TEMPLATES[0]["OPTIONS"]["loaders"] = [
         "django.template.loaders.filesystem.Loader",
         "django.template.loaders.app_directories.Loader",
@@ -154,6 +164,7 @@ MEDIA_URL = "/media/"
 # Security
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [f"https://{PROJECT_DOMAIN}"]
 
 # Authentification
 AUTH_PASSWORD_VALIDATORS = [
