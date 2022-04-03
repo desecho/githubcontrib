@@ -202,17 +202,6 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         self.assertIn("python-social-auth/social-core", commits[0].url)
         self.assertIn("jieter/django-tables2", commits[1].url)
 
-    def test_load_commit_data_repo_not_found(self):
-        self.github_mock.should_receive("get_commit_data").and_return(None)
-        response = self.client.post(self.url)
-        self.assertEqual(response.status_code, 200)
-        expected_response = {
-            "status": "fail",
-            "message": "Repository jieter/django-tables2 not found",
-            "messageType": "error",
-        }
-        self.assertEqual(self.get_json(response), expected_response)
-
 
 class LogoutTestCase(BaseTestLoginCase):
     def test_logout(self):

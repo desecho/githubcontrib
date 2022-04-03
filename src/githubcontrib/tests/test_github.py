@@ -77,21 +77,21 @@ def test_repo_exists_success(repo, username, github_mock, user_mock, repo_mock, 
 #     assert result == commits2_items_total
 
 
-def test_get_commit_data_fail(repo, username, githubcontrib_github_mock, gh):
-    githubcontrib_github_mock.should_receive("repo_exists").and_return(False)
-    result = gh.get_commit_data(username, repo)
-    assert result is None
+# def test_get_commit_data_fail(repo, username, githubcontrib_github_mock, gh):
+#     githubcontrib_github_mock.should_receive("repo_exists").and_return(False)
+#     result = gh.get_commit_data(username, repo)
+#     assert result is None
 
 
-def test_get_commit_data_success(
-    repo,
-    username,
-    githubcontrib_github_mock,
-    commits1_items,
-    commits_python_social_auth,
-    gh,
-):
-    githubcontrib_github_mock.should_receive("repo_exists").and_return(True)
-    githubcontrib_github_mock.should_receive("_load_commits").and_return(commits1_items)
-    result = gh.get_commit_data(username, repo)
-    assert result == commits_python_social_auth
+# def test_get_commit_data_success(
+#     repo,
+#     username,
+#     githubcontrib_github_mock,
+#     commits1_items,
+#     commits_python_social_auth,
+#     gh,
+# ):
+#     githubcontrib_github_mock.should_receive("repo_exists").and_return(True)
+#     githubcontrib_github_mock.should_receive("_load_commits").and_return(commits1_items)
+#     result = gh.get_commit_data(username, repo)
+#     assert result == commits_python_social_auth

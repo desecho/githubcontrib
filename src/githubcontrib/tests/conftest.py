@@ -2,7 +2,6 @@
 
 import github
 import pytest
-import requests
 from flexmock import flexmock
 
 from githubcontrib.github import Github
@@ -88,11 +87,6 @@ def commits2_output_page2(commits2_items_page2):
 @pytest.fixture
 def github_mock():
     return flexmock(spec=github.Github)
-
-
-@pytest.fixture
-def requests_mock():
-    return flexmock(spec=requests)
 
 
 @pytest.fixture
