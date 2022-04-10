@@ -31,7 +31,7 @@ class ContribsView(TemplateAnonymousView):
 
     def get_context_data(self, username):  # pylint: disable=no-self-use
         user = get_object_or_404(User, username=username)
-        return {"repos": user.repos.all(), "selected_user": user}
+        return {"repos": user.repos.all().prefetch_related("commits"), "selected_user": user}
 
 
 class MyContribsView(TemplateView):
