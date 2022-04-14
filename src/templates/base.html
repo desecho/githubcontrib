@@ -14,21 +14,21 @@
   <title>{% block title %}GitHubContrib{% endblock %}</title>
 </head>
 <body>
-<div>
-{% include 'includes/menu.html' %}
-<div id="app" class="container-fluid mt-3">
-  <flash-message class="flashpool"></flash-message>
-  {% block content %}{% endblock %}
-</div>
-</div>
-<footer class="container-fluid py-3">
-  <a href="{% url 'about' %}">{% trans 'About GitHubContrib' %}</a> | Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>
-</footer>
+  <div>
+  {% include 'includes/menu.html' %}
+  <div id="app" class="container-fluid mt-3">
+    <flash-message class="flashpool"></flash-message>
+    {% block content %}{% endblock %}
+  </div>
+  </div>
+  <footer class="container-fluid py-3">
+    <a href="{% url 'about' %}">{% trans 'About GitHubContrib' %}</a> | Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>
+  </footer>
 
-<script src="{% url 'javascript-catalog' %}"></script>
-<script src="{% static 'js/commons.js' %}"></script>
-<script src="{% static 'js/vendor.js' %}"></script>
-<script src="{% static 'js/init.js' %}"></script>
-{% block js %}{% endblock %}
-<script src="{% static 'js/setAxiosSettings.js' %}"></script>
+  <script src="{% url 'javascript-catalog' %}"></script>
+  <script src="{% static 'js/commons.js' %}"></script>
+  <script src="{% static 'js/vendor.js' %}"></script>
+  <script src="{% static 'js/init.js' %}"></script>
+  {% block js %}{% endblock %}
+  <script src="{% static 'js/setAxiosSettings.js' %}"></script>
 </body>
