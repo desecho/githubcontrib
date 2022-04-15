@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load abs_url %}
+
 {% block content %}
   <div>
     <form class="form-horizontal">
@@ -16,6 +18,10 @@
                      value="{{ language.code }}"> {{ language.name_local }}
             </label>
           {% endfor %}
+        </div>
+        <label class="col-form-label col-sm-2" for="lang">{% trans 'Profile link' %}:</label>
+        <div class="col-sm-10">
+          <a href="{% abs_url 'contribs' user.username %}">{% abs_url 'contribs' user.username %}</a>
         </div>
       </div>
     </form>
