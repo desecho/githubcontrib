@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
-from django.urls import path, re_path
+from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
 from githubcontrib.views.githubcontrib import (
@@ -53,7 +53,7 @@ urlpatterns += [
     path("", HomeView.as_view(), name="home"),
     path("my-repositories/", MyReposView.as_view(), name="my_repos"),
     path("my-contributions/", MyContribsView.as_view(), name="my_contribs"),
-    re_path(r"repository/(?P<id>\d+)/", RepoView.as_view(), name="repo"),
+    path("repository/<int:id>/", RepoView.as_view(), name="repo"),
     path("repository/", RepoView.as_view(), name="repo"),
     path("load-commit-data/", LoadCommitDataView.as_view(), name="load_commit_data"),
     # This route has to be in the end
