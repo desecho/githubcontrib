@@ -20,3 +20,5 @@ commits_python_social_auth = [
 ]
 
 repo = "username/project"
+
+username = "username"

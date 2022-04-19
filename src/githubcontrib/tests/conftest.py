@@ -1,5 +1,7 @@
 # pylint: disable=redefined-outer-name
 
+from unittest.mock import Mock
+
 import github
 import pytest
 from flexmock import flexmock
@@ -7,7 +9,7 @@ from flexmock import flexmock
 from githubcontrib.github import Github
 
 from .data.commit_items import commits1_items_data, commits2_items_page1_data, commits2_items_page2_data
-from .fixtures import commits_python_social_auth as commits_python_social_auth_fixture, repo as repo_fixture
+from .fixtures import commits_python_social_auth as commits_python_social_auth_fixture
 
 
 @pytest.fixture
@@ -33,16 +35,6 @@ def commits2_items_page2():
 @pytest.fixture
 def commits2_items_total(commits2_items_page1, commits2_items_page2):
     return commits2_items_page1 + commits2_items_page2
-
-
-@pytest.fixture
-def username():
-    return "username"
-
-
-@pytest.fixture
-def repo():
-    return repo_fixture
 
 
 @pytest.fixture
@@ -96,13 +88,13 @@ def githubcontrib_github_mock():
 
 @pytest.fixture
 def user_mock():
-    return flexmock()
+    return Mock()
 
 
 @pytest.fixture
 def repo_mock():
-    repo = flexmock()
-    repo.owner = flexmock()
+    repo = Mock()
+    repo.owner = Mock()
     repo.owner.login = "123"
     return repo
 
