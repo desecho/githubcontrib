@@ -2,9 +2,6 @@
 
 python-dateutil
 
-# Tests
-flexmock
-
 # Pytest
 pytest
 pytest-cov

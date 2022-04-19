@@ -12,11 +12,16 @@ commits_jieter = [
 
 commits_python_social_auth = [
     {
+        "url": "https://github.com/python-social-auth/social-core/commit/ca68410f4cc6bd017919b2cf4a1b31b834b8fe6b",
+        "date": datetime(2017, 4, 10, 13, 57, 41, tzinfo=tzoffset(None, -14400)),
+        "message": "Fix typos in readme",
+    },
+    {
         "url": "https://github.com/python-social-auth/social-core/commit/ab19dc49a5366ae4f917bed2a7bfddce7e7b003f",
         "date": datetime(2017, 4, 16, 4, 39, 32, tzinfo=tzoffset(None, -14400)),
         "message": "Speed up authorization process for VKAppOAuth2\n"
         "Use first api request provided immediately instead of creating a new one.",
-    }
+    },
 ]
 
 repo = "username/project"

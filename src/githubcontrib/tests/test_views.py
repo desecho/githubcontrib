@@ -202,9 +202,9 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         commits = Commit.objects.filter(repo__user=self.user)
-        self.assertListEqual(list(commits.values_list("pk", flat=True)), [2, 1])
+        self.assertListEqual(list(commits.values_list("pk", flat=True)), [3, 2, 1])
         self.assertIn("python-social-auth/social-core", commits[0].url)
-        self.assertIn("jieter/django-tables2", commits[1].url)
+        self.assertIn("jieter/django-tables2", commits[2].url)
 
 
 class LogoutTestCase(BaseTestLoginCase):

@@ -2,88 +2,11 @@
 
 from unittest.mock import Mock
 
-import github
 import pytest
-from flexmock import flexmock
 
 from githubcontrib.github import Github
 
-from .data.commit_items import commits1_items_data, commits2_items_page1_data, commits2_items_page2_data
-from .fixtures import commits_python_social_auth as commits_python_social_auth_fixture
-
-
-@pytest.fixture
-def commits_python_social_auth():
-    return commits_python_social_auth_fixture
-
-
-@pytest.fixture
-def commits1_items():
-    return commits1_items_data
-
-
-@pytest.fixture
-def commits2_items_page1():
-    return commits2_items_page1_data
-
-
-@pytest.fixture
-def commits2_items_page2():
-    return commits2_items_page2_data
-
-
-@pytest.fixture
-def commits2_items_total(commits2_items_page1, commits2_items_page2):
-    return commits2_items_page1 + commits2_items_page2
-
-
-@pytest.fixture
-def commits1_output(commits1_items):
-    return {"total_count": 1, "incomplete_results": False, "items": commits1_items}
-
-
-@pytest.fixture
-def url_page1():
-    return (
-        "https://api.github.com/search/commits"
-        "?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=1"
-    )
-
-
-@pytest.fixture
-def url_page2():
-    return (
-        "https://api.github.com/search/commits"
-        "?q=author:desecho+repo:desecho/movies+sort:author-date-desc&per_page=100&page=2"
-    )
-
-
-@pytest.fixture
-def commits2_output_page1(commits2_items_page1):
-    return {
-        "total_count": 101,
-        "incomplete_results": False,
-        "items": commits2_items_page1,
-    }
-
-
-@pytest.fixture
-def commits2_output_page2(commits2_items_page2):
-    return {
-        "total_count": 101,
-        "incomplete_results": False,
-        "items": commits2_items_page2,
-    }
-
-
-@pytest.fixture
-def github_mock():
-    return flexmock(spec=github.Github)
-
-
-@pytest.fixture
-def githubcontrib_github_mock():
-    return flexmock(spec=Github)
+from .fixtures import commits_python_social_auth
 
 
 @pytest.fixture
@@ -101,4 +24,40 @@ def repo_mock():
 
 @pytest.fixture
 def gh():
-    return Github()
+    g = Github()
+    g.MAX_NUMBER_OF_ITEMS = 1
+    return g
+
+
+@pytest.fixture
+def paginated_list_mock():
+    def get_page(page):
+        if page == 0:
+            return [commit_mock1]
+        if page == 1:
+            return [commit_mock2]
+        if page == 2:
+            return []
+        return None
+
+    committer_mock1 = Mock()
+    committer_mock1.date = commits_python_social_auth[0]["date"]
+    git_commit_mock1 = Mock()
+    git_commit_mock1.html_url = commits_python_social_auth[0]["url"]
+    git_commit_mock1.committer = committer_mock1
+    git_commit_mock1.message = commits_python_social_auth[0]["message"]
+    commit_mock1 = Mock()
+    commit_mock1.commit = git_commit_mock1
+
+    committer_mock2 = Mock()
+    committer_mock2.date = commits_python_social_auth[1]["date"]
+    git_commit_mock2 = Mock()
+    git_commit_mock2.html_url = commits_python_social_auth[1]["url"]
+    git_commit_mock2.committer = committer_mock2
+    git_commit_mock2.message = commits_python_social_auth[1]["message"]
+    commit_mock2 = Mock()
+    commit_mock2.commit = git_commit_mock2
+
+    paginated_list = Mock()
+    paginated_list.get_page.side_effect = get_page
+    return paginated_list
