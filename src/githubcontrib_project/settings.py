@@ -78,7 +78,7 @@ if DEBUG:  # pragma: no cover
         "template_timings_panel",
     ]
 
-if IS_DEV or COLLECT_STATIC:
+if IS_DEV or COLLECT_STATIC:  # pragma: no cover
     INSTALLED_APPS.append("django.contrib.staticfiles")
 
 MIDDLEWARE = [
@@ -149,7 +149,7 @@ if IS_DEV:  # pragma: no cover
     ]
 
 # Static files
-if IS_DEV:
+if IS_DEV:  # pragma: no cover
     STATICFILES_DIRS = (join(SRC_DIR, "githubcontrib", "static"),)
     STATIC_ROOT = None
 else:
