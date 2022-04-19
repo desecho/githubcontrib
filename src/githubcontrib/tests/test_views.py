@@ -1,7 +1,7 @@
 import json
+from unittest.mock import patch
 
 from django.urls import reverse
-from flexmock import flexmock
 
 from githubcontrib.github import Github
 from githubcontrib.models import Commit
@@ -101,7 +101,6 @@ class RepoTestCase(BaseTestLoginCase):
 
     def setUp(self):
         super().setUp()
-        self.github_mock = flexmock(spec=Github)
         self.url = reverse("repo")
 
     def test_add_repo_wrong_name(self):
@@ -124,14 +123,16 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(self.get_json(response), expected_response)
 
-    def test_add_repo_success(self):
-        self.github_mock.should_receive("repo_exists").and_return(True)
+    @patch.object(Github, "repo_exists")
+    def test_add_repo_success(self, repo_exists_mock):
+        repo_exists_mock.return_value = True
         response = self.client.post(self.url, {"name": repo})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.get_json(response), {"status": "success", "id": 3})
 
-    def test_add_repo_repo_not_found(self):
-        self.github_mock.should_receive("repo_exists").and_return(False)
+    @patch.object(Github, "repo_exists")
+    def test_add_repo_repo_not_found(self, repo_exists_mock):
+        repo_exists_mock.return_value = False
         response = self.client.post(self.url, {"name": repo})
         self.assertEqual(response.status_code, 200)
         expected_response = {
@@ -141,8 +142,9 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(self.get_json(response), expected_response)
 
-    def test_add_repo_exists(self):
-        self.github_mock.should_receive("repo_exists").and_return(True)
+    @patch.object(Github, "repo_exists")
+    def test_add_repo_exists(self, repo_exists_mock):
+        repo_exists_mock.return_value = True
         response = self.client.post(self.url, {"name": "jieter/django-tables2"})
         self.assertEqual(response.status_code, 200)
         expected_response = {
@@ -185,16 +187,18 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
 
     def setUp(self):
         super().setUp()
-        self.github_mock = flexmock(spec=Github)
         self.url = reverse("load_commit_data")
 
-    def test_load_commit_data_success(self):
-        self.github_mock.should_receive("get_commit_data").with_args("neo", "jieter/django-tables2").and_return(
-            commits_jieter
-        )
-        self.github_mock.should_receive("get_commit_data").with_args(
-            "neo", "python-social-auth/social-core"
-        ).and_return(commits_python_social_auth)
+    @patch.object(Github, "get_commit_data")
+    def test_load_commit_data_success(self, get_commit_data_mock):
+        def get_commit_data(username: str, repo: str):  # pylint: disable=unused-argument,redefined-outer-name
+            if repo == "jieter/django-tables2":
+                return commits_jieter
+            if repo == "python-social-auth/social-core":
+                return commits_python_social_auth
+            return None
+
+        get_commit_data_mock.side_effect = get_commit_data
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         commits = Commit.objects.filter(repo__user=self.user)
