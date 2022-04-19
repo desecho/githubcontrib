@@ -17,11 +17,10 @@ def test_repo_exists_wrong_user(get_user_mock, gh):
     assert result is False
 
 
-@patch.object(Github, "get_repo")
 @patch.object(Github, "get_user")
-def test_repo_exists_wrong_repo(get_user_mock, get_repo_mock, user_mock, gh):
+def test_repo_exists_wrong_repo(get_user_mock, user_mock, gh):
     get_user_mock.return_value = user_mock
-    get_repo_mock.side_effect = UnknownObjectException(None, None, None)
+    user_mock.get_repo.side_effect = UnknownObjectException(None, None, None)
     result = gh.repo_exists(repo)
     assert result is False
 
