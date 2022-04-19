@@ -1,26 +1,29 @@
 from unittest.mock import patch
 
 from github import Github
+from github.GithubException import UnknownObjectException
 
 from .fixtures import repo, username
 
 # from flexmock import flexmock
-# from github.GithubException import UnknownObjectException
 
 # pylint: disable=no-name-in-module
 
 
-# def test_repo_exists_wrong_user(repo, github_mock, gh):
-#     github_mock.should_receive("get_user").and_raise(UnknownObjectException(None, None))
-#     result = gh.repo_exists(repo)
-#     assert result is False
+@patch.object(Github, "get_user")
+def test_repo_exists_wrong_user(get_user_mock, gh):
+    get_user_mock.side_effect = UnknownObjectException(None, None, None)
+    result = gh.repo_exists(repo)
+    assert result is False
 
 
-# def test_repo_exists_wrong_repo(repo, github_mock, user_mock, gh):
-#     github_mock.should_receive("get_user").and_return(user_mock)
-#     user_mock.should_receive("get_repo").and_raise(UnknownObjectException(None, None))
-#     result = gh.repo_exists(repo)
-#     assert result is False
+@patch.object(Github, "get_repo")
+@patch.object(Github, "get_user")
+def test_repo_exists_wrong_repo(get_user_mock, get_repo_mock, user_mock, gh):
+    get_user_mock.return_value = user_mock
+    get_repo_mock.side_effect = UnknownObjectException(None, None, None)
+    result = gh.repo_exists(repo)
+    assert result is False
 
 
 @patch.object(Github, "get_user")
