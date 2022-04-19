@@ -1,8 +1,10 @@
 [run]
 branch = True
 omit =
-    githubcontrib/tests/*
-    githubcontrib/migrations/*
+    src/githubcontrib/tests/*
+    src/githubcontrib/migrations/*
+    src/githubcontrib_project/wsgi.py
+    src/manage.py
 
 [report]
 exclude_lines =
@@ -16,5 +18,7 @@ ignore_errors = True
 show_missing = True
 
 omit =
-    githubcontrib/tests/*
-    githubcontrib/migrations/*
+    src/githubcontrib/tests/*
+    src/githubcontrib/migrations/*
+    src/githubcontrib_project/wsgi.py
+    src/manage.py
