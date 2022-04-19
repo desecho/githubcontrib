@@ -2,17 +2,13 @@ import github
 from django.conf import settings
 from github.GithubException import UnknownObjectException
 
-# pylint: disable=no-name-in-module
-
 
 class Github:
     # The limit is set by GitHub
     MAX_NUMBER_OF_ITEMS = 100
 
     def __init__(self):
-        self.gh = github.Github(
-            settings.GITHUB_API_KEY, per_page=self.MAX_NUMBER_OF_ITEMS
-        )  # pylint: disable=too-many-function-args
+        self.gh = github.Github(settings.GITHUB_API_KEY, per_page=self.MAX_NUMBER_OF_ITEMS)
 
     def repo_exists(self, repo: str) -> bool:
         username, repo = repo.split("/")
