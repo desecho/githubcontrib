@@ -190,8 +190,6 @@ AUTHENTICATION_BACKENDS = (
 
 # Internationalization
 LANGUAGE_CODE = "en"
-USE_I18N = True
-USE_L10N = True
 LANGUAGES = (
     ("en", "English"),
     ("ru", "Русский"),
