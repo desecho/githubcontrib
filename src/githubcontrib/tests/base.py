@@ -1,5 +1,6 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
+
+from githubcontrib.models import User
 
 
 class BaseTestCase(TestCase):
@@ -12,7 +13,6 @@ class BaseTestCase(TestCase):
     # Another user - fox/password
 
     def setUp(self):
-        User = get_user_model()
         self.user = User.objects.get(username=self.USER_USERNAME)
 
     def login(self, username=None):

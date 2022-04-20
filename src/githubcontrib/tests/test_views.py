@@ -2,11 +2,10 @@ import json
 from http import HTTPStatus
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from githubcontrib.github import Github
-from githubcontrib.models import Commit
+from githubcontrib.models import Commit, User
 
 from .base import BaseTestLoginCase
 from .fixtures import commits_jieter, commits_python_social_auth, repo
@@ -226,7 +225,6 @@ class PreferencesTestCase(BaseTestLoginCase):
         response = self.client.post(reverse("save_preferences"), {"language": language})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), {"status": "success"})
-        User = get_user_model()
         user = User.objects.get(pk=self.user.pk)
         self.assertEqual(user.language, language)
 
