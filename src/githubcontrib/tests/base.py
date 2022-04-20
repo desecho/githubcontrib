@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
@@ -13,19 +11,8 @@ class BaseTestCase(TestCase):
     # Superuser - admin/adminpassword
     # Another user - fox/password
 
-    @staticmethod
-    def get_content(response):
-        return response.content.decode("utf-8")
-
-    def get_json(self, response):
-        return json.loads(self.get_content(response))
-
-    @staticmethod
-    def get_user_model():
-        return get_user_model()
-
     def setUp(self):
-        User = self.get_user_model()
+        User = get_user_model()
         self.user = User.objects.get(username=self.USER_USERNAME)
 
     def login(self, username=None):
