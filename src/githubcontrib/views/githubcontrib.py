@@ -87,9 +87,6 @@ class LoadCommitDataView(AjaxView):
         gh = Github()
         for repo in repos:
             commit_data = gh.get_commit_data(user.username, repo.name)
-            if commit_data is None:
-                name = repo.name
-                return self.fail(_(f"Repository {name} not found"))
             Commit.objects.filter(repo=repo).delete()
             for commit in commit_data:
                 Commit.objects.create(
