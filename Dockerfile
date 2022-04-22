@@ -1,8 +1,8 @@
 FROM python:3.10-alpine
 
-ADD requirements.txt /app/requirements.txt
-
 WORKDIR /app
+
+COPY requirements.txt ./requirements.txt
 
 RUN apk add --no-cache --virtual .build-deps git gcc musl-dev libffi-dev openssl-dev python3-dev cargo make && \
     apk add --no-cache mariadb-dev && \
@@ -10,7 +10,7 @@ RUN apk add --no-cache --virtual .build-deps git gcc musl-dev libffi-dev openssl
     apk del .build-deps && \
     rm requirements.txt
 
-ADD src /app
+COPY src .
 
 EXPOSE 8000
 
