@@ -1,3 +1,4 @@
+---
 name: Update avatars
 on: workflow_dispatch
 jobs:
