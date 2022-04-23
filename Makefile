@@ -77,14 +77,9 @@ db_env_prod.sh:
 #------------------------------------
 # Scripts
 #------------------------------------
-
 .PHONY: pydiatra-script
 pydiatra-script:
 	scripts/pydiatra.sh
-
-.PHONY: jsonlint-script
-jsonlint-script:
-	scripts/jsonlint.sh lint
 #------------------------------------
 
 
@@ -93,18 +88,13 @@ jsonlint-script:
 #------------------------------------
 .PHONY: test
 ## Run tests | Tests
-test: shellcheck
+test: shellcheck hadolint shfmt csscomb-linter eslint jsonlint
 	tox
 
 .PHONY: pydiatra
 ## Run pydiatra linter
 pydiatra:
 	tox -e py-pydiatra
-
-.PHONY: jsonlint
-## Run jsonlint linter
-jsonlint:
-	tox -e py-jsonlint
 
 .PHONY: pylint
 ## Run pylint linter
@@ -146,41 +136,45 @@ safety:
 pytest:
 	tox -e py-pytest
 
-.PHONY: eslint
-## Run eslint linter
-eslint:
-	tox -e py-eslint
-
-.PHONY: csscomb-linter
-## Run csscomb-linter linter
-csscomb-linter:
-	tox -e py-csscomb-linter
-
 .PHONY: black
 ## Run black linter
 black:
 	tox -e py-black
-
-.PHONY: shfmt
-## Run shfmt linter
-shfmt:
-	tox -e py-shfmt
-
-.PHONY: shellcheck
-## Run shellcheck linter
-shellcheck:
-	shellcheck scripts/*.sh ./*.sh
 
 .PHONY: yamllint
 ## Run yamllint linter
 yamllint:
 	tox -e py-yamllint
 
+.PHONY: eslint
+## Run eslint linter
+eslint:
+	yarn run eslint "./*.js" "src/${APP}/js/*"
+
+.PHONY: csscomb-linter
+## Run csscomb-linter linter
+csscomb-linter:
+	yarn run csscomb-linter "src/${APP}/styles/*"
+
+.PHONY: shfmt
+## Run shfmt linter
+shfmt:
+	shfmt -l -d .
+
+.PHONY: shellcheck
+## Run shellcheck linter
+shellcheck:
+	shellcheck scripts/*.sh ./*.sh
+
 .PHONY: hadolint
 ## Run hadolint linter
 hadolint:
-	tox -e py-hadolint
+	hadolint Dockerfile
 
+.PHONY: jsonlint
+## Run jsonlint linter
+jsonlint:
+	scripts/jsonlint.sh lint
 #------------------------------------
 
 #------------------------------------
@@ -248,7 +242,6 @@ load-db: drop-db create-db
 #------------------------------------
 # Django management commands
 #------------------------------------
-
 MANAGE_CMD := src/manage.py
 
 .PHONY: makemessages
