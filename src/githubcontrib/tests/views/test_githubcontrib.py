@@ -5,10 +5,10 @@ from unittest.mock import patch
 from django.urls import reverse
 
 from githubcontrib.github import Github
-from githubcontrib.models import Commit, User
+from githubcontrib.models import Commit
 
-from .base import BaseTestLoginCase
-from .fixtures import commits_jieter, commits_python_social_auth, repo
+from ..base import BaseTestLoginCase
+from ..fixtures import commits_jieter, commits_python_social_auth, repo
 
 
 class ContribHomeTestCase(BaseTestLoginCase):
@@ -206,28 +206,3 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         self.assertListEqual(list(commits.values_list("pk", flat=True)), [3, 2, 1])
         self.assertIn("python-social-auth/social-core", commits[0].url)
         self.assertIn("jieter/django-tables2", commits[2].url)
-
-
-class LogoutTestCase(BaseTestLoginCase):
-    def test_logout(self):
-        response = self.client.get(reverse("logout"))
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
-        self.assertFalse(self.is_authenticated)
-
-
-class PreferencesTestCase(BaseTestLoginCase):
-    def test_preferences(self):
-        response = self.client.get(reverse("preferences"))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_save_preferences(self):
-        language = "ru"
-        response = self.client.post(reverse("save_preferences"), {"language": language})
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(response.json(), {"status": "success"})
-        user = User.objects.get(pk=self.user.pk)
-        self.assertEqual(user.language, language)
-
-    def test_save_preferences_bad_request(self):
-        response = self.client.post(reverse("save_preferences"))
-        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
