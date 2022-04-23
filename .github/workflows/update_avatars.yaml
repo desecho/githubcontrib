@@ -1,6 +1,9 @@
 ---
 name: Update avatars
-on: workflow_dispatch
+on:
+  schedule:
+    - cron: "0 0 1 * *"  # Run every month at midnight
+  workflow_dispatch:
 jobs:
   update_avatars:
     name: Update avatars

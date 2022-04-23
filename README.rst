@@ -54,9 +54,12 @@ The following GitHub Actions are used:
 * `GitHub Action for DigitalOcean - doctl`_
 * `Kubectl tool installer`_
 
-Backup
+Cronjobs
 ----------------------------
-Backup runs daily with GitHub Actions.
+Cronjobs are run with GitHub Actions
+
+* Backup runs daily
+* ``Update avatars`` command runs monthly
 
 Fonts used
 ----------------------------
