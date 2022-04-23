@@ -85,11 +85,6 @@ pydiatra-script:
 .PHONY: jsonlint-script
 jsonlint-script:
 	scripts/jsonlint.sh lint
-
-.PHONY: shellcheck-script
-shellcheck-script:
-	scripts/shellcheck.sh
-
 #------------------------------------
 
 
@@ -98,7 +93,7 @@ shellcheck-script:
 #------------------------------------
 .PHONY: test
 ## Run tests | Tests
-test:
+test: shellcheck
 	tox
 
 .PHONY: pydiatra
@@ -174,7 +169,7 @@ shfmt:
 .PHONY: shellcheck
 ## Run shellcheck linter
 shellcheck:
-	tox -e py-shellcheck
+	shellcheck scripts/*.sh ./*.sh
 
 .PHONY: yamllint
 ## Run yamllint linter
