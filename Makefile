@@ -73,7 +73,6 @@ db_env_prod.sh:
 	cp db_env_prod_template.sh db_env_prod.sh
 #------------------------------------
 
-
 #------------------------------------
 # Scripts
 #------------------------------------
@@ -82,13 +81,16 @@ pydiatra-script:
 	scripts/pydiatra.sh
 #------------------------------------
 
-
 #------------------------------------
-# Tox
+# Tests
 #------------------------------------
 .PHONY: test
 ## Run tests | Tests
-test: shellcheck hadolint shfmt csscomb-linter eslint jsonlint
+test: shellcheck hadolint shfmt csscomb-linter eslint jsonlint tox
+
+.PHONY: tox
+## Run tox
+tox:
 	tox
 
 .PHONY: pydiatra
@@ -238,7 +240,6 @@ load-db: drop-db create-db
 	./scripts/load_db.sh
 #------------------------------------
 
-
 #------------------------------------
 # Django management commands
 #------------------------------------
@@ -300,7 +301,6 @@ manage:
 	${MANAGE_CMD} ${MANAGE_ARGS}
 #------------------------------------
 
-
 #------------------------------------
 # Docker commands
 #------------------------------------
@@ -321,7 +321,6 @@ docker-run:
 docker-sh:
 	docker run -ti --env-file ${DOCKER_ENV_FILE} ${PROJECT} sh
 #------------------------------------
-
 
 #------------------------------------
 # Production commands
