@@ -105,7 +105,7 @@ class RepoTestCase(BaseTestLoginCase):
         self.url = reverse("repo")
 
     def test_add_repo_wrong_name(self):
-        response = self.client.post(self.url, {"name": "something"})
+        response = self.client.post_ajax(self.url, {"name": "something"})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {
             "status": "fail",
@@ -115,7 +115,7 @@ class RepoTestCase(BaseTestLoginCase):
         self.assertEqual(response.json(), expected_response)
 
     def test_add_repo_own(self):
-        response = self.client.post(self.url, {"name": "neo/blah"})
+        response = self.client.post_ajax(self.url, {"name": "neo/blah"})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {
             "status": "fail",
@@ -127,14 +127,14 @@ class RepoTestCase(BaseTestLoginCase):
     @patch.object(Github, "repo_exists")
     def test_add_repo_success(self, repo_exists_mock):
         repo_exists_mock.return_value = True
-        response = self.client.post(self.url, {"name": repo})
+        response = self.client.post_ajax(self.url, {"name": repo})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), {"status": "success", "id": 3})
 
     @patch.object(Github, "repo_exists")
     def test_add_repo_repo_not_found(self, repo_exists_mock):
         repo_exists_mock.return_value = False
-        response = self.client.post(self.url, {"name": repo})
+        response = self.client.post_ajax(self.url, {"name": repo})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {
             "status": "fail",
@@ -146,7 +146,7 @@ class RepoTestCase(BaseTestLoginCase):
     @patch.object(Github, "repo_exists")
     def test_add_repo_exists(self, repo_exists_mock):
         repo_exists_mock.return_value = True
-        response = self.client.post(self.url, {"name": "jieter/django-tables2"})
+        response = self.client.post_ajax(self.url, {"name": "jieter/django-tables2"})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {
             "status": "fail",
@@ -200,7 +200,7 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
             return None
 
         get_commit_data_mock.side_effect = get_commit_data
-        response = self.client.post(self.url)
+        response = self.client.post_ajax(self.url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         commits = Commit.objects.filter(repo__user=self.user)
         self.assertListEqual(list(commits.values_list("pk", flat=True)), [3, 2, 1])

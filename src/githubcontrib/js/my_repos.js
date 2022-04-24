@@ -2,10 +2,6 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import {
-  param,
-} from './helpers';
-
 
 window.vm = new Vue({
   el: '#app',
@@ -49,9 +45,9 @@ window.vm = new Vue({
       }
 
       const vm = this;
-      const data = param({
+      const data = {
         name: vm.name,
-      });
+      };
       axios.post(urls.repo, data).then(success).catch(fail);
     },
     loadCommitData: function() {
@@ -68,9 +64,9 @@ window.vm = new Vue({
       }
 
       const vm = this;
-      axios.post(urls.loadCommitData, param({
+      axios.post(urls.loadCommitData, {
         name: vm.name,
-      })).then(success).catch(fail);
+      }).then(success).catch(fail);
     },
   },
 });

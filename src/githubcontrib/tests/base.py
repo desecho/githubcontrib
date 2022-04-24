@@ -1,9 +1,37 @@
 from django.test import TestCase
+from django.test.client import Client
 
 from githubcontrib.models import User
 
+CONTENT_TYPE = "application/json"
+
+
+class BaseClient(Client):
+    def post_ajax(
+        self,
+        path,
+        data=None,
+        content_type=CONTENT_TYPE,
+        follow=False,
+        secure=False,
+        **extra,
+    ):
+        return self.post(path, data, content_type, follow, secure, **extra)
+
+    def put_ajax(
+        self,
+        path,
+        data="",
+        content_type=CONTENT_TYPE,
+        follow=False,
+        secure=False,
+        **extra,
+    ):
+        return self.put(path, data, content_type, follow, secure, **extra)
+
 
 class BaseTestCase(TestCase):
+    client_class = BaseClient
     fixtures = [
         "users.json",
     ]

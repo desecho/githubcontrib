@@ -94,6 +94,7 @@ MIDDLEWARE = [
     "django.middleware.gzip.GZipMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "admin_reorder.middleware.ModelAdminReorder",
+    "githubcontrib.middleware.AjaxHandlerMiddleware",
     "githubcontrib.middleware.language_middleware",
 ]
 if DEBUG:  # pragma: no cover

@@ -26,16 +26,16 @@ class PreferencesTestCase(BaseTestLoginCase):
 
     def test_save_preferences(self):
         language = "ru"
-        response = self.client.post(self.save_preferences_url, {"language": language})
+        response = self.client.post_ajax(self.save_preferences_url, {"language": language})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), {"status": "success"})
         user = User.objects.get(pk=self.user.pk)
         self.assertEqual(user.language, language)
 
     def test_save_preferences_bad_request(self):
-        response = self.client.post(self.save_preferences_url)
+        response = self.client.post_ajax(self.save_preferences_url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     def test_save_preferences_invalid_language(self):
-        response = self.client.post(self.save_preferences_url, {"language": "ro"})
+        response = self.client.post_ajax(self.save_preferences_url, {"language": "ro"})
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
