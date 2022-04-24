@@ -13,6 +13,7 @@ from githubcontrib.views.githubcontrib import (
     LoadCommitDataView,
     MyContribsView,
     MyReposView,
+    RepoDeleteView,
     RepoView,
 )
 from githubcontrib.views.user import PreferencesView, SavePreferencesView, logout_view
@@ -53,7 +54,7 @@ urlpatterns += [
     path("", HomeView.as_view(), name="home"),
     path("my-repositories/", MyReposView.as_view(), name="my_repos"),
     path("my-contributions/", MyContribsView.as_view(), name="my_contribs"),
-    path("repository/<int:id>/", RepoView.as_view(), name="repo"),
+    path("repository/<int:repo_id>/", RepoDeleteView.as_view(), name="repo"),
     path("repository/", RepoView.as_view(), name="repo"),
     path("load-commit-data/", LoadCommitDataView.as_view(), name="load_commit_data"),
     # This route has to be in the end

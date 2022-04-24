@@ -51,28 +51,25 @@ class MyReposView(TemplateView):
 
 
 class RepoView(AjaxView):
-    def post(self, *args, **kwargs):  # pylint: disable=unused-argument
-        name = self.request.POST["name"]
-        if re.match(".+/.+", name) is not None:
-            user = self.request.user
-            username, __ = name.split("/")
-            if username == user.username:
-                return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
-            if Github().repo_exists(name):
-                if not user.repos.filter(name=name).exists():
-                    repo_id = Repo.objects.create(name=name, user=user).pk
-                    return self.success(id=repo_id)
-                return self.fail(_("Repository already exists"), self.MESSAGE_WARNING)
-            return self.fail(_("Repository not found"))
-        return self.fail(_("Repository name is incorrect"))
+    def post(self, request):
+        name = request.POST["name"]
+        if re.match(r".+/.+", name) is None:
+            return self.fail(_("Repository name is incorrect"))
+        user = request.user
+        username, __ = name.split("/")
+        if username == user.username:
+            return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
+        if Github().repo_exists(name):
+            if not user.repos.filter(name=name).exists():
+                repo_id = Repo.objects.create(name=name, user=user).pk
+                return self.success(id=repo_id)
+            return self.fail(_("Repository already exists"), self.MESSAGE_WARNING)
+        return self.fail(_("Repository not found"))
 
-    def delete(self, *args, **kwargs):  # pylint: disable=unused-argument
-        try:
-            repo_id = int(kwargs["id"])
-        except (KeyError, ValueError):
-            return self.render_bad_request_response()
-        user = self.request.user
-        repos = user.repos.filter(pk=repo_id)
+
+class RepoDeleteView(AjaxView):
+    def delete(self, request, repo_id):
+        repos = request.user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
         else:
@@ -81,8 +78,8 @@ class RepoView(AjaxView):
 
 
 class LoadCommitDataView(AjaxView):
-    def post(self, *args, **kwargs):  # pylint: disable=unused-argument
-        user = self.request.user
+    def post(self, request):
+        user = request.user
         repos = user.repos.all()
         gh = Github()
         for repo in repos:

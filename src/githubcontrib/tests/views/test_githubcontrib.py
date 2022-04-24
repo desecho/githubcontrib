@@ -155,6 +155,13 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(response.json(), expected_response)
 
+
+class RepoDeleteTestCase(BaseTestLoginCase):
+    fixtures = [
+        "users.json",
+        "repos.json",
+    ]
+
     def test_delete_repo(self):
         url = reverse("repo", args=(1,))
         response = self.client.delete(url)
@@ -173,11 +180,6 @@ class RepoTestCase(BaseTestLoginCase):
             "messageType": "error",
         }
         self.assertEqual(response.json(), expected_response)
-
-    def test_delete_repo_bad_request(self):
-        url = reverse("repo")
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
 
 class LoadCommitDataTestCase(BaseTestLoginCase):
