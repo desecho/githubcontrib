@@ -15,18 +15,27 @@ class LogoutTestCase(BaseTestLoginCase):
 
 
 class PreferencesTestCase(BaseTestLoginCase):
+    def setUp(self):
+        super().setUp()
+        self.save_preferences_url = reverse("save_preferences")
+
     def test_preferences(self):
-        response = self.client.get(reverse("preferences"))
+        url = reverse("preferences")
+        response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_save_preferences(self):
         language = "ru"
-        response = self.client.post(reverse("save_preferences"), {"language": language})
+        response = self.client.post(self.save_preferences_url, {"language": language})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), {"status": "success"})
         user = User.objects.get(pk=self.user.pk)
         self.assertEqual(user.language, language)
 
     def test_save_preferences_bad_request(self):
-        response = self.client.post(reverse("save_preferences"))
+        response = self.client.post(self.save_preferences_url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_save_preferences_invalid_language(self):
+        response = self.client.post(self.save_preferences_url, {"language": "ro"})
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
