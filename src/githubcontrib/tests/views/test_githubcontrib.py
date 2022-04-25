@@ -155,6 +155,10 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(response.json(), expected_response)
 
+    def test_add_repo_bad_request(self):
+        response = self.client.post_ajax(self.url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
 
 class RepoDeleteTestCase(BaseTestLoginCase):
     fixtures = [

@@ -52,7 +52,11 @@ class MyReposView(TemplateView):
 
 class RepoView(AjaxView):
     def post(self, request):
-        name = request.POST["name"]
+        try:
+            name = request.POST["name"]
+        except KeyError:
+            return self.render_bad_request_response()
+
         if re.match(r".+/.+", name) is None:
             return self.fail(_("Repository name is incorrect"))
         user = request.user
