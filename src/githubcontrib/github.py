@@ -11,17 +11,17 @@ class Github:
     # The limit is set by GitHub
     MAX_NUMBER_OF_ITEMS = 100
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.gh = github.Github(settings.GITHUB_API_KEY, per_page=self.MAX_NUMBER_OF_ITEMS)
 
-    def repo_exists(self, repo: str) -> bool:
-        username, repo = repo.split("/")
+    def repo_exists(self, repo_name: str) -> bool:
+        username, repo_name = repo_name.split("/")
         try:
             user = self.gh.get_user(username)
         except UnknownObjectException:
             return False
         try:
-            repo = user.get_repo(repo)
+            repo = user.get_repo(repo_name)
             if repo.owner.login != username:
                 return False
         except UnknownObjectException:
@@ -29,7 +29,10 @@ class Github:
         return True
 
     def _load_commits(
-        self, commits_paginated: PaginatedList[Commit], page: int, commits_total: List[Commit]
+        self,
+        commits_paginated: PaginatedList,  # type: ignore
+        page: int,
+        commits_total: List[Commit],
     ) -> List[Commit]:
         commits = commits_paginated.get_page(page)
         commits_total += commits
@@ -38,16 +41,16 @@ class Github:
         return commits_total
 
     def get_commit_data(self, username: str, repo: str) -> List[Dict[str, Any]]:
-        commits = self.gh.search_commits("", "author-date", "desc", author=username, repo=repo)
-        commits = self._load_commits(commits, 0, [])
+        commits_paginated = self.gh.search_commits("", "author-date", "desc", author=username, repo=repo)
+        commits = self._load_commits(commits_paginated, 0, [])
         commit_data = []
         for commit in commits:
-            commit = commit.commit
+            commit_git = commit.commit
             commit_data.append(
                 {
-                    "url": commit.html_url,
-                    "date": commit.committer.date,
-                    "message": commit.message,
+                    "url": commit_git.html_url,
+                    "date": commit_git.committer.date,
+                    "message": commit_git.message,
                 }
             )
         return commit_data

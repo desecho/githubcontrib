@@ -1,9 +1,11 @@
 """URL Configuration."""
+from typing import List, Union
+
 from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
-from django.urls import path
+from django.urls import URLPattern, URLResolver, path
 from django.views.i18n import JavaScriptCatalog
 
 from githubcontrib.views.githubcontrib import (
@@ -20,7 +22,10 @@ from githubcontrib.views.user import PreferencesView, SavePreferencesView, logou
 
 admin.autodiscover()
 
-urlpatterns = []
+URL = Union[URLPattern, URLResolver]
+URLList = List[URL]
+
+urlpatterns: URLList = []
 
 if settings.DEBUG:  # pragma: no cover
     import debug_toolbar

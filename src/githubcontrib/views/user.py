@@ -1,12 +1,20 @@
 from django.conf import settings
 from django.contrib.auth import logout
-from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+)
 from django.shortcuts import redirect
+
+from githubcontrib.models import User
 
 from .mixins import AjaxView, TemplateView
 
 
-def logout_view(request: HttpRequest):
+def logout_view(request: HttpRequest) -> (HttpResponseRedirect | HttpResponsePermanentRedirect):
     logout(request)
     return redirect("/")
 
@@ -17,7 +25,7 @@ class PreferencesView(TemplateView):
 
 class SavePreferencesView(AjaxView):
     def post(self, request: HttpRequest) -> (HttpResponse | HttpResponseBadRequest):
-        def is_valid_language(language):
+        def is_valid_language(language: str) -> bool:
             for lang in settings.LANGUAGES:
                 if lang[0] == language:
                     return True
@@ -26,12 +34,14 @@ class SavePreferencesView(AjaxView):
         try:
             language = request.POST["language"]
         except KeyError:
-            return self.render_bad_request_response()
+            response_bad: HttpResponseBadRequest = self.render_bad_request_response()
+            return response_bad
 
         if not is_valid_language(language):
-            return self.render_bad_request_response()
+            response: HttpResponse = self.render_bad_request_response()
+            return response
 
-        user = request.user
+        user: User = request.user  # type: ignore
         user.language = language
         user.save()
         return self.success()
