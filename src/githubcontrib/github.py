@@ -1,6 +1,10 @@
+from typing import Any, Dict, List
+
 import github
 from django.conf import settings
+from github.Commit import Commit
 from github.GithubException import UnknownObjectException
+from github.PaginatedList import PaginatedList
 
 
 class Github:
@@ -24,14 +28,16 @@ class Github:
             return False
         return True
 
-    def _load_commits(self, commits_paginated, page, commits_total):
+    def _load_commits(
+        self, commits_paginated: PaginatedList[Commit], page: int, commits_total: List[Commit]
+    ) -> List[Commit]:
         commits = commits_paginated.get_page(page)
         commits_total += commits
         if len(commits) == self.MAX_NUMBER_OF_ITEMS:
             return self._load_commits(commits_paginated, page + 1, commits_total)
         return commits_total
 
-    def get_commit_data(self, username: str, repo: str):
+    def get_commit_data(self, username: str, repo: str) -> List[Dict[str, Any]]:
         commits = self.gh.search_commits("", "author-date", "desc", author=username, repo=repo)
         commits = self._load_commits(commits, 0, [])
         commit_data = []

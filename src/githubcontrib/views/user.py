@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.contrib.auth import logout
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 
 from .mixins import AjaxView, TemplateView
 
 
-def logout_view(request):
+def logout_view(request: HttpRequest):
     logout(request)
     return redirect("/")
 
@@ -15,7 +16,7 @@ class PreferencesView(TemplateView):
 
 
 class SavePreferencesView(AjaxView):
-    def post(self, request):
+    def post(self, request: HttpRequest) -> (HttpResponse | HttpResponseBadRequest):
         def is_valid_language(language):
             for lang in settings.LANGUAGES:
                 if lang[0] == language:

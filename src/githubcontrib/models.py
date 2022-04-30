@@ -9,7 +9,7 @@ class User(AbstractUser):
     loaded_initial_data = models.BooleanField(default=False)
 
     @property
-    def github_profile_url(self):
+    def github_profile_url(self) -> str:
         return f"https://github.com/{self.username}"
 
 
@@ -30,7 +30,7 @@ class Commit(models.Model):
     date = models.DateTimeField()
     message = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.repo} - {self.message}"
 
     class Meta:

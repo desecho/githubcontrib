@@ -1,6 +1,8 @@
 import json
 import re
+from typing import Any, Dict
 
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -18,7 +20,7 @@ class AboutView(TemplateAnonymousView):
 class HomeView(TemplateAnonymousView):
     template_name = "home.html"
 
-    def get_context_data(self):
+    def get_context_data(self) -> Dict[str, Any]:
         users = User.objects.exclude(username="admin")
         user = self.request.user
         if user.is_authenticated:
@@ -29,7 +31,7 @@ class HomeView(TemplateAnonymousView):
 class ContribsView(TemplateAnonymousView):
     template_name = "contribs.html"
 
-    def get_context_data(self, username):  # pylint: disable=no-self-use
+    def get_context_data(self, username: str) -> Dict[str, Any]:  # pylint: disable=no-self-use
         user = get_object_or_404(User, username=username)
         return {"repos": user.repos.all().prefetch_related("commits"), "selected_user": user}
 
@@ -37,21 +39,21 @@ class ContribsView(TemplateAnonymousView):
 class MyContribsView(TemplateView):
     template_name = ""
 
-    def get(self, *args, **kwargs):  # pylint: disable=unused-argument
+    def get(self, *args, **kwargs) -> HttpResponseRedirect:  # pylint: disable=unused-argument
         return redirect(reverse("contribs", args=(self.request.user.username,)))
 
 
 class MyReposView(TemplateView):
     template_name = "my_repos.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
         repos = [{"id": repo.id, "name": repo.name} for repo in self.request.user.repos.all()]
         kwargs["repos"] = json.dumps(repos)
         return kwargs
 
 
 class RepoView(AjaxView):
-    def post(self, request):
+    def post(self, request: HttpRequest) -> (HttpResponse | HttpResponseBadRequest):
         try:
             name = request.POST["name"]
         except KeyError:
@@ -72,7 +74,7 @@ class RepoView(AjaxView):
 
 
 class RepoDeleteView(AjaxView):
-    def delete(self, request, repo_id):
+    def delete(self, request: HttpRequest, repo_id: int) -> HttpResponse:
         repos = request.user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
@@ -82,7 +84,7 @@ class RepoDeleteView(AjaxView):
 
 
 class LoadCommitDataView(AjaxView):
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         user = request.user
         repos = user.repos.all()
         gh = Github()

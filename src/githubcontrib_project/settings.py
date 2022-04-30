@@ -2,6 +2,7 @@
 
 from os import getenv
 from os.path import abspath, dirname, join
+from typing import Any, Dict, List
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -100,7 +101,7 @@ MIDDLEWARE = [
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
-TEMPLATES = [
+TEMPLATES: List[Dict[str, Any]] = [
     {
         "NAME": "Main",
         "BACKEND": "django.template.backends.django.DjangoTemplates",

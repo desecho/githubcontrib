@@ -1,4 +1,5 @@
 from braces.views import JsonRequestResponseMixin, LoginRequiredMixin
+from django.http import HttpResponse
 from django.views.generic import TemplateView as TemplateViewOriginal, View
 
 
@@ -8,12 +9,12 @@ class AjaxAnonymousView(JsonRequestResponseMixin, View):
     MESSAGE_WARNING = "warning"
     MESSAGE_SUCCESS = "success"
 
-    def success(self, **kwargs):
+    def success(self, **kwargs) -> HttpResponse:
         response = {"status": "success"}
         response.update(kwargs)
         return self.render_json_response(response)
 
-    def fail(self, message=None, message_type=MESSAGE_ERROR):
+    def fail(self, message: str = None, message_type: str = MESSAGE_ERROR) -> HttpResponse:
         response = {"status": "fail", "message": message, "messageType": message_type}
         return self.render_json_response(response)
 
