@@ -1,6 +1,7 @@
 """URL Configuration."""
 from typing import List, Union
 
+import debug_toolbar
 from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
@@ -28,8 +29,6 @@ URLList = List[URL]
 urlpatterns: URLList = []
 
 if settings.DEBUG:  # pragma: no cover
-    import debug_toolbar
-
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
     ]
