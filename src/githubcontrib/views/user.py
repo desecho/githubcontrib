@@ -9,7 +9,7 @@ from django.http import (
 )
 from django.shortcuts import redirect
 
-from githubcontrib.models import User
+from githubcontrib.http import AuthenticatedHttpRequest
 
 from .mixins import AjaxView, TemplateView
 
@@ -24,7 +24,7 @@ class PreferencesView(TemplateView):
 
 
 class SavePreferencesView(AjaxView):
-    def post(self, request: HttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+    def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
         def is_valid_language(language: str) -> bool:
             for lang in settings.LANGUAGES:
                 if lang[0] == language:
@@ -41,7 +41,7 @@ class SavePreferencesView(AjaxView):
             response: HttpResponse = self.render_bad_request_response()
             return response
 
-        user: User = request.user  # type: ignore
+        user = request.user
         user.language = language
         user.save()
         return self.success()

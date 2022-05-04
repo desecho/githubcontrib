@@ -2,13 +2,13 @@ import json
 import re
 from typing import Any, Dict, Union
 
-from django.http import HttpRequest  # pylint: disable=duplicate-code
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from githubcontrib.github import Github
+from githubcontrib.http import AuthenticatedHttpRequest
 from githubcontrib.models import Commit, Repo, User
 
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
@@ -41,25 +41,24 @@ class ContribsView(TemplateAnonymousView):
 class MyContribsView(TemplateView):
     template_name = ""
 
-    def get(
-        self, *args: Any, **kwargs: Any
-    ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:  # pylint: disable=unused-argument
-        user: User = self.request.user  # type: ignore
-        return redirect(reverse("contribs", args=(user.username,)))
+    def get(  # type: ignore
+        self, request: AuthenticatedHttpRequest, *args: Any, **kwargs: Any  # pylint: disable=unused-argument
+    ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:
+        return redirect(reverse("contribs", args=(request.user.username,)))
 
 
 class MyReposView(TemplateView):
     template_name = "my_repos.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        repos = self.request.user.repos.all()  # type: ignore
-        repos = [{"id": repo.id, "name": repo.name} for repo in repos]
+        request: AuthenticatedHttpRequest = self.request  # type: ignore
+        repos = [{"id": repo.id, "name": repo.name} for repo in request.user.repos.all()]
         kwargs["repos"] = json.dumps(repos)
         return kwargs
 
 
 class RepoView(AjaxView):
-    def post(self, request: HttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+    def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
         try:
             name = request.POST["name"]
         except KeyError:
@@ -68,7 +67,7 @@ class RepoView(AjaxView):
 
         if re.match(r".+/.+", name) is None:
             return self.fail(_("Repository name is incorrect"))
-        user: User = request.user  # type: ignore
+        user = request.user
         username, __ = name.split("/")
         if username == user.username:
             return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
@@ -81,8 +80,8 @@ class RepoView(AjaxView):
 
 
 class RepoDeleteView(AjaxView):
-    def delete(self, request: HttpRequest, repo_id: int) -> HttpResponse:
-        repos = request.user.repos.filter(pk=repo_id)  # type: ignore
+    def delete(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
+        repos = request.user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
         else:
@@ -91,8 +90,8 @@ class RepoDeleteView(AjaxView):
 
 
 class LoadCommitDataView(AjaxView):
-    def post(self, request: HttpRequest) -> HttpResponse:
-        user: User = request.user  # type: ignore
+    def post(self, request: AuthenticatedHttpRequest) -> HttpResponse:
+        user = request.user
         repos = user.repos.all()
         gh = Github()
         for repo in repos:

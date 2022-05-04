@@ -5,8 +5,6 @@ from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from django.utils.translation import activate
 
-from githubcontrib.models import User
-
 
 class AjaxHandlerMiddleware:
     def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]):
@@ -23,7 +21,7 @@ class AjaxHandlerMiddleware:
 def language_middleware(get_response: Callable[[HttpRequest], HttpResponse]) -> Callable[[HttpRequest], HttpResponse]:
     def middleware(request: HttpRequest) -> HttpResponse:
         response = get_response(request)
-        user: User = request.user  # type: ignore
+        user = request.user
         if user.is_authenticated:
             language = user.language
             activate(language)
