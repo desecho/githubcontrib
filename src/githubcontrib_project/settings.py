@@ -4,8 +4,11 @@ from os import getenv
 from os.path import abspath, dirname, join
 from typing import Any, Dict, List
 
+import django_stubs_ext
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+
+django_stubs_ext.monkeypatch()
 
 SENTRY_TRACE_SAMPLING = 0.5
 
