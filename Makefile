@@ -4,6 +4,7 @@ include help.mk
 
 export PROJECT := githubcontrib
 export APP := ${PROJECT}
+PROD_DB_HOST := mysql.samarchyan.me
 
 SHELL := /bin/bash
 SOURCE_CMDS := source venv/bin/activate && source env.sh
@@ -81,6 +82,11 @@ db_env_prod.sh:
 .PHONY: pydiatra-script
 pydiatra-script:
 	scripts/pydiatra.sh
+
+.PHONY: backup-db
+backup-db:
+	export DB_HOST="${PROD_DB_HOST}" && \
+	scripts/backup_db.sh
 #------------------------------------
 
 #------------------------------------
