@@ -2,9 +2,8 @@ from typing import Any
 
 from social_core.backends.base import BaseAuth
 
-from githubcontrib.models import User
-
 from .github import Github
+from .models import User
 
 
 def load_user_data(backend: BaseAuth, user: User, **kwargs: Any) -> None:  # pylint: disable=unused-argument

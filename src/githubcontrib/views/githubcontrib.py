@@ -7,10 +7,9 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from githubcontrib.github import Github
-from githubcontrib.http import AuthenticatedHttpRequest
-from githubcontrib.models import Commit, Repo, User
-
+from ..github import Github
+from ..http import AuthenticatedHttpRequest
+from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 

@@ -9,8 +9,7 @@ from django.http import (
 )
 from django.shortcuts import redirect
 
-from githubcontrib.http import AuthenticatedHttpRequest
-
+from ..http import AuthenticatedHttpRequest
 from .mixins import AjaxView, TemplateView
 
 
