@@ -55,9 +55,9 @@ The following GitHub Actions are used:
 * `Kubectl tool installer`_
 * `DigitalOcean Spaces Upload Action`_
 
-Cronjobs
+Cron jobs
 ----------------------------
-Cronjobs are run with GitHub Actions
+Cron jobs are run with GitHub Actions.
 
 * Backup runs daily
 * ``Update avatars`` command runs monthly
