@@ -24,10 +24,7 @@ class Github:
 
     def repo_exists(self, repo_name: str) -> bool:
         username, repo_name = repo_name.split("/")
-        try:
-            user = self.gh.get_user(username)
-        except UnknownObjectException:
-            return False
+        user = self.gh.get_user(username)
         try:
             repo = user.get_repo(repo_name)
             if repo.owner.login != username:
