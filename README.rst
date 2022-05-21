@@ -54,6 +54,8 @@ The following GitHub Actions are used:
 * `GitHub Action for DigitalOcean - doctl`_
 * `Kubectl tool installer`_
 * `DigitalOcean Spaces Upload Action`_
+* Cache_
+* `Docker Setup Buildx`_
 
 Cron jobs
 ----------------------------
@@ -83,6 +85,7 @@ Fonts used
 .. _mysql-docker: https://github.com/desecho/mysql-docker
 .. _Orbitron: https://fonts.google.com/specimen/Orbitron
 .. _GitHub Actions: https://github.com/features/actions
+
 .. _Cancel Workflow Action: https://github.com/marketplace/actions/cancel-workflow-action
 .. _Checkout: https://github.com/marketplace/actions/checkout
 .. _Setup Python: https://github.com/marketplace/actions/setup-python
@@ -91,5 +94,7 @@ Fonts used
 .. _Docker Login: https://github.com/marketplace/actions/docker-login
 .. _Build and push Docker images: https://github.com/marketplace/actions/build-and-push-docker-images
 .. _GitHub Action for DigitalOcean - doctl: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
+.. _Cache: https://github.com/marketplace/actions/cache
+.. _Docker Setup Buildx: https://github.com/marketplace/actions/docker-setup-buildx
 .. _Kubectl tool installer: https://github.com/marketplace/actions/kubectl-tool-installer
 .. _DigitalOcean Spaces Upload Action: https://github.com/marketplace/actions/digitalocean-spaces-upload-action
