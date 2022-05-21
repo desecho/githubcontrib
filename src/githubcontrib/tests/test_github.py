@@ -46,3 +46,13 @@ def test_get_commit_data(search_commits_mock, gh, paginated_list_mock):
 
     result = gh.get_commit_data(username, repo)
     assert result == commits_python_social_auth
+
+
+@patch.object(Github, "get_user")
+def test_get_stars_count(get_user_mock, user_mock, gh, repos_paginated_list_mock):
+    get_user_mock.return_value = user_mock
+    user_mock.get_repos.return_value = repos_paginated_list_mock
+
+    result = gh.get_stars_count(username)
+
+    assert result == 5

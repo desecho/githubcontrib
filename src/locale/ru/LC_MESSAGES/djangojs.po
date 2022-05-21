@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-15 11:31-0400\n"
+"POT-Creation-Date: 2022-05-21 12:58-0400\n"
 "PO-Revision-Date: 2018-02-10 20:50-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,28 +16,28 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: src/githubcontrib/js/my_repos.js:27
+#: src/githubcontrib/js/my_repos.js:23
 msgid "Error deleting repository"
 msgstr "Ошибка удаления репозитория"
 
-#: src/githubcontrib/js/my_repos.js:48
+#: src/githubcontrib/js/my_repos.js:44
 msgid "Error adding repository"
 msgstr "Ошибка добавления репозитория"
 
-#: src/githubcontrib/js/my_repos.js:60
+#: src/githubcontrib/js/my_repos.js:56
 msgid "Commit data has been updated"
 msgstr "Данные по коммитам были обновлены"
 
-#: src/githubcontrib/js/my_repos.js:67
+#: src/githubcontrib/js/my_repos.js:63
 msgid "Error loading commit data"
 msgstr "Ошибка загрузки данный по коммитам"
 
-#: src/githubcontrib/js/preferences.js:23
+#: src/githubcontrib/js/preferences.js:19
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
 

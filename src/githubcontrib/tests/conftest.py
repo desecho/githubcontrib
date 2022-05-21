@@ -61,3 +61,12 @@ def paginated_list_mock():
     paginated_list = Mock()
     paginated_list.get_page.side_effect = get_page
     return paginated_list
+
+
+@pytest.fixture
+def repos_paginated_list_mock():
+    repo_mock1 = Mock()
+    repo_mock1.stargazers_count = 2
+    repo_mock2 = Mock()
+    repo_mock2.stargazers_count = 3
+    return [repo_mock1, repo_mock2]

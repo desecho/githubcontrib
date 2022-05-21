@@ -3,7 +3,11 @@ GitHubContrib
 
 |Deployment Status| |Requirements Status| |Codecov|
 
-The web application on Django_ 4, Vue.js_ 2, Bootstrap_ 4. It allows you to have a profile page with your opensource contributions.
+The web application on Django_ 4, Vue.js_ 2, Bootstrap_ 4.
+
+It allows you to have a profile page with your opensource contributions.
+
+It also shows the number of stars you have for your repositories.
 
 The website is live at https://githubcontrib.samarchyan.me.
 
@@ -63,6 +67,7 @@ Cron jobs are run with GitHub Actions.
 
 * Backup runs daily
 * ``Update avatars`` command runs monthly
+* ``Update stars`` command runs monthly
 
 Fonts used
 ----------------------------

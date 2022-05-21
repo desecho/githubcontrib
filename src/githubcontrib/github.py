@@ -14,6 +14,14 @@ class Github:
     def __init__(self) -> None:
         self.gh = github.Github(settings.GITHUB_API_KEY, per_page=self.MAX_NUMBER_OF_ITEMS)
 
+    def get_stars_count(self, username: str) -> int:
+        stars = 0
+        user = self.gh.get_user(username)
+        repos = user.get_repos()
+        for repo in repos:
+            stars += repo.stargazers_count
+        return stars
+
     def repo_exists(self, repo_name: str) -> bool:
         username, repo_name = repo_name.split("/")
         try:

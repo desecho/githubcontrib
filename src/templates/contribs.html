@@ -7,6 +7,7 @@
   <h3>
     {{ selected_user.username }}
     <a href="{{ selected_user.github_profile_url }}" target="_blank"><i class="fa fa-github"></i></a>
+    <i class="fa fa-star" aria-hidden="true"></i> {{ selected_user.stars }}
   </h3>
   <br>
   {% for repo in repos %}

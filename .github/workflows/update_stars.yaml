@@ -1,0 +1,26 @@
+---
+name: Update stars
+on:
+  schedule:
+    - cron: "0 0 1 * *"  # Run every month at midnight
+  workflow_dispatch:
+jobs:
+  update_stars:
+    name: Update stars
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v2.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir ~/.kube
+          echo $KUBECONFIG > ~/.kube/config
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}  # Done as a variable because doesn't work in place.
+
+      - name: Update stars
+        run: make prod-manage update_stars
