@@ -30,16 +30,7 @@ def gh():
 
 
 @pytest.fixture
-def paginated_list_mock():
-    def get_page(page):
-        if page == 0:
-            return [commit_mock1]
-        if page == 1:
-            return [commit_mock2]
-        if page == 2:
-            return []
-        return None
-
+def commits_paginated_list_mock():
     committer_mock1 = Mock()
     committer_mock1.date = commits_python_social_auth[0]["date"]
     git_commit_mock1 = Mock()
@@ -58,9 +49,7 @@ def paginated_list_mock():
     commit_mock2 = Mock()
     commit_mock2.commit = git_commit_mock2
 
-    paginated_list = Mock()
-    paginated_list.get_page.side_effect = get_page
-    return paginated_list
+    return [commit_mock1, commit_mock2]
 
 
 @pytest.fixture

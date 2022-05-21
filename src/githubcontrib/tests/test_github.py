@@ -40,8 +40,8 @@ def test_repo_exists_success(get_user_mock, user_mock, repo_mock, gh):
 
 
 @patch.object(Github, "search_commits")
-def test_get_commit_data(search_commits_mock, gh, paginated_list_mock):
-    search_commits_mock.return_value = paginated_list_mock
+def test_get_commit_data(search_commits_mock, gh, commits_paginated_list_mock):
+    search_commits_mock.return_value = commits_paginated_list_mock
 
     result = gh.get_commit_data(username, repo)
 
