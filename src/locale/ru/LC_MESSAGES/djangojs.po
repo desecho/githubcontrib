@@ -40,6 +40,3 @@ msgstr "Ошибка загрузки данный по коммитам"
 #: src/githubcontrib/js/preferences.js:19
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
-
-#~ msgid "Close all notifications"
-#~ msgstr "Закрыть все оповещения"
