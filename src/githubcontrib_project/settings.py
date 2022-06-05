@@ -79,7 +79,6 @@ INSTALLED_APPS = [
 if DEBUG:  # pragma: no cover
     INSTALLED_APPS += [
         "debug_toolbar",
-        "template_timings_panel",
     ]
 
 if IS_DEV or COLLECT_STATIC:  # pragma: no cover
@@ -226,8 +225,6 @@ DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.sql.SQLPanel",
     "debug_toolbar.panels.signals.SignalsPanel",
     "debug_toolbar.panels.profiling.ProfilingPanel",
-    # django-debug-toolbar-template-timings
-    "template_timings_panel.panels.TemplateTimings.TemplateTimings",
 ]
 
 # social-auth-app-django
