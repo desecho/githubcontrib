@@ -264,7 +264,7 @@ drop-db:
 	scripts/drop_db.sh
 
 .PHONY: load-db
-## Load db from yesterday's backup
+## Load db from today's backup
 load-db: drop-db create-db
 	source env.sh && \
 	./scripts/load_db.sh
@@ -368,7 +368,7 @@ prod-drop-db:
 	scripts/drop_db.sh
 
 .PHONY: prod-load-db
-## Load db to prod from yesterday's backup
+## Load db to prod from today's backup
 prod-load-db: prod-drop-db prod-create-db
 	source db_env_prod.sh && \
 	./scripts/load_db.sh
