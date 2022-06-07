@@ -60,6 +60,7 @@ The following GitHub Actions are used:
 * `DigitalOcean Spaces Upload Action`_
 * Cache_
 * `Docker Setup Buildx`_
+* `Set Timezone`_
 
 Cron jobs
 ----------------------------
@@ -103,3 +104,4 @@ Fonts used
 .. _Docker Setup Buildx: https://github.com/marketplace/actions/docker-setup-buildx
 .. _Kubectl tool installer: https://github.com/marketplace/actions/kubectl-tool-installer
 .. _DigitalOcean Spaces Upload Action: https://github.com/marketplace/actions/digitalocean-spaces-upload-action
+.. _Set Timezone: https://github.com/marketplace/actions/set-timezone
