@@ -6,7 +6,7 @@ metadata:
 data:
   PROJECT_DOMAIN: githubcontrib.samarchyan.me
   ADMIN_EMAIL: desecho@gmail.com
-  DB_HOST: mysql.samarchyan.me
+  DB_HOST: mysql
   DB_USER: root
   STATIC_URL: https://githubcontrib.cdn.samarchyan.me/
   GOOGLE_ANALYTICS_ID: G-4LNTLBZCVM
