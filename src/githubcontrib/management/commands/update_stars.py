@@ -16,6 +16,7 @@ class Command(BaseCommand):
         users = User.objects.all()
         t = self.tqdm(total=users.count())
         for user in users:
-            user.fetch_stars()
+            user.stars = user.fetch_stars()
+            user.save()
             t.set_description(str(user))
             t.update()

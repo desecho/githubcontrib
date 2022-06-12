@@ -16,7 +16,7 @@ def load_user_data(backend: BaseAuth, user: User, **kwargs: Any) -> None:  # pyl
     gh_user = gh.get_user(user.username)
     user.avatar = gh_user.avatar_url
     user.loaded_initial_data = True
-    user.fetch_stars(False)
+    user.stars = user.fetch_stars()
     user.save()
 
     return None

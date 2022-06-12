@@ -29,13 +29,10 @@ class User(AbstractUser):
         """Return GitHub profile URL."""
         return f"https://github.com/{self.username}"
 
-    def fetch_stars(self, save: bool = True) -> None:
+    def fetch_stars(self) -> int:
         """Fetch stars."""
         gh = Github()
-        stars = gh.get_stars_count(self.username)
-        self.stars = stars
-        if save:
-            self.save()
+        return gh.get_stars_count(self.username)
 
 
 class Repo(Model):
