@@ -2,7 +2,7 @@
 name: Update stars
 on:
   schedule:
-    - cron: "0 0 1 * *"  # Run every month at midnight
+    - cron: "0 7 * * *"  # Runs at 07:00 UTC (03:00 EDT) monthly
   workflow_dispatch:
 jobs:
   update_stars:
