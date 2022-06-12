@@ -26,7 +26,7 @@ Development
 
 | Open http://localhost:8000/ to access the web application.
 | Open http://localhost:8000/admin to access the admin section.
-| Open http://localhost:8000/rosetta to access rosetta.
+| Open http://localhost:8000/rosetta to access Rosetta.
 
 Run in Docker:
 
