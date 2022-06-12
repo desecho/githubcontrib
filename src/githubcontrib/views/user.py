@@ -29,22 +29,22 @@ class PreferencesView(TemplateView):
 class SavePreferencesView(AjaxView):
     """Save preferences view."""
 
+    @staticmethod
+    def _is_valid_language(language: str) -> bool:
+        for lang in settings.LANGUAGES:
+            if lang[0] == language:
+                return True
+        return False
+
     def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
         """Return response for the save preferences view."""
-
-        def is_valid_language(language: str) -> bool:
-            for lang in settings.LANGUAGES:
-                if lang[0] == language:
-                    return True
-            return False
-
         try:
             language = request.POST["language"]
         except KeyError:
             response_bad: HttpResponseBadRequest = self.render_bad_request_response()
             return response_bad
 
-        if not is_valid_language(language):
+        if not self._is_valid_language(language):
             response: HttpResponse = self.render_bad_request_response()
             return response
 
