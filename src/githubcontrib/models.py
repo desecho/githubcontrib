@@ -10,6 +10,7 @@ from django.db.models import (
     Model,
     PositiveIntegerField,
     TextField,
+    UniqueConstraint,
     URLField,
 )
 
@@ -49,13 +50,17 @@ class Repo(Model):
         """Meta."""
 
         ordering = ["name"]
+        constraints = [
+            # A user should not have duplicated repos
+            UniqueConstraint(fields=("user", "name"), name="unique_user_name_repo"),
+        ]
 
 
 class Commit(Model):
     """Commit."""
 
     repo = ForeignKey(Repo, CASCADE, related_name="commits")
-    url = URLField()
+    url = URLField(unique=True)
     date = DateTimeField()
     message = TextField()
 
