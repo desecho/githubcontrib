@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export SOCIAL_AUTH_GITHUB_KEY=
+export SOCIAL_AUTH_GITHUB_SECRET=
+
+export GITHUB_API_KEY=

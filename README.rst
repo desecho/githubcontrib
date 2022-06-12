@@ -19,7 +19,7 @@ Development
 2. Use mysql-docker_ to bring up MySQL in Docker
 3. Run ``make bootstrap``
 4. Run ``make createsuperuser`` to create a superadmin user
-5. Edit file ``env.sh``
+5. Edit files ``env_custom.sh`` and ``env_secrets.sh``
 
 | Run ``make build`` and ``make run`` to run the server for development.
 | Run ``make help`` to get a list of all available commands.
@@ -32,7 +32,8 @@ Run in Docker:
 
 1. Run ``make collectstatic``
 2. Run ``make docker-build``
-3. Run ``make docker-run``
+3. Edit file ``docker_secrets.env``
+4. Run ``make docker-run``
 
 Production
 ----------------------------

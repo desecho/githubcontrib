@@ -5,10 +5,16 @@ include help.mk
 export PROJECT := githubcontrib
 export APP := ${PROJECT}
 export BUCKET := scrap-db-backups
+export DOCKER_SECRETS_ENV_FILE := docker_secrets.env
 PROD_DB_HOST := mysql.samarchyan.me
 
+ENV_FILE := env.sh
+ENV_CUSTOM_FILE := env_custom.sh
+ENV_SECRETS_FILE := env_secrets.sh
+DB_ENV_PROD_FILE := db_env_prod.sh
+
 SHELL := /bin/bash
-SOURCE_CMDS := source venv/bin/activate && source env.sh
+SOURCE_CMDS := source venv/bin/activate && source $(ENV_FILE) && source $(ENV_CUSTOM_FILE) && source $(ENV_SECRETS_FILE)
 PYTHON := python3.10
 
 #------------------------------------
@@ -60,7 +66,7 @@ yarn-install-locked:
 .PHONY: create-db
 ## Create db
 create-db:
-	source env.sh && \
+	source $(ENV_FILE) && \
 	scripts/create_db.sh
 
 .PHONY: bootstrap
@@ -69,13 +75,19 @@ bootstrap: install-deps yarn-install-locked create-env-files create-venv create-
 
 .PHONY: create-env-files
 ## Create env files
-create-env-files: env.sh db_env_prod.sh
+create-env-files: $(ENV_CUSTOM_FILE) $(ENV_SECRETS_FILE) $(DB_ENV_PROD_FILE) $(DOCKER_SECRETS_ENV_FILE)
 
-env.sh:
-	cp env_template.sh env.sh
+$(DOCKER_SECRETS_ENV_FILE):
+	cp "${DOCKER_SECRETS_ENV_FILE}.tpl" $(DOCKER_SECRETS_ENV_FILE)
 
-db_env_prod.sh:
-	cp db_env_prod_template.sh db_env_prod.sh
+$(ENV_CUSTOM_FILE):
+	cp $(ENV_CUSTOM_FILE).tpl $(ENV_CUSTOM_FILE)
+
+$(ENV_SECRETS_FILE):
+	cp $(ENV_SECRETS_FILE).tpl $(ENV_SECRETS_FILE)
+
+$(DB_ENV_PROD_FILE):
+	cp $(DB_ENV_PROD_FILE).tpl $(DB_ENV_PROD_FILE)
 #------------------------------------
 
 #------------------------------------
@@ -238,13 +250,13 @@ build:
 .PHONY: drop-db
 ## Drop db
 drop-db:
-	source env.sh && \
+	source $(ENV_FILE) && \
 	scripts/drop_db.sh
 
 .PHONY: load-db
 ## Load db from today's backup
 load-db: drop-db create-db
-	source env.sh && \
+	source $(ENV_FILE) && \
 	./scripts/load_db.sh
 #------------------------------------
 
@@ -354,7 +366,7 @@ manage:
 #------------------------------------
 # Docker commands
 #------------------------------------
-DOCKER_ENV_FILE := env_docker
+export DOCKER_ENV_FILE := docker.env
 
 .PHONY: docker-build
 ## Build image | Docker
@@ -369,7 +381,7 @@ docker-run:
 .PHONY: docker-sh
 ## Run docker shell
 docker-sh:
-	docker run -ti --env-file ${DOCKER_ENV_FILE} ${PROJECT} sh
+	docker run -ti --env-file ${DOCKER_ENV_FILE} --env-file $(DOCKER_SECRETS_ENV_FILE) ${PROJECT} sh
 #------------------------------------
 
 #------------------------------------
@@ -378,19 +390,19 @@ docker-sh:
 .PHONY: prod-create-db
 ## Create prod db | Production
 prod-create-db:
-	source db_env_prod.sh && \
+	source $(DB_ENV_PROD_FILE) && \
 	scripts/create_db.sh
 
 .PHONY: prod-drop-db
 ## Drop prod db
 prod-drop-db:
-	source db_env_prod.sh && \
+	source $(DB_ENV_PROD_FILE) && \
 	scripts/drop_db.sh
 
 .PHONY: prod-load-db
 ## Load db to prod from today's backup
 prod-load-db: prod-drop-db prod-create-db
-	source db_env_prod.sh && \
+	source $(DB_ENV_PROD_FILE) && \
 	./scripts/load_db.sh
 
 ifeq (prod-manage,$(firstword $(MAKECMDGOALS)))
