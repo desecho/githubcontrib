@@ -16,7 +16,7 @@ class Command(BaseCommand):
         """Execute command."""
         gh = Github().gh
         users = User.objects.all()
-        t = self.tqdm(total=users.count())
+        t = self.tqdm(total=users.count(), unit="user")
         for user in users:
             gh_user = gh.get_user(user.username)
             user.avatar = gh_user.avatar_url
