@@ -30,10 +30,9 @@ Development
 
 Run in Docker:
 
-1. Run ``make collectstatic``
-2. Run ``make docker-build``
-3. Edit file ``docker_secrets.env``
-4. Run ``make docker-run``
+1. Run ``make docker-build``
+2. Edit file ``docker_secrets.env``
+3. Run ``make docker-run``
 
 Production
 ----------------------------

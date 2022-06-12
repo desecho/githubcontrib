@@ -375,7 +375,7 @@ docker-build:
 
 .PHONY: docker-run
 ## Run server in docker
-docker-run:
+docker-run: collectstatic
 	docker-compose up
 
 .PHONY: docker-sh
