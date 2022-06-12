@@ -9,32 +9,32 @@ from .fixtures import commits_python_social_auth, repo, username
 
 
 @patch.object(Github, "get_user")
-def test_repo_exists_wrong_repo(get_user_mock, user_mock, gh):
+def test_is_repo_exists_wrong_repo(get_user_mock, user_mock, gh):
     get_user_mock.return_value = user_mock
     user_mock.get_repo.side_effect = UnknownObjectException(None, None, None)
 
-    result = gh.repo_exists(repo)
+    result = gh.is_repo_exists(repo)
 
     assert result is False
 
 
 @patch.object(Github, "get_user")
-def test_repo_exists_user_mismatch(get_user_mock, user_mock, repo_mock, gh):
+def test_is_repo_exists_user_mismatch(get_user_mock, user_mock, repo_mock, gh):
     get_user_mock.return_value = user_mock
     user_mock.get_repo.return_value = repo_mock
 
-    result = gh.repo_exists(repo)
+    result = gh.is_repo_exists(repo)
 
     assert result is False
 
 
 @patch.object(Github, "get_user")
-def test_repo_exists_success(get_user_mock, user_mock, repo_mock, gh):
+def test_is_repo_exists_success(get_user_mock, user_mock, repo_mock, gh):
     get_user_mock.return_value = user_mock
     repo_mock.owner.login = username
     user_mock.get_repo.return_value = repo_mock
 
-    result = gh.repo_exists(repo)
+    result = gh.is_repo_exists(repo)
 
     assert result is True
 

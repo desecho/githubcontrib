@@ -88,7 +88,7 @@ class RepoView(AjaxView):
         username, __ = name.split("/")
         if username == user.username:
             return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
-        if Github().repo_exists(name):
+        if Github().is_repo_exists(name):
             if not user.repos.filter(name=name).exists():
                 repo_id = Repo.objects.create(name=name, user=user).pk
                 return self.success(id=repo_id)

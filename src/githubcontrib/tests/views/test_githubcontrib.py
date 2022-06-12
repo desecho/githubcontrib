@@ -124,16 +124,16 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(response.json(), expected_response)
 
-    @patch.object(Github, "repo_exists")
-    def test_add_repo_success(self, repo_exists_mock):
-        repo_exists_mock.return_value = True
+    @patch.object(Github, "is_repo_exists")
+    def test_add_repo_success(self, is_repo_exists_mock):
+        is_repo_exists_mock.return_value = True
         response = self.client.post_ajax(self.url, {"name": repo})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(response.json(), {"status": "success", "id": 3})
 
-    @patch.object(Github, "repo_exists")
-    def test_add_repo_repo_not_found(self, repo_exists_mock):
-        repo_exists_mock.return_value = False
+    @patch.object(Github, "is_repo_exists")
+    def test_add_repo_repo_not_found(self, is_repo_exists_mock):
+        is_repo_exists_mock.return_value = False
         response = self.client.post_ajax(self.url, {"name": repo})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {
@@ -143,9 +143,9 @@ class RepoTestCase(BaseTestLoginCase):
         }
         self.assertEqual(response.json(), expected_response)
 
-    @patch.object(Github, "repo_exists")
-    def test_add_repo_exists(self, repo_exists_mock):
-        repo_exists_mock.return_value = True
+    @patch.object(Github, "is_repo_exists")
+    def test_add_is_repo_exists(self, is_repo_exists_mock):
+        is_repo_exists_mock.return_value = True
         response = self.client.post_ajax(self.url, {"name": "jieter/django-tables2"})
         self.assertEqual(response.status_code, HTTPStatus.OK)
         expected_response = {

@@ -25,7 +25,7 @@ class Github:
             stars += repo.stargazers_count
         return stars
 
-    def repo_exists(self, repo_name: str) -> bool:
+    def is_repo_exists(self, repo_name: str) -> bool:
         """Return True if repo exists."""
         username, repo_name = repo_name.split("/")
         user = self.gh.get_user(username)
