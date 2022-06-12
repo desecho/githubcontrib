@@ -1,3 +1,4 @@
+"""Fixtures."""
 from datetime import datetime
 
 from dateutil.tz import tzoffset

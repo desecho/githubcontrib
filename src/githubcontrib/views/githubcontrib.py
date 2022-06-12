@@ -1,3 +1,4 @@
+"""Githubcontrib views."""
 import json
 import re
 from typing import Any, Dict, Union
@@ -14,13 +15,18 @@ from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
 class AboutView(TemplateAnonymousView):
+    """About view."""
+
     template_name = "about.html"
 
 
 class HomeView(TemplateAnonymousView):
+    """Home view."""
+
     template_name = "home.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Get context data."""
         users = User.objects.exclude(username="admin")
         user = self.request.user
         if user.is_authenticated:
@@ -29,27 +35,36 @@ class HomeView(TemplateAnonymousView):
 
 
 class ContribsView(TemplateAnonymousView):
+    """Contribs view."""
+
     template_name = "contribs.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:  # pylint: disable=no-self-use
+        """Get context data."""
         user = get_object_or_404(User, username=kwargs["username"])
         repos = user.repos.all().prefetch_related("commits")
         return {"repos": repos, "selected_user": user}
 
 
 class MyContribsView(TemplateView):
+    """My contribs view."""
+
     template_name = ""
 
     def get(  # type: ignore
         self, request: AuthenticatedHttpRequest, *args: Any, **kwargs: Any  # pylint: disable=unused-argument
     ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:
+        """Get."""
         return redirect(reverse("contribs", args=(request.user.username,)))
 
 
 class MyReposView(TemplateView):
+    """My repos view."""
+
     template_name = "my_repos.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Get context data."""
         request: AuthenticatedHttpRequest = self.request  # type: ignore
         repos = [{"id": repo.id, "name": repo.name} for repo in request.user.repos.all()]
         kwargs["repos"] = json.dumps(repos)
@@ -57,7 +72,10 @@ class MyReposView(TemplateView):
 
 
 class RepoView(AjaxView):
+    """Repo view."""
+
     def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+        """Post."""
         try:
             name = request.POST["name"]
         except KeyError:
@@ -79,7 +97,10 @@ class RepoView(AjaxView):
 
 
 class RepoDeleteView(AjaxView):
+    """Repo delete view."""
+
     def delete(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
+        """Delete."""
         repos = request.user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
@@ -89,7 +110,10 @@ class RepoDeleteView(AjaxView):
 
 
 class LoadCommitDataView(AjaxView):
+    """Load commit data view."""
+
     def post(self, request: AuthenticatedHttpRequest) -> HttpResponse:
+        """Post."""
         user = request.user
         repos = user.repos.all()
         gh = Github()

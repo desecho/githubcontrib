@@ -1,3 +1,4 @@
+"""Pytest fixtures."""
 # pylint: disable=redefined-outer-name
 
 from unittest.mock import Mock
@@ -11,11 +12,13 @@ from .fixtures import commits_python_social_auth
 
 @pytest.fixture
 def user_mock():
+    """User mock."""
     return Mock()
 
 
 @pytest.fixture
 def repo_mock():
+    """Repo mock."""
     repo = Mock()
     repo.owner = Mock()
     repo.owner.login = "123"
@@ -24,6 +27,7 @@ def repo_mock():
 
 @pytest.fixture
 def gh():
+    """GitHub."""
     g = Github()
     g.MAX_NUMBER_OF_ITEMS = 1
     return g
@@ -31,6 +35,7 @@ def gh():
 
 @pytest.fixture
 def commits_paginated_list_mock():
+    """Return commits paginated list mock."""
     committer_mock1 = Mock()
     committer_mock1.date = commits_python_social_auth[0]["date"]
     git_commit_mock1 = Mock()
@@ -54,6 +59,7 @@ def commits_paginated_list_mock():
 
 @pytest.fixture
 def repos_paginated_list_mock():
+    """Return repos paginated list mock."""
     repo_mock1 = Mock()
     repo_mock1.stargazers_count = 2
     repo_mock2 = Mock()
