@@ -30,6 +30,7 @@ COLLECT_STATIC = bool(getenv("COLLECT_STATIC"))
 SRC_DIR = dirname(dirname(abspath(__file__)))
 PROJECT_DIR = dirname(SRC_DIR)
 PROJECT_DOMAIN = getenv("PROJECT_DOMAIN")
+REDIS_URL = getenv("REDIS_URL")
 
 # Debug
 DEBUG = bool(getenv("DEBUG"))
@@ -58,11 +59,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 ALLOWED_HOSTS = [PROJECT_DOMAIN]
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-    }
-}
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -80,6 +76,14 @@ if DEBUG:  # pragma: no cover
     INSTALLED_APPS += [
         "debug_toolbar",
     ]
+
+if not DEBUG:  # pragma: no cover
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": REDIS_URL,
+        }
+    }
 
 if IS_DEV or COLLECT_STATIC:  # pragma: no cover
     INSTALLED_APPS.append("django.contrib.staticfiles")

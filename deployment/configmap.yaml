@@ -10,3 +10,4 @@ data:
   DB_USER: root
   STATIC_URL: https://githubcontrib.cdn.samarchyan.me/
   GOOGLE_ANALYTICS_ID: G-4LNTLBZCVM
+  REDIS_URL: redis://redis:6379
