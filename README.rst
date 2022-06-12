@@ -36,8 +36,10 @@ Run in Docker:
 
 Production
 ----------------------------
-To use production commands edit ``db_env_prod.sh``.
+To use production commands:
 
+1. Edit file ``db_env_prod.sh``
+2. Activate the kubectl context
 
 Fonts used
 ----------------------------
