@@ -137,18 +137,9 @@ TEMPLATES: List[Dict[str, Any]] = [
                     ],
                 ),
             ],
-            "debug": DEBUG,
             "builtins": ["django.templatetags.static", "django.templatetags.i18n"],
         },
-    },
-    {
-        "NAME": "Secondary",
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "debug": DEBUG,
-        },
-    },
+    }
 ]
 if IS_DEV:  # pragma: no cover
     TEMPLATES[0]["OPTIONS"]["loaders"] = [
