@@ -2,11 +2,13 @@
 
 from os import getenv
 from os.path import abspath, dirname, join
-from typing import Any, Dict, List
+from typing import List
 
 import django_stubs_ext
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+
+from githubcontrib.types import TemplatesSettings
 
 django_stubs_ext.monkeypatch()
 
@@ -107,13 +109,13 @@ MIDDLEWARE = [
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
-TEMPLATES: List[Dict[str, Any]] = [
+TEMPLATES: List[TemplatesSettings] = [
     {
         "NAME": "Main",
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": (join(SRC_DIR, "templates"),),
+        "DIRS": [join(SRC_DIR, "templates")],
         "OPTIONS": {
-            "context_processors": (
+            "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
@@ -127,7 +129,7 @@ TEMPLATES: List[Dict[str, Any]] = [
                 "social_django.context_processors.login_redirect",
                 # githubcontrib
                 "githubcontrib.context_processors.variables",
-            ),
+            ],
             "loaders": [
                 (
                     "django.template.loaders.cached.Loader",

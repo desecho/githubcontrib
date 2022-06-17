@@ -1,9 +1,11 @@
 """GitHub."""
-from typing import Any, Dict, List
+from typing import List
 
 import github
 from django.conf import settings
 from github.GithubException import UnknownObjectException
+
+from .types import CommitType
 
 
 class Github:
@@ -37,10 +39,10 @@ class Github:
             return False
         return True
 
-    def get_commit_data(self, username: str, repo: str) -> List[Dict[str, Any]]:
+    def get_commit_data(self, username: str, repo: str) -> List[CommitType]:
         """Get commit data."""
         commits = self.gh.search_commits("", "author-date", "desc", author=username, repo=repo)
-        commit_data = []
+        commit_data: List[CommitType] = []
         for commit in commits:
             commit_git = commit.commit
             commit_data.append(

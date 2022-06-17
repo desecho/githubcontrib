@@ -1,7 +1,7 @@
 """Githubcontrib views."""
 import json
 import re
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
@@ -12,6 +12,7 @@ from ..github import Github
 from ..http import AuthenticatedHttpRequest
 from ..models import Commit, Repo, User
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
+from .types import ContribsViewContextData, HomeViewContextData, MyReposViewContextData
 
 
 class AboutView(TemplateAnonymousView):
@@ -25,13 +26,14 @@ class HomeView(TemplateAnonymousView):
 
     template_name = "home.html"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> HomeViewContextData:  # type: ignore
         """Get context data."""
         users = User.objects.exclude(username="admin")
         user = self.request.user
         if user.is_authenticated:
             users = users.exclude(pk=user.pk)
-        return {"usernames": users.values_list("username", flat=True)}
+        usernames = list(users.values_list("username", flat=True))
+        return {"usernames": usernames}
 
 
 class ContribsView(TemplateAnonymousView):
@@ -39,7 +41,7 @@ class ContribsView(TemplateAnonymousView):
 
     template_name = "contribs.html"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:  # pylint: disable=no-self-use
+    def get_context_data(self, **kwargs: Any) -> ContribsViewContextData:  # type: ignore  # pylint: disable=no-self-use
         """Get context data."""
         user = get_object_or_404(User, username=kwargs["username"])
         repos = user.repos.all().prefetch_related("commits")
@@ -63,12 +65,11 @@ class MyReposView(TemplateView):
 
     template_name = "my_repos.html"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> MyReposViewContextData:  # type: ignore
         """Get context data."""
         request: AuthenticatedHttpRequest = self.request  # type: ignore
         repos = [{"id": repo.id, "name": repo.name} for repo in request.user.repos.all()]
-        kwargs["repos"] = json.dumps(repos)
-        return kwargs
+        return {"repos": json.dumps(repos)}
 
 
 class RepoView(AjaxView):
