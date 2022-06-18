@@ -6,8 +6,9 @@
   </a>
   <h3>
     {{ selected_user.username }}
-    <a href="{{ selected_user.github_profile_url }}" target="_blank"><i class="fa fa-github"></i></a>
-    <i class="fa fa-star" aria-hidden="true"></i> {{ selected_user.stars }}
+    <a href="{{ selected_user.github_profile_url }}" target="_blank"><font-awesome-icon icon="fa-brands fa-github" /></a>
+    <span><font-awesome-icon icon="fa-solid fa-star" /></span>
+    {{ selected_user.stars }}
   </h3>
   <br>
   {% for repo in repos %}
@@ -18,10 +19,14 @@
           <li class="ml-5">
           {{ commit.message }} [{{ commit.date|date:"j F Y" }}]
           <a href="{{ commit.url }}" target="_blank">
-            <i class="fa fa-external-link-square" aria-hidden="true"></i>
+            <font-awesome-icon icon="fa-solid fa-external-link-square" />
           </a>
         {% endfor %}
       </ul>
     {% endif %}
   {% endfor %}
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'js/app.js' %}"></script>
 {% endblock %}

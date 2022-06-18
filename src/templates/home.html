@@ -6,3 +6,7 @@
     <div><a href="{% url 'contribs' username %}">{{ username }}</a></div>
   {% endfor %}
 {% endblock %}
+
+{% block js %}
+  <script src="{% static 'js/app.js' %}"></script>
+{% endblock %}

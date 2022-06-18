@@ -31,8 +31,8 @@
     </ul>
     <ul class="navbar-nav">
       {% if user.is_authenticated %}
-        <li class="nav-item"><a href="{% url 'preferences' %}" class="nav-link"><i class="fa fa-cog"></i></a></li>
-        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link"><i class="fa fa-sign-out"></i></a></li>
+        <li class="nav-item"><a href="{% url 'preferences' %}" class="nav-link"><font-awesome-icon icon="fa-solid fa-gear" /></a></li>
+        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link"><font-awesome-icon icon="fa-solid fa-sign-out" /></a></li>
       {% else %}
         {% get_current_language as LANGUAGE_CODE %}
         <li class="nav-item">
@@ -43,7 +43,7 @@
           {% csrf_token %}
           <input name="language" type="hidden" value="{% if LANGUAGE_CODE == 'en' %}ru{% else %}en{% endif %}"/>
         </form>
-        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link"><i class="fa fa-sign-in"></i></a></li>
+        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link"><font-awesome-icon icon="fa-solid fa-sign-in" /></i></a></li>
       {% endif %}
     </ul>
   </div>

@@ -1,25 +1,24 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const basePath = path.resolve(__dirname, 'src', 'githubcontrib');
 const jsPath = path.join(basePath, 'js');
-const loaderFontOptions = {
-  outputPath: 'font/',
-};
-const vendorPackages = ['font-awesome-webpack', 'vue-flash-message/dist/vue-flash-message.min.css',
+const vendorPackages = ['vue-flash-message/dist/vue-flash-message.min.css',
   'bootstrap/dist/css/bootstrap.min.css', 'bootstrap/dist/js/bootstrap.min.js',
   'axios-progress-bar/dist/nprogress.css', 'popper.js/dist/umd/popper.min.js',
   'bootstrap-social/bootstrap-social.css',
 ];
 
+function getBundle(filename) {
+  return [path.join(jsPath, 'init.js'), path.join(jsPath, filename), path.join(jsPath, 'set_axios_settings.js')];
+}
 
 module.exports = {
   entry: {
-    preferences: path.join(jsPath, 'preferences.js'),
-    init: path.join(jsPath, 'init.js'),
-    setAxiosSettings: path.join(jsPath, 'set_axios_settings.js'),
-    myRepos: path.join(jsPath, 'my_repos.js'),
+    myRepos: getBundle('my_repos.js'),
+    preferences: getBundle('preferences.js'),
+    app: [path.join(jsPath, 'init.js'), path.join(jsPath, 'app.js')],
     style: path.join(basePath, 'styles', 'styles.scss'),
     vendor: vendorPackages,
   },
@@ -36,42 +35,22 @@ module.exports = {
     path: path.join(basePath, 'static'),
   },
   module: {
-    rules: [{
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader',
-      }),
-    },
-    {
-      test: /\.scss$/,
-      loader: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [{
-          loader: 'css-loader',
-        }, {
-          loader: 'sass-loader',
-        }],
+    rules: [
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
-
-      ),
-    },
-    {
-      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      options: loaderFontOptions,
-    },
-    {
-      test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: 'file-loader',
-      options: loaderFontOptions,
-    },
+      {
+        test: /\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
     ],
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
+    new MiniCssExtractPlugin(),
     new webpack.ProvidePlugin({
       '$': 'jquery',
+      'Vue': 'vue',
       'jQuery': 'jquery',
       'window.jQuery': 'jquery',
       'Tether': 'tether',
@@ -89,11 +68,10 @@ module.exports = {
       'Tooltip': 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
       'Util': 'exports-loader?Util!bootstrap/js/dist/util',
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons',
-      filename: 'js/commons.js',
-      minChunks: 2,
-      minSize: 0,
-    }),
   ],
+  optimization: {
+    splitChunks: {
+      minSize: 0,
+    },
+  },
 };

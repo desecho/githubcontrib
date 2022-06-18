@@ -22,7 +22,8 @@
     "gettext": false,
     "urls": false,
     "vars": false,
-    "vm": false
+    "vm": false,
+    "Vue": false
   },
   "parserOptions": {
     "sourceType": "module"

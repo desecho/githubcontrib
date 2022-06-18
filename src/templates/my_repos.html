@@ -15,9 +15,11 @@
             @click="loadCommitData">{% trans 'Load/Update commits' %}</button>
     <br><br>
     <div v-cloak>
-      <div v-for="repo in repos">[[ repo.name ]] <a href="javascript:void(0)"
-                                                    @click="deleteRepo(repo.id)"><i
-        class="fa fa-trash"></i></a></div>
+      <div v-for="repo in repos">[[ repo.name ]]
+        <a href="javascript:void(0)" @click="deleteRepo(repo.id)">
+          <font-awesome-icon icon="fa-solid fa-trash" />
+        </a>
+      </div>
     </div>
   </div>
 {% endblock %}
@@ -25,7 +27,6 @@
 {% block js %}
   <script>
     'use strict';
-
     urls.repo = '{% url 'repo' %}';
     urls.loadCommitData = '{% url 'load_commit_data' %}';
     vars.repos = JSON.parse('{{ repos|safe }}');

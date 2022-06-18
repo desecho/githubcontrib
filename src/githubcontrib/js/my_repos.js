@@ -1,6 +1,5 @@
 'use strict';
 
-import Vue from 'vue';
 import axios from 'axios';
 
 window.vm = new Vue({

@@ -26,9 +26,11 @@
   </footer>
 
   <script src="{% url 'javascript-catalog' %}"></script>
-  <script src="{% static 'js/commons.js' %}"></script>
   <script src="{% static 'js/vendor.js' %}"></script>
-  <script src="{% static 'js/init.js' %}"></script>
+  <script>
+    'use strict';
+    window.vars = {};
+    window.urls = {};
+  </script>
   {% block js %}{% endblock %}
-  <script src="{% static 'js/setAxiosSettings.js' %}"></script>
 </body>
