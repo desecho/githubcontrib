@@ -1,32 +1,34 @@
 'use strict';
 
 import axios from 'axios';
+import {newApp} from './app';
 
-window.vm = new Vue({
-  el: '#app',
-  data: {
-    repos: vars.repos,
-    name: '',
+window.vm = newApp({
+  data() {
+    return {
+      repos: vars.repos,
+      name: '',
+    };
   },
   methods: {
-    deleteRepo: function(id) {
+    deleteRepo(id) {
       function success(response) {
         if (response.data.status === 'success') {
           vm.repos = vm.repos.filter((repo) => repo.id != id);
         } else {
-          vm.flashError(response.data.message);
+          vm.$toast.error(response.data.message);
         }
       }
 
       function fail() {
-        vm.flashError(gettext('Error deleting repository'));
+        vm.$toast.error(gettext('Error deleting repository'));
       }
 
       const vm = this;
       const url = urls.repo + id + '/';
       axios.delete(url).then(success).catch(fail);
     },
-    addRepo: function() {
+    addRepo() {
       function success(response) {
         if (response.data.status === 'success') {
           vm.repos.push({
@@ -35,12 +37,14 @@ window.vm = new Vue({
           });
           vm.name = '';
         } else {
-          vm.flash(response.data.message, response.data.messageType);
+          vm.$toast.open({
+            message: response.data.message,
+            type: response.data.messageType});
         }
       }
 
       function fail() {
-        vm.flashError(gettext('Error adding repository'));
+        vm.$toast.error(gettext('Error adding repository'));
       }
 
       const vm = this;
@@ -49,17 +53,17 @@ window.vm = new Vue({
       };
       axios.post(urls.repo, data).then(success).catch(fail);
     },
-    loadCommitData: function() {
+    loadCommitData() {
       function success(response) {
         if (response.data.status === 'success') {
-          vm.flashSuccess(gettext('Commit data has been updated'));
+          vm.$toast.success(gettext('Commit data has been updated'));
         } else {
-          vm.flashError(response.data.message);
+          vm.$toast.error(response.data.message);
         }
       }
 
       function fail() {
-        vm.flashError(gettext('Error loading commit data'));
+        vm.$toast.error(gettext('Error loading commit data'));
       }
 
       const vm = this;
@@ -69,3 +73,5 @@ window.vm = new Vue({
     },
   },
 });
+
+window.vm.mount('#app');

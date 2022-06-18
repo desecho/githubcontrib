@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const basePath = path.resolve(__dirname, 'src', 'githubcontrib');
 const jsPath = path.join(basePath, 'js');
-const vendorPackages = ['vue-flash-message/dist/vue-flash-message.min.css',
+const vendorPackages = ['vue-toast-notification/dist/theme-default.css',
   'bootstrap/dist/css/bootstrap.min.css', 'bootstrap/dist/js/bootstrap.min.js',
   'axios-progress-bar/dist/nprogress.css', 'popper.js/dist/umd/popper.min.js',
   'bootstrap-social/bootstrap-social.css',
@@ -18,17 +18,12 @@ module.exports = {
   entry: {
     myRepos: getBundle('my_repos.js'),
     preferences: getBundle('preferences.js'),
-    app: [path.join(jsPath, 'init.js'), path.join(jsPath, 'app.js')],
+    emptyApp: [path.join(jsPath, 'init.js'), path.join(jsPath, 'empty_app.js')],
     style: path.join(basePath, 'styles', 'styles.scss'),
     vendor: vendorPackages,
   },
   watchOptions: {
     poll: true,
-  },
-  resolve: {
-    alias: {
-      vue: 'vue/dist/vue.min.js',
-    },
   },
   output: {
     filename: 'js/[name].js',
@@ -48,9 +43,12 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false,
+    }),
     new webpack.ProvidePlugin({
       '$': 'jquery',
-      'Vue': 'vue',
       'jQuery': 'jquery',
       'window.jQuery': 'jquery',
       'Tether': 'tether',

@@ -3,7 +3,7 @@ GitHubContrib
 
 |Deployment Status| |Requirements Status| |Codecov|
 
-The web application on Django_ 4, Vue.js_ 2, Bootstrap_ 4, `Font Awesome`_ 6.
+The web application on Django_ 4, Vue.js_ 3, Bootstrap_ 4, `Font Awesome`_ 6.
 
 It allows you to have a profile page with your opensource contributions.
 
