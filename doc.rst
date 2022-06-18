@@ -9,7 +9,7 @@ We also don't have any user data like name or location because the main profile 
 Npm module dependencies
 -------------------------
 * ``tether``, ``jquery`` and ``popper.js`` are ``bootstrap`` dependencies
-* ``node-sass`` is a dependency of ``sass-loader``
+* ``sass`` is a dependency of ``sass-loader``
 
 Redis
 --------
