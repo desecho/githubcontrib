@@ -1,3 +1,5 @@
+'use strict';
+
 import VueToast from 'vue-toast-notification';
 import VueCookie from 'vue-cookies';
 import {createApp} from 'vue';
@@ -25,7 +27,6 @@ export function newApp(options) {
   );
   app.use(VueCookie);
 
-  /* add font awesome icon component */
   app.component('FontAwesomeIcon', FontAwesomeIcon);
 
   return app;
