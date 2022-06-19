@@ -11,6 +11,10 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {faGear, faSignIn, faSignOut, faExternalLinkSquare, faStar, faTrash} from '@fortawesome/free-solid-svg-icons';
 import {faGithub} from '@fortawesome/free-brands-svg-icons';
 
+
+/* add icons to the library */
+library.add(faGear, faSignIn, faSignOut, faExternalLinkSquare, faGithub, faStar, faTrash);
+
 export function newApp(options) {
   const app = createApp(options);
   app.config.compilerOptions.delimiters = ['[[', ']]'];
@@ -20,9 +24,6 @@ export function newApp(options) {
   },
   );
   app.use(VueCookie);
-
-  /* add icons to the library */
-  library.add(faGear, faSignIn, faSignOut, faExternalLinkSquare, faGithub, faStar, faTrash);
 
   /* add font awesome icon component */
   app.component('FontAwesomeIcon', FontAwesomeIcon);
