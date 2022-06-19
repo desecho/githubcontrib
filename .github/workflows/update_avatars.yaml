@@ -2,7 +2,7 @@
 name: Update avatars
 on:
   schedule:
-    - cron: "0 8 * * *"  # Runs at 08:00 UTC (04:00 EDT) monthly
+    - cron: "0 8 1 * *"  # Runs at 08:00 UTC (04:00 EDT) on the first day of the month
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

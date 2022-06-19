@@ -20,8 +20,8 @@ Cron jobs
 Cron jobs are run with `GitHub Actions`_. Time zone is UTC.
 
 - ``DB backup`` runs at 09:00 UTC (05:00 EDT) daily
-- ``Update avatars`` runs at 08:00 UTC (04:00 EDT) monthly
-- ``Update stars`` runs at 07:00 UTC (03:00 EDT) monthly
+- ``Update avatars`` runs at 08:00 UTC (04:00 EDT) on the first day of the month
+- ``Update stars`` runs at 07:00 UTC (03:00 EDT) on the first day of the month
 
 CI/CD
 ----------------------------
