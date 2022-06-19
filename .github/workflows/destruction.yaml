@@ -1,6 +1,8 @@
 ---
 name: Destruction
 on: workflow_dispatch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   destruction:
     name: Destruction
@@ -8,11 +10,6 @@ jobs:
     env:
       PROJECT: githubcontrib
     steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout code
         uses: actions/checkout@v3
 

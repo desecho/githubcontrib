@@ -1,0 +1,42 @@
+---
+name: Reusable Restart App
+on:
+  workflow_call:
+jobs:
+  reusable_restart_app:
+    name: Restart app
+    runs-on: ubuntu-latest
+    env:
+      PROJECT: githubcontrib
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v2.1
+
+      - name: Configure kubectl
+        run: |
+          mkdir ~/.kube
+          echo "$KUBECONFIG" > ~/.kube/config
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}  # Done as a variable because it doesn't work in place.
+
+      - name: Restart app
+        run: |
+          kubectl apply -f deployment/configmap.yaml
+          kubectl create secret generic "$PROJECT" --from-literal=DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            --from-literal=SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+            --from-literal=SOCIAL_AUTH_GITHUB_KEY=${{ secrets.SOCIAL_AUTH_GITHUB_KEY }} \
+            --from-literal=SOCIAL_AUTH_GITHUB_SECRET=${{ secrets.SOCIAL_AUTH_GITHUB_SECRET }} \
+            --from-literal=GITHUB_API_KEY=${{ secrets.GH_API_KEY }} \
+            --from-literal=SENTRY_DSN=${{ secrets.SENTRY_DSN }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+          kubectl apply -f deployment/deployment.yaml
+          kubectl apply -f deployment/ingress.yaml
+          kubectl apply -f deployment/service.yaml
+          kubectl rollout restart "deployment/$PROJECT"
+          kubectl rollout status "deployment/$PROJECT"
+
+      - name: Run db migration
+        run: make prod-manage migrate
