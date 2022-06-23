@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h3>{% trans 'Users' %}</h3>
+  <h3>{% translate 'Users' %}</h3>
   {% for username in usernames %}
     <div><a href="{% url 'contribs' username %}">{{ username }}</a></div>
   {% endfor %}

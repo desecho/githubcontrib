@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}{% trans 'About GitHubContrib' %}{% endblock %}
+{% block title %}{% translate 'About GitHubContrib' %}{% endblock %}
 
 {% block content %}
-  <legend>{% trans 'About GitHubContrib' %}</legend>
-  {% blocktrans %}
+  <legend>{% translate 'About GitHubContrib' %}</legend>
+  {% blocktranslate %}
     <p>
       GitHubContrib allows you to have a profile page with your open-source contributions.<br>
       It also shows the number of stars you have for your repositories.<br>
@@ -15,5 +15,5 @@
       The <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a> is used in GitHubContrib.<br>
       The source code is available on GitHub — <a href="https://github.com/desecho/githubcontrib" target="_blank">GitHubContrib</a>.
     </p>
-  {% endblocktrans %}
+  {% endblocktranslate %}
 {% endblock %}
