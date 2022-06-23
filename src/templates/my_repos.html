@@ -5,14 +5,14 @@
     {% trans 'Add a repository you contributed to. Then you can load/update commits from the added repositories.' %}<br><br>
     <form @submit.prevent="addRepo">
       <input required v-model="name" type="text" pattern=".+/.+" title="user/project"
-             class="form-control form-control col-sm-5 col-md-4"
-             placeholder="user/project">
+        class="form-control form-control col-sm-5 col-md-4"
+        placeholder="user/project">
       <br>
       <button type="submit" class="btn btn-primary form-control col-sm-5 col-md-4">{% trans 'Add' %}</button>
     </form>
     <br>
     <button class="btn btn-primary form-control col-sm-5 col-md-4"
-            @click="loadCommitData">{% trans 'Load/Update commits' %}</button>
+      @click="loadCommitData">{% trans 'Load/Update commits' %}</button>
     <br><br>
     <div v-cloak>
       <div v-for="repo in repos">[[ repo.name ]]
