@@ -25,6 +25,7 @@ black
 restructuredtext_lint
 yamllint
 mypy
+djhtml
 
 # Stubs
 django-stubs
