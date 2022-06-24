@@ -45,8 +45,8 @@ urlpatterns += [
     # User
     path("login/", LoginView.as_view(template_name="user/login.html"), name="login"),
     path("logout/", logout_view, name="logout"),
-    path("delete/", AccountDeleteView.as_view(), name="delete_account"),
-    path("account-deleted/", AccountDeletedView.as_view(), name="account_deleted"),
+    path("account/delete/", AccountDeleteView.as_view(), name="delete_account"),
+    path("account/deleted/", AccountDeletedView.as_view(), name="account_deleted"),
     #
     # Preferences
     path("preferences/", PreferencesView.as_view(), name="preferences"),
