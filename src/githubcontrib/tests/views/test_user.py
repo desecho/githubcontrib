@@ -39,3 +39,18 @@ class PreferencesTestCase(BaseTestLoginCase):
     def test_save_preferences_invalid_language(self):
         response = self.client.post_ajax(self.save_preferences_url, {"language": "ro"})
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+
+class AccountDeletedTestCase(BaseTestLoginCase):
+    def test_account_deleted(self):
+        url = reverse("account_deleted")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+
+class AccountDeleteTestCase(BaseTestLoginCase):
+    def test_account_delete(self):
+        url = reverse("delete_account")
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertFalse(User.objects.filter(pk=self.user.pk).exists())

@@ -19,7 +19,13 @@ from githubcontrib.views.githubcontrib import (
     RepoDeleteView,
     RepoView,
 )
-from githubcontrib.views.user import PreferencesView, SavePreferencesView, logout_view
+from githubcontrib.views.user import (
+    AccountDeletedView,
+    AccountDeleteView,
+    PreferencesView,
+    SavePreferencesView,
+    logout_view,
+)
 
 admin.autodiscover()
 
@@ -39,6 +45,8 @@ urlpatterns += [
     # User
     path("login/", LoginView.as_view(template_name="user/login.html"), name="login"),
     path("logout/", logout_view, name="logout"),
+    path("delete/", AccountDeleteView.as_view(), name="delete_account"),
+    path("account-deleted/", AccountDeletedView.as_view(), name="account_deleted"),
     #
     # Preferences
     path("preferences/", PreferencesView.as_view(), name="preferences"),

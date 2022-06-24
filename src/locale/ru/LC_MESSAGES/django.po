@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-23 20:16-0400\n"
-"PO-Revision-Date: 2022-06-23 20:18-0400\n"
+"POT-Creation-Date: 2022-06-24 13:49-0400\n"
+"PO-Revision-Date: 2022-06-24 13:50-0400\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -86,9 +86,6 @@ msgid "Toggle navigation"
 msgstr "Переключить навигацию"
 
 #: src/templates/my_repos.html:5
-#| msgid ""
-#| "Add a repository you contributed to. Then you can load/update commits from "
-#| "the added repositories."
 msgid ""
 "\n"
 "      Add a repository you contributed to. Then you can load/update commits from the added repositories.\n"
@@ -105,18 +102,37 @@ msgstr "Добавить"
 msgid "Load/Update commits"
 msgstr "Загрузить/Обновить коммиты"
 
+#: src/templates/user/account_deleted.html:4
+msgid "Your account has been deleted"
+msgstr "Ваш аккаунт был удален"
+
+#: src/templates/user/delete.html:6 src/templates/user/delete.html:17
+#: src/templates/user/preferences.html:38
+msgid "Delete Account"
+msgstr "Удалить Аккаунт"
+
+#: src/templates/user/delete.html:8
+msgid ""
+"\n"
+"        Are you sure you want to delete your account?\n"
+"        This will permanently delete your profile and all your data.\n"
+"      "
+msgstr ""
+"\n"
+"Вы уверены что Вы хотите удалить Ваш аккаунт? Это полностью удалит Ваш профайл и все ваши данные."
+
 #: src/templates/user/login.html:6
 msgid "Log in with"
 msgstr "Вход через"
 
-#: src/templates/user/preferences.html:8
+#: src/templates/user/preferences.html:7
 msgid "Settings"
 msgstr "Настройки"
 
-#: src/templates/user/preferences.html:11
+#: src/templates/user/preferences.html:10
 msgid "Language"
 msgstr "Язык"
 
-#: src/templates/user/preferences.html:30
+#: src/templates/user/preferences.html:29
 msgid "Profile link"
 msgstr "Ссылка на профиль"

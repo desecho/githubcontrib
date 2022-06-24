@@ -3,37 +3,42 @@
 {% load abs_url %}
 
 {% block content %}
-  <div>
-    <form class="form-horizontal">
-      <legend>{% translate 'Settings' %}</legend>
-      <br>
-      <div class="form-group row">
-        <label class="col-form-label col-sm-4 text-right" for="lang">{% translate 'Language' %}:</label>
-        <div class="col-sm-5" v-cloak>
-          {% get_available_languages as LANGUAGES %}
-          {% get_language_info_list for LANGUAGES as languages %}
-          {% for language in languages %}
-            <label class="radio mr-2 col-form-label">
-              <input
-                v-model="language"
-                @change="savePreferences"
-                type="radio"
-                name="lang"
-                value="{{ language.code }}"
-              >
-              {{ language.name_local }}
-            </label>
-          {% endfor %}
-        </div>
+  <form class="form-horizontal">
+    <legend>{% translate 'Settings' %}</legend>
+    <br>
+    <div class="form-group row">
+      <label class="col-form-label col-sm-4 text-right" for="lang">{% translate 'Language' %}:</label>
+      <div class="col-sm-5" v-cloak>
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+          <label class="radio mr-2 col-form-label">
+            <input
+              v-model="language"
+              @change="savePreferences"
+              type="radio"
+              name="lang"
+              value="{{ language.code }}"
+            >
+            {{ language.name_local }}
+          </label>
+        {% endfor %}
       </div>
-      <div class="form-group row">
-        <label class="col-form-label col-sm-4 text-right" for="lang">{% translate 'Profile link' %}:</label>
-        <div class="col-sm-5">
-          <a href="{% abs_url 'contribs' user.username %}">{% abs_url 'contribs' user.username %}</a>
-        </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-form-label col-sm-4 text-right" for="lang">{% translate 'Profile link' %}:</label>
+      <div class="col-sm-5">
+        <a href="{% abs_url 'contribs' user.username %}">{% abs_url 'contribs' user.username %}</a>
       </div>
-    </form>
-  </div>
+    </div>
+    <br>
+    <div class="form-group row">
+      <label class="col-form-label col-sm-4"></label>
+      <div class="col-sm-5 col-md-3">
+        <a href="{% url 'delete_account' %}">{% translate 'Delete Account' %}</a>
+      </div>
+    </div>
+  </form>
 {% endblock %}
 
 {% block js %}

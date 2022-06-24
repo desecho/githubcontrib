@@ -1,6 +1,7 @@
 """User views."""
 from django.conf import settings
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpRequest,
     HttpResponse,
@@ -9,9 +10,14 @@ from django.http import (
     HttpResponseRedirect,
 )
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import FormView
 
+from ..forms import UserDeleteForm
 from ..http import AuthenticatedHttpRequest
-from .mixins import AjaxView, TemplateView
+from ..types import UntypedObject
+from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
 def logout_view(request: HttpRequest) -> (HttpResponseRedirect | HttpResponsePermanentRedirect):
@@ -52,3 +58,33 @@ class SavePreferencesView(AjaxView):
         user.language = language
         user.save()
         return self.success()
+
+
+class AccountDeletedView(TemplateAnonymousView):
+    """Account deleted view."""
+
+    template_name = "user/account_deleted.html"
+
+
+@method_decorator(login_required, name="dispatch")
+class AccountDeleteView(FormView[UserDeleteForm]):  # pylint:disable=unsubscriptable-object
+    """Account delete view."""
+
+    template_name = "user/delete.html"
+    form_class = UserDeleteForm
+
+    def get_form_kwargs(self) -> UntypedObject:
+        """Get form kwargs."""
+        result = super().get_form_kwargs()
+        result["instance"] = self.request.user
+        return result
+
+    def get_success_url(self) -> str:  # pylint:disable=no-self-use
+        """Get success url."""
+        return reverse("account_deleted")
+
+    def form_valid(self, form: UserDeleteForm) -> HttpResponse:
+        """Redirect to the supplied URL if the form is valid."""
+        request = self.request
+        request.user.delete()
+        return super().form_valid(form)

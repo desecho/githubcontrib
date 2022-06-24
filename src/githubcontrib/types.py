@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, TypeAlias
 
 from typing_extensions import NotRequired, TypedDict
 
@@ -39,3 +39,6 @@ class TemplatesSettings(TypedDict):
     DIRS: NotRequired[List[str]]
     OPTIONS: NotRequired[TemplatesSettingsOptions]
     APP_DIRS: NotRequired[Optional[bool]]
+
+
+UntypedObject: TypeAlias = Dict[str, Any]
