@@ -8,6 +8,6 @@ data:
   ADMIN_EMAIL: desecho@gmail.com
   DB_HOST: mysql
   DB_USER: githubcontrib
-  STATIC_URL: https://githubcontrib.cdn.samarchyan.me/
+  STATIC_URL: https://cdn.githubcontrib.samarchyan.me/
   GOOGLE_ANALYTICS_ID: G-4LNTLBZCVM
   REDIS_URL: redis://redis:6379

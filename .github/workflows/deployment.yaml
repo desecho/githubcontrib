@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     env:
-      SPACE_NAME: githubcontrib.cdn.samarchyan.me
+      SPACE_NAME: cdn.githubcontrib.samarchyan.me
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
