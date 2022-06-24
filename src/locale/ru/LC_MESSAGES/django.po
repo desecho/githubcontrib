@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-21 12:58-0400\n"
-"PO-Revision-Date: 2022-05-21 13:00-0400\n"
+"POT-Creation-Date: 2022-06-23 20:16-0400\n"
+"PO-Revision-Date: 2022-06-23 20:18-0400\n"
 "Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,53 +19,41 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: src/githubcontrib/menus.py:11 src/templates/home.html:4
+#: src/githubcontrib/menus.py:13 src/templates/home.html:4
 msgid "Users"
 msgstr "Пользователи"
 
-#: src/githubcontrib/menus.py:14
+#: src/githubcontrib/menus.py:16
 msgid "My Contributions"
 msgstr "Мои Контрибуции"
 
-#: src/githubcontrib/menus.py:16
+#: src/githubcontrib/menus.py:18
 msgid "My Repositories"
 msgstr "Мои Репозитории"
 
-#: src/githubcontrib/views/githubcontrib.py:68
+#: src/githubcontrib/views/githubcontrib.py:87
 msgid "Repository name is incorrect"
 msgstr "Имя репозитория не верно"
 
-#: src/githubcontrib/views/githubcontrib.py:72
+#: src/githubcontrib/views/githubcontrib.py:91
 msgid "You cannot add your own repository"
 msgstr "Вы не можете добавить ваш собственный репозиторий"
 
-#: src/githubcontrib/views/githubcontrib.py:77
+#: src/githubcontrib/views/githubcontrib.py:96
 msgid "Repository already exists"
 msgstr "Репозиторий уже существует"
 
-#: src/githubcontrib/views/githubcontrib.py:78
-#: src/githubcontrib/views/githubcontrib.py:87
+#: src/githubcontrib/views/githubcontrib.py:97
+#: src/githubcontrib/views/githubcontrib.py:109
 msgid "Repository not found"
 msgstr "Репозиторий не найден"
 
 #: src/templates/about.html:3 src/templates/about.html:6
-#: src/templates/base.html:25
+#: src/templates/base.html:26
 msgid "About GitHubContrib"
 msgstr "О GitHubContrib"
 
 #: src/templates/about.html:7
-#| msgid ""
-#| "\n"
-#| "    <p>\n"
-#| "      GitHubContrib allows you to have a profile page with your open-source contributions.<br>\n"
-#| "      You can only add repositories that don't belong to you.\n"
-#| "    </p>\n"
-#| "    <p>If you have any issues, questions or feedback email me at <a href=\"mailto:desecho@gmail.com\">desecho@gmail.com</a>.</p>\n"
-#| "    <p>Development:<br>\n"
-#| "      The <a href=\"https://docs.github.com/en/rest\" target=\"_blank\">GitHub API</a> is used in GitHubContrib.<br>\n"
-#| "      The source code is available on GitHub — <a href=\"https://github.com/desecho/githubcontrib\" target=\"_blank\">GitHubContrib</a>.\n"
-#| "    </p>\n"
-#| "  "
 msgid ""
 "\n"
 "    <p>\n"
@@ -93,23 +81,27 @@ msgstr ""
 msgid "Avatar"
 msgstr "Аватар"
 
-#: src/templates/includes/menu.html:8
+#: src/templates/includes/menu.html:13
 msgid "Toggle navigation"
 msgstr "Переключить навигацию"
 
 #: src/templates/my_repos.html:5
+#| msgid ""
+#| "Add a repository you contributed to. Then you can load/update commits from "
+#| "the added repositories."
 msgid ""
-"Add a repository you contributed to. Then you can load/update commits from "
-"the added repositories."
+"\n"
+"      Add a repository you contributed to. Then you can load/update commits from the added repositories.\n"
+"    "
 msgstr ""
-"Добавьте репозиторий в который вы внесли контрибуцию. Затем вы можете "
-"загрузить/обновить коммиты из добавленных репозиториев."
+"\n"
+"Добавьте репозиторий в который вы внесли контрибуцию. Затем вы можете загрузить/обновить коммиты из добавленных репозиториев."
 
-#: src/templates/my_repos.html:11
+#: src/templates/my_repos.html:21
 msgid "Add"
 msgstr "Добавить"
 
-#: src/templates/my_repos.html:15
+#: src/templates/my_repos.html:25
 msgid "Load/Update commits"
 msgstr "Загрузить/Обновить коммиты"
 
@@ -125,6 +117,6 @@ msgstr "Настройки"
 msgid "Language"
 msgstr "Язык"
 
-#: src/templates/user/preferences.html:22
+#: src/templates/user/preferences.html:30
 msgid "Profile link"
 msgstr "Ссылка на профиль"

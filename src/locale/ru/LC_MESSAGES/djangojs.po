@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-21 12:58-0400\n"
+"POT-Creation-Date: 2022-06-23 20:16-0400\n"
 "PO-Revision-Date: 2018-02-10 20:50-0456\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,22 +21,22 @@ msgstr ""
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.8.1\n"
 
-#: src/githubcontrib/js/my_repos.js:23
+#: src/githubcontrib/js/my_repos.js:24
 msgid "Error deleting repository"
 msgstr "Ошибка удаления репозитория"
 
-#: src/githubcontrib/js/my_repos.js:44
+#: src/githubcontrib/js/my_repos.js:47
 msgid "Error adding repository"
 msgstr "Ошибка добавления репозитория"
 
-#: src/githubcontrib/js/my_repos.js:56
+#: src/githubcontrib/js/my_repos.js:59
 msgid "Commit data has been updated"
 msgstr "Данные по коммитам были обновлены"
 
-#: src/githubcontrib/js/my_repos.js:63
+#: src/githubcontrib/js/my_repos.js:66
 msgid "Error loading commit data"
 msgstr "Ошибка загрузки данный по коммитам"
 
-#: src/githubcontrib/js/preferences.js:19
+#: src/githubcontrib/js/preferences.js:20
 msgid "Error saving settings"
 msgstr "Ошибка сохранения настроек"
