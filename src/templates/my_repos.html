@@ -41,7 +41,7 @@
 
     urls.repo = '{% url 'repo' %}';
     urls.loadCommitData = '{% url 'load_commit_data' %}';
-    vars.repos = JSON.parse('{{ repos|safe }}');
+    vars.repos = JSON.parse('{{ repos|escapejs|safe }}');
   </script>
   <script src="{% static 'js/myRepos.js' %}"></script>
 {% endblock %}
