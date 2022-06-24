@@ -14,8 +14,14 @@
           {% get_language_info_list for LANGUAGES as languages %}
           {% for language in languages %}
             <label class="radio mr-2 col-form-label">
-              <input v-model="language" @change="savePreferences" type="radio" name="lang"
-                value="{{ language.code }}"> {{ language.name_local }}
+              <input
+                v-model="language"
+                @change="savePreferences"
+                type="radio"
+                name="lang"
+                value="{{ language.code }}"
+              >
+              {{ language.name_local }}
             </label>
           {% endfor %}
         </div>

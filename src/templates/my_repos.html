@@ -2,17 +2,28 @@
 
 {% block content %}
   <div>
-    {% translate 'Add a repository you contributed to. Then you can load/update commits from the added repositories.' %}<br><br>
+    {% blocktranslate %}
+      Add a repository you contributed to. Then you can load/update commits from the added repositories.
+    {% endblocktranslate %}
+    <br>
+    <br>
     <form @submit.prevent="addRepo">
-      <input required v-model="name" type="text" pattern=".+/.+" title="user/project"
+      <input
+        type="text"
         class="form-control form-control col-sm-5 col-md-4"
-        placeholder="user/project">
+        required
+        pattern=".+/.+"
+        placeholder="user/project"
+        title="user/project"
+        v-model="name"
+      >
       <br>
       <button type="submit" class="btn btn-primary form-control col-sm-5 col-md-4">{% translate 'Add' %}</button>
     </form>
     <br>
-    <button class="btn btn-primary form-control col-sm-5 col-md-4"
-      @click="loadCommitData">{% translate 'Load/Update commits' %}</button>
+    <button class="btn btn-primary form-control col-sm-5 col-md-4" @click="loadCommitData">
+      {% translate 'Load/Update commits' %}
+    </button>
     <br><br>
     <div v-cloak>
       <div v-for="repo in repos">[[ repo.name ]]
@@ -27,6 +38,7 @@
 {% block js %}
   <script>
     'use strict';
+
     urls.repo = '{% url 'repo' %}';
     urls.loadCommitData = '{% url 'load_commit_data' %}';
     vars.repos = JSON.parse('{{ repos|safe }}');

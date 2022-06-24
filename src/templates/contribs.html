@@ -6,7 +6,9 @@
   </a>
   <h3>
     {{ selected_user.username }}
-    <a href="{{ selected_user.github_profile_url }}" target="_blank"><font-awesome-icon icon="fa-brands fa-github" /></a>
+    <a href="{{ selected_user.github_profile_url }}" target="_blank">
+      <font-awesome-icon icon="fa-brands fa-github" />
+    </a>
     <span><font-awesome-icon icon="fa-solid fa-star" /></span>
     {{ selected_user.stars }}
   </h3>
@@ -21,6 +23,7 @@
             <a href="{{ commit.url }}" target="_blank">
               <font-awesome-icon icon="fa-solid fa-external-link-square" />
             </a>
+          </li>
         {% endfor %}
       </ul>
     {% endif %}
