@@ -1,63 +1,16 @@
-"""Githubcontrib views."""
+"""Repos views."""
 import json
 import re
-from typing import Any, Union
+from typing import Any
 
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponsePermanentRedirect, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils.translation import gettext_lazy as _
 
 from ..github import Github
 from ..http import AuthenticatedHttpRequest
-from ..models import Commit, Repo, User
-from .mixins import AjaxView, TemplateAnonymousView, TemplateView
-from .types import ContribsViewContextData, HomeViewContextData, MyReposViewContextData
-
-
-class AboutView(TemplateAnonymousView):
-    """About view."""
-
-    template_name = "about.html"
-
-
-class HomeView(TemplateAnonymousView):
-    """Home view."""
-
-    template_name = "home.html"
-
-    def get_context_data(self, **kwargs: Any) -> HomeViewContextData:  # type: ignore
-        """Get context data."""
-        users = User.objects.exclude(username="admin")
-        user = self.request.user
-        if user.is_authenticated:
-            users = users.exclude(pk=user.pk)
-        usernames = list(users.values_list("username", flat=True))
-        return {"usernames": usernames}
-
-
-class ContribsView(TemplateAnonymousView):
-    """Contribs view."""
-
-    template_name = "contribs.html"
-
-    def get_context_data(self, **kwargs: Any) -> ContribsViewContextData:  # type: ignore  # pylint: disable=no-self-use
-        """Get context data."""
-        user = get_object_or_404(User, username=kwargs["username"])
-        repos = user.repos.all().prefetch_related("commits")
-        return {"repos": repos, "selected_user": user}
-
-
-class MyContribsView(TemplateView):
-    """My contribs view."""
-
-    template_name = ""
-
-    def get(  # type: ignore
-        self, request: AuthenticatedHttpRequest, *args: Any, **kwargs: Any  # pylint: disable=unused-argument
-    ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:
-        """Get."""
-        return redirect(reverse("contribs", args=(request.user.username,)))
+from ..models import Commit, Repo
+from .mixins import AjaxView, TemplateView
+from .types import MyReposViewContextData
 
 
 class MyReposView(TemplateView):
