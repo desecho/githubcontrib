@@ -2,17 +2,21 @@
 
 import axios from 'axios';
 import {newApp} from './app';
+import {initAxios} from './helpers';
 
-window.vm = newApp({
+newApp({
   data() {
+    const vars = window.vars;
     return {
       language: vars.language,
+      urls: window.urls,
     };
   },
   methods: {
     savePreferences() {
       const vm = this;
-      axios.post(urls.savePreferences, {
+
+      axios.post(vm.urls.savePreferences, {
         language: vm.language,
       }).then(function() {
         location.reload();
@@ -21,5 +25,7 @@ window.vm = newApp({
       });
     },
   },
-});
-window.vm.mount('#app');
+  mounted() {
+    initAxios(this);
+  },
+}).mount('#app');

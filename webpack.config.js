@@ -11,14 +11,14 @@ const vendorPackages = ['vue-toast-notification/dist/theme-default.css',
 ];
 
 function getBundle(filename) {
-  return [path.join(jsPath, 'init.js'), path.join(jsPath, filename), path.join(jsPath, 'set_axios_settings.js')];
+  return [path.join(jsPath, 'menu.js'), path.join(jsPath, filename)];
 }
 
 module.exports = {
   entry: {
     myRepos: getBundle('my_repos.js'),
     preferences: getBundle('preferences.js'),
-    emptyApp: [path.join(jsPath, 'init.js'), path.join(jsPath, 'empty_app.js')],
+    emptyApp: getBundle('empty_app.js'),
     style: path.join(basePath, 'styles', 'styles.scss'),
     vendor: vendorPackages,
   },

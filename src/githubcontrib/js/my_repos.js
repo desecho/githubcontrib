@@ -2,12 +2,15 @@
 
 import axios from 'axios';
 import {newApp} from './app';
+import {initAxios} from './helpers';
 
-window.vm = newApp({
+newApp({
   data() {
+    const vars = window.vars;
     return {
       repos: vars.repos,
       name: '',
+      urls: window.urls,
     };
   },
   methods: {
@@ -25,7 +28,7 @@ window.vm = newApp({
       }
 
       const vm = this;
-      const url = urls.repo + id + '/';
+      const url = vm.urls.repo + id + '/';
       axios.delete(url).then(success).catch(fail);
     },
     addRepo() {
@@ -51,7 +54,7 @@ window.vm = newApp({
       const data = {
         name: vm.name,
       };
-      axios.post(urls.repo, data).then(success).catch(fail);
+      axios.post(vm.urls.repo, data).then(success).catch(fail);
     },
     loadCommitData() {
       function success(response) {
@@ -67,11 +70,12 @@ window.vm = newApp({
       }
 
       const vm = this;
-      axios.post(urls.loadCommitData, {
+      axios.post(vm.urls.loadCommitData, {
         name: vm.name,
       }).then(success).catch(fail);
     },
   },
-});
-
-window.vm.mount('#app');
+  mounted() {
+    initAxios(this);
+  },
+}).mount('#app');
