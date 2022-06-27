@@ -9,8 +9,7 @@
     <a href="{{ selected_user.github_profile_url }}" target="_blank">
       <font-awesome-icon icon="fa-brands fa-github" />
     </a>
-    <span><font-awesome-icon icon="fa-solid fa-star" /></span>
-    {{ selected_user.stars }}
+    <span id="stars"><font-awesome-icon icon="fa-solid fa-star" /></span>{{ selected_user.stars }}
   </h3>
   <br>
   {% for repo in repos %}
