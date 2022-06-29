@@ -6,5 +6,11 @@ DATABASES["default"] = {  # noqa
     "NAME": ":memory:",
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    }
+}
+
 SECRET_KEY = "key"  # nosec B105
 GOOGLE_ANALYTICS = "id"
