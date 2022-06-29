@@ -1,0 +1,6 @@
+node_modules
+src/githubcontrib/static
+venv/*
+.tox/*
+.mypy_cache/*
+.vscode/*
