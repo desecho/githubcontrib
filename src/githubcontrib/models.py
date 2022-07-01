@@ -44,7 +44,7 @@ class Repo(Model):
 
     def __str__(self) -> str:
         """Return string representation."""
-        return str(self.name)
+        return f"{self.user} - {self.name}"
 
     class Meta:
         """Meta."""
