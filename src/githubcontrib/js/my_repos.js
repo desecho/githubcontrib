@@ -70,9 +70,24 @@ newApp({
       }
 
       const vm = this;
-      axios.post(vm.urls.loadCommitData, {
-        name: vm.name,
-      }).then(success).catch(fail);
+      axios.post(vm.urls.loadCommitData).then(success).catch(fail);
+    },
+    loadCommitDataForRepo(repoId) {
+      function success(response) {
+        if (response.data.status === 'success') {
+          vm.$toast.success(gettext('Commit data has been updated'));
+        } else {
+          vm.$toast.error(response.data.message);
+        }
+      }
+
+      function fail() {
+        vm.$toast.error(gettext('Error loading commit data'));
+      }
+
+      const vm = this;
+      const url = vm.urls.repo + repoId + '/load-commit-data/';
+      axios.post(url).then(success).catch(fail);
     },
   },
   mounted() {

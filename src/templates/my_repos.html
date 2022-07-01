@@ -2,11 +2,11 @@
 
 {% block content %}
   <div>
-    {% blocktranslate %}
-      Add a repository you contributed to. Then you can load/update commits from the added repositories.
-    {% endblocktranslate %}
-    <br>
-    <br>
+    <p>
+      {% blocktranslate %}
+        Add a repository you contributed to. Then you can load/update commits from the added repositories.
+      {% endblocktranslate %}
+    </p>
     <form @submit.prevent="addRepo">
       <input
         type="text"
@@ -27,8 +27,11 @@
     <br><br>
     <div v-cloak>
       <div v-for="repo in repos">[[ repo.name ]]
-        <a href="javascript:void(0)" @click="deleteRepo(repo.id)">
+        <a href="javascript:void(0)" @click="deleteRepo(repo.id)" class="icon">
           <font-awesome-icon icon="fa-solid fa-trash" />
+        </a>
+        <a href="javascript:void(0)" @click="loadCommitDataForRepo(repo.id)" class="icon">
+          <font-awesome-icon icon="fa-solid fa-rotate" />
         </a>
       </div>
     </div>

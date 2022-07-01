@@ -4,6 +4,7 @@ import re
 from typing import Any
 
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
 from ..github import Github
@@ -29,7 +30,7 @@ class RepoView(AjaxView):
     """Repo view."""
 
     def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
-        """Post."""
+        """Add repo."""
         try:
             name = request.POST["name"]
         except KeyError:
@@ -54,7 +55,7 @@ class RepoDeleteView(AjaxView):
     """Repo delete view."""
 
     def delete(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
-        """Delete."""
+        """Delete repo."""
         repos = request.user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
@@ -63,23 +64,37 @@ class RepoDeleteView(AjaxView):
         return self.success()
 
 
+def load_commit_data(repo: Repo) -> None:
+    """Load commit data."""
+    gh = Github()
+    commit_data = gh.get_commit_data(repo.user.username, repo.name)
+    for commit in commit_data:
+        url: str = commit["url"]
+        message: str = commit["message"]
+        Commit.objects.update_or_create(
+            repo=repo,
+            url=url,
+            message=message,
+            date=commit["date"],
+        )
+
+
 class LoadCommitDataView(AjaxView):
     """Load commit data view."""
 
     def post(self, request: AuthenticatedHttpRequest) -> HttpResponse:
-        """Post."""
-        user = request.user
-        repos = user.repos.all()
-        gh = Github()
+        """Load commit data for all repos."""
+        repos = request.user.repos.all()
         for repo in repos:
-            commit_data = gh.get_commit_data(user.username, repo.name)
-            for commit in commit_data:
-                url: str = commit["url"]
-                message: str = commit["message"]
-                Commit.objects.update_or_create(
-                    repo=repo,
-                    url=url,
-                    message=message,
-                    date=commit["date"],
-                )
+            load_commit_data(repo)
+        return self.success()
+
+
+class RepoLoadCommitDataView(AjaxView):
+    """Repo load commit data view."""
+
+    def post(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
+        """Load commit data."""
+        repo = get_object_or_404(Repo, user=request.user, pk=repo_id)
+        load_commit_data(repo)
         return self.success()

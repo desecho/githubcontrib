@@ -11,69 +11,6 @@ from ..base import BaseTestLoginCase
 from ..fixtures import commits_jieter, commits_python_social_auth, repo
 
 
-class ContribHomeTestCase(BaseTestLoginCase):
-    def test_home(self):
-        url = reverse("home")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman"])
-
-    def test_home_anonymous(self):
-        self.client.logout()
-        url = reverse("home")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman", "neo"])
-
-
-class ContributionsTestCase(BaseTestLoginCase):
-    """
-    Tests for contributions.
-
-    Dumpdata commands:
-    manage dumpdata githubcontrib.Repo --indent 2 > githubcontrib/fixtures/repos.json
-    manage dumpdata githubcontrib.Commit --indent 2 > githubcontrib/fixtures/commits.json
-
-    User actions in fixtures:
-    neo:
-        - Added jieter/django-tables2
-        - Added python-social-auth/social-core
-        - Loaded commit data
-    """
-
-    fixtures = [
-        "users.json",
-        "repos.json",
-    ]
-
-    def contribs(self, page, with_username=True, status_code=HTTPStatus.OK):
-        username = "neo"
-        args = (username,) if with_username else None
-        url = reverse(page, args=args)
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status_code)
-        if status_code == HTTPStatus.FOUND:
-            response = self.client.get(url, follow=True)
-        repos = list(response.context_data["repos"].values_list("pk", flat=True))
-        self.assertListEqual(repos, [1, 2])
-        self.assertEqual(response.context_data["selected_user"].username, username)
-
-    def test_contribs(self):
-        self.contribs("contribs")
-
-    def test_contribs_anonymous(self):
-        self.client.logout()
-        self.contribs("contribs")
-
-    def test_my_contribs(self):
-        self.contribs("my_contribs", False, HTTPStatus.FOUND)
-
-    def test_contribs_not_found(self):
-        url = reverse("contribs", args=("potato",))
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
-
-
 class ReposTestCase(BaseTestLoginCase):
     fixtures = [
         "users.json",
@@ -192,10 +129,6 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
         "repos.json",
     ]
 
-    def setUp(self):
-        super().setUp()
-        self.url = reverse("load_commit_data")
-
     @patch.object(Github, "get_commit_data")
     def test_load_commit_data_success(self, get_commit_data_mock):
         def get_commit_data(username: str, repo: str):  # pylint: disable=unused-argument,redefined-outer-name
@@ -206,9 +139,32 @@ class LoadCommitDataTestCase(BaseTestLoginCase):
             return None
 
         get_commit_data_mock.side_effect = get_commit_data
-        response = self.client.post_ajax(self.url)
+        url = reverse("load_commit_data")
+        response = self.client.post_ajax(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         commits = Commit.objects.filter(repo__user=self.user)
         self.assertListEqual(list(commits.values_list("pk", flat=True)), [3, 2, 1])
         self.assertIn("python-social-auth/social-core", commits[0].url)
         self.assertIn("jieter/django-tables2", commits[2].url)
+
+
+class RepoLoadCommitDataTestCase(BaseTestLoginCase):
+    fixtures = [
+        "users.json",
+        "repos.json",
+    ]
+
+    @patch.object(Github, "get_commit_data")
+    def test_load_commit_data_success(self, get_commit_data_mock):
+        def get_commit_data(username: str, repo: str):  # pylint: disable=unused-argument,redefined-outer-name
+            if repo == "jieter/django-tables2":
+                return commits_jieter
+            return None
+
+        get_commit_data_mock.side_effect = get_commit_data
+        url = reverse("repo_load_commit_data", args=(1,))
+        response = self.client.post_ajax(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        commits = Commit.objects.filter(repo__user=self.user)
+        self.assertListEqual(list(commits.values_list("pk", flat=True)), [1])
+        self.assertIn("jieter/django-tables2", commits[0].url)
