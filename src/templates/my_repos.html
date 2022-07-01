@@ -21,31 +21,31 @@
       <button type="submit" class="btn btn-primary form-control col-sm-5 col-md-4">{% translate 'Add' %}</button>
     </form>
     <br>
-    <button class="btn btn-primary form-control col-sm-5 col-md-4" @click="loadCommitData">
+    <button class="btn btn-primary form-control col-sm-5 col-md-4" @click="loadCommitData" v-show="repos.length > 0">
       {% translate 'Load/Update commits' %}
     </button>
-    <br><br>
-    <div class="col-sm-5 col-md-4">
-      <draggable
-        v-model="repos"
-        @sort="saveReposOrder"
-        item-key="id"
-      >
-        <template #item="{element, index}">
-          <div v-cloak>
-            <div class="draggable">[[ element.name ]]
-              <a href="javascript:void(0)" @click="deleteRepo(element.id, index)" class="icon">
-                <font-awesome-icon icon="fa-solid fa-trash" />
-              </a>
-              <a href="javascript:void(0)" @click="loadCommitDataForRepo(element.id)" class="icon">
-                <font-awesome-icon icon="fa-solid fa-rotate" />
-              </a>
+      <br><br>
+      <div class="col-sm-5 col-md-4">
+        <draggable
+          v-model="repos"
+          @sort="saveReposOrder"
+          item-key="id"
+        >
+          <template #item="{element, index}">
+            <div v-cloak>
+              <div class="draggable">[[ element.name ]]
+                <a href="javascript:void(0)" @click="deleteRepo(element.id, index)" class="icon">
+                  <font-awesome-icon icon="fa-solid fa-trash" />
+                </a>
+                <a href="javascript:void(0)" @click="loadCommitDataForRepo(element.id)" class="icon">
+                  <font-awesome-icon icon="fa-solid fa-rotate" />
+                </a>
+              </div>
             </div>
-          </div>
-        </template>
-      </draggable>
+          </template>
+        </draggable>
+      </div>
     </div>
-  </div>
 {% endblock %}
 
 {% block js %}
