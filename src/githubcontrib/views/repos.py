@@ -73,11 +73,10 @@ class LoadCommitDataView(AjaxView):
         gh = Github()
         for repo in repos:
             commit_data = gh.get_commit_data(user.username, repo.name)
-            Commit.objects.filter(repo=repo).delete()
             for commit in commit_data:
                 url: str = commit["url"]
                 message: str = commit["message"]
-                Commit.objects.create(
+                Commit.objects.update_or_create(
                     repo=repo,
                     url=url,
                     message=message,
