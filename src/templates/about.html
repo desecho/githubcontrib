@@ -4,16 +4,31 @@
 
 {% block content %}
   <legend>{% translate 'About GitHubContrib' %}</legend>
-  {% blocktranslate %}
-    <p>
-      GitHubContrib allows you to have a profile page with your open-source contributions.<br>
-      It also shows the number of stars you have for your repositories.<br>
-      You can only add repositories that don't belong to you.
-    </p>
-    <p>If you have any issues, questions or feedback email me at <a href="mailto:desecho@gmail.com">desecho@gmail.com</a>.</p>
-    <p>Development:<br>
-      The <a href="https://docs.github.com/en/rest" target="_blank">GitHub API</a> is used in GitHubContrib.<br>
-      The source code is available on GitHub — <a href="https://github.com/desecho/githubcontrib" target="_blank">GitHubContrib</a>.
-    </p>
-  {% endblocktranslate %}
+  <div class="row">
+    <div class="col-sm-6 mb-2">
+      {% blocktranslate %}
+        <p>Have a profile page with your open-source contributions.</p>
+        <h5>Features</h5>
+        <ul>
+          <li>Show the total number of stars you have for your repositories</li>
+          <li>Have custom order for repositories</li>
+        </ul>
+        <h5>Tips</h5>
+        <ul>
+          <li>You can only add repositories that don't belong to you</li>
+        </ul>
+        <h5>API used</h5>
+        <ul>
+          <li><a href="https://docs.github.com/en/rest" target="_blank">GitHub</a></li>
+        </ul>
+        <h5>Source code</h5>
+        <p>The source code is available <a href="https://github.com/desecho/githubcontrib" target="_blank">on GitHub</a>.</p>
+        <h5>Contact info</h5>
+        <p>
+          If you have any issues, questions or feedback please email me at
+          <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>.
+        </p>
+      {% endblocktranslate %}
+    </div>
+  </div>
 {% endblock %}

@@ -2,6 +2,7 @@
 from django.http import HttpRequest
 
 from .models import User
+from .types import UntypedObject
 
 
 class AuthenticatedHttpRequest(HttpRequest):
@@ -10,3 +11,9 @@ class AuthenticatedHttpRequest(HttpRequest):
     LANGUAGE_CODE = ""
 
     user: User
+
+
+class AuthenticatedAjaxHttpRequest(AuthenticatedHttpRequest):
+    """Authenticated AJAX request."""
+
+    PUT: UntypedObject = {}

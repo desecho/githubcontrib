@@ -24,7 +24,7 @@ export function initAxios(vm) {
   axios.interceptors.response.use(null, function(error) {
     if (error.response.status === 403) {
       vm.$toast.info(
-          gettext('You need to login to add a movie to your list'));
+          gettext('You don\'t have permission to perform this action'));
       return new Promise(() => {});
     }
     return Promise.reject(error);

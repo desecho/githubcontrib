@@ -5,7 +5,7 @@ from unittest.mock import patch
 from django.urls import reverse
 
 from githubcontrib.github import Github
-from githubcontrib.models import Commit
+from githubcontrib.models import Commit, Repo
 
 from ..base import BaseTestLoginCase
 from ..fixtures import commits_jieter, commits_python_social_auth, repo
@@ -168,3 +168,26 @@ class RepoLoadCommitDataTestCase(BaseTestLoginCase):
         commits = Commit.objects.filter(repo__user=self.user)
         self.assertListEqual(list(commits.values_list("pk", flat=True)), [1])
         self.assertIn("jieter/django-tables2", commits[0].url)
+
+
+class SaveReposOrderTestCase(BaseTestLoginCase):
+    fixtures = [
+        "users.json",
+        "repos.json",
+    ]
+
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("save_repos_order")
+
+    def test_repos_order(self):
+        response = self.client.put_ajax(self.url, {"repos": [{"id": 1, "order": 2}, {"id": 2, "order": 1}]})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        repo1 = Repo.objects.get(pk=1)
+        self.assertEqual(repo1.order, 2)
+        repo2 = Repo.objects.get(pk=2)
+        self.assertEqual(repo2.order, 1)
+
+    def test_repos_order_bad_request(self):
+        response = self.client.put_ajax(self.url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)

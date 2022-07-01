@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
 from ..github import Github
-from ..http import AuthenticatedHttpRequest
+from ..http import AuthenticatedAjaxHttpRequest, AuthenticatedHttpRequest
 from ..models import Commit, Repo
 from .mixins import AjaxView, TemplateView
 from .types import MyReposViewContextData
@@ -97,4 +97,21 @@ class RepoLoadCommitDataView(AjaxView):
         """Load commit data."""
         repo = get_object_or_404(Repo, user=request.user, pk=repo_id)
         load_commit_data(repo)
+        return self.success()
+
+
+class SaveReposOrderView(AjaxView):
+    """Save repos order view."""
+
+    def put(self, request: AuthenticatedAjaxHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+        """Save repos order."""
+        try:
+            repos = request.PUT["repos"]
+        except KeyError:
+            response: HttpResponseBadRequest = self.render_bad_request_response()
+            return response
+
+        for repo in repos:
+            # If repo id is not found we silently ignore it
+            Repo.objects.filter(pk=repo["id"], user=request.user).update(order=repo["order"])
         return self.success()

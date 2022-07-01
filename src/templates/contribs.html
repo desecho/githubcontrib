@@ -17,7 +17,7 @@
       <div class="repo">{{ repo }}</div>
       <ul>
         {% for commit in repo.commits.all %}
-          <li class="ml-5">
+          <li>
             {{ commit.message }} [{{ commit.date|date:"j F Y" }}]
             <a href="{{ commit.url }}" target="_blank">
               <font-awesome-icon icon="fa-solid fa-external-link-square" />

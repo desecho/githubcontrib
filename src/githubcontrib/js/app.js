@@ -4,6 +4,7 @@ import VueToast from 'vue-toast-notification';
 import VueCookie from 'vue-cookies';
 import {createApp} from 'vue';
 import {library} from '@fortawesome/fontawesome-svg-core';
+import draggable from 'vuedraggable';
 
 /* import font awesome icon component */
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
@@ -27,6 +28,7 @@ export function newApp(options) {
   app.use(VueCookie);
 
   app.component('FontAwesomeIcon', FontAwesomeIcon);
+  app.component('Draggable', draggable); // eslint-disable-line vue/multi-word-component-names
 
   return app;
 }

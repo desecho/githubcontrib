@@ -12,7 +12,14 @@ from django.views.i18n import JavaScriptCatalog
 from githubcontrib.views.about import AboutView
 from githubcontrib.views.contribs import ContribsView, MyContribsView
 from githubcontrib.views.home import HomeView
-from githubcontrib.views.repos import LoadCommitDataView, MyReposView, RepoDeleteView, RepoLoadCommitDataView, RepoView
+from githubcontrib.views.repos import (
+    LoadCommitDataView,
+    MyReposView,
+    RepoDeleteView,
+    RepoLoadCommitDataView,
+    RepoView,
+    SaveReposOrderView,
+)
 from githubcontrib.views.user import (
     AccountDeletedView,
     AccountDeleteView,
@@ -65,6 +72,7 @@ urlpatterns += [
     path("repository/<int:repo_id>/", RepoDeleteView.as_view(), name="repo"),
     path("repository/", RepoView.as_view(), name="repo"),
     path("load-commit-data/", LoadCommitDataView.as_view(), name="load_commit_data"),
+    path("save-repos-order/", SaveReposOrderView.as_view(), name="save_repos_order"),
     #
     # Contribs
     path("my-contributions/", MyContribsView.as_view(), name="my_contribs"),

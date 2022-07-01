@@ -25,15 +25,25 @@
       {% translate 'Load/Update commits' %}
     </button>
     <br><br>
-    <div v-cloak>
-      <div v-for="repo in repos">[[ repo.name ]]
-        <a href="javascript:void(0)" @click="deleteRepo(repo.id)" class="icon">
-          <font-awesome-icon icon="fa-solid fa-trash" />
-        </a>
-        <a href="javascript:void(0)" @click="loadCommitDataForRepo(repo.id)" class="icon">
-          <font-awesome-icon icon="fa-solid fa-rotate" />
-        </a>
-      </div>
+    <div class="col-sm-5 col-md-4">
+      <draggable
+        v-model="repos"
+        @sort="saveReposOrder"
+        item-key="id"
+      >
+        <template #item="{element, index}">
+          <div v-cloak>
+            <div class="draggable">[[ element.name ]]
+              <a href="javascript:void(0)" @click="deleteRepo(element.id, index)" class="icon">
+                <font-awesome-icon icon="fa-solid fa-trash" />
+              </a>
+              <a href="javascript:void(0)" @click="loadCommitDataForRepo(element.id)" class="icon">
+                <font-awesome-icon icon="fa-solid fa-rotate" />
+              </a>
+            </div>
+          </div>
+        </template>
+      </draggable>
     </div>
   </div>
 {% endblock %}
@@ -44,6 +54,8 @@
 
     urls.repo = '{% url 'repo' %}';
     urls.loadCommitData = '{% url 'load_commit_data' %}';
+    urls.saveReposOrder = '{% url 'save_repos_order' %}';
+
     vars.repos = JSON.parse('{{ repos|escapejs|safe }}');
   </script>
   <script src="{% static 'js/myRepos.js' %}"></script>

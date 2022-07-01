@@ -9,6 +9,7 @@ from django.db.models import (
     ForeignKey,
     Model,
     PositiveIntegerField,
+    PositiveSmallIntegerField,
     TextField,
     UniqueConstraint,
     URLField,
@@ -41,6 +42,7 @@ class Repo(Model):
 
     user = ForeignKey(User, CASCADE, related_name="repos")
     name = CharField(max_length=255)
+    order = PositiveSmallIntegerField(default=0)
 
     def __str__(self) -> str:
         """Return string representation."""
@@ -49,7 +51,7 @@ class Repo(Model):
     class Meta:
         """Meta."""
 
-        ordering = ["name"]
+        ordering = ["order", "name"]
         constraints = [
             # A user should not have duplicated repos
             UniqueConstraint(fields=("user", "name"), name="unique_user_name_repo"),
