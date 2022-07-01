@@ -14,7 +14,7 @@
   <br>
   {% for repo in repos %}
     {% if repo.commits.all.count > 0 %}
-      <div class="repo">{{ repo }}</div>
+      <div class="repo">{{ repo.name }}</div>
       <ul>
         {% for commit in repo.commits.all %}
           <li>
