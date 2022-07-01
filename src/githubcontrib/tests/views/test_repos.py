@@ -169,6 +169,11 @@ class RepoLoadCommitDataTestCase(BaseTestLoginCase):
         self.assertListEqual(list(commits.values_list("pk", flat=True)), [1])
         self.assertIn("jieter/django-tables2", commits[0].url)
 
+    def test_load_commit_data_404(self):
+        url = reverse("repo_load_commit_data", args=(5,))
+        response = self.client.post_ajax(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
 
 class SaveReposOrderTestCase(BaseTestLoginCase):
     fixtures = [
