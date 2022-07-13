@@ -484,6 +484,18 @@ endif
 prod-manage:
 	scripts/run_management_command_prod.sh ${PROD_MANAGE_ARGS} $(arguments)
 
+ifeq (prod-manage-interactive,$(firstword $(MAKECMDGOALS)))
+  # Use the rest as arguments
+  PROD_MANAGE_INTERACTIVE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # Turn them into do-nothing targets
+  $(eval $(PROD_MANAGE_INTERACTIVE_ARGS):;@:)
+endif
+
+.PHONY: prod-manage-interactive
+## Run management command in prod (interactive). Usage: make prod-manage [command] arguments="[arguments]"
+prod-manage-interactive:
+	scripts/run_management_command_interactive_prod.sh ${PROD_MANAGE_INTERACTIVE_ARGS} $(arguments)
+
 .PHONY: prod-shell
 ## Run shell in prod
 prod-shell:
