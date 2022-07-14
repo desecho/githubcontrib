@@ -1,5 +1,5 @@
 """Types for views."""
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 from django.db.models import QuerySet
 from typing_extensions import TypedDict
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 class HomeViewContextData(TypedDict):
     """Home view context data."""
 
-    usernames: List[str]
+    usernames: list[str]
 
 
 class ContribsViewContextData(TypedDict):

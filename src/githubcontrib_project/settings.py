@@ -2,7 +2,6 @@
 
 from os import getenv
 from os.path import abspath, dirname, join
-from typing import List
 
 import django_stubs_ext
 import sentry_sdk
@@ -109,7 +108,7 @@ MIDDLEWARE = [
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
 
-TEMPLATES: List[TemplatesSettings] = [
+TEMPLATES: list[TemplatesSettings] = [
     {
         "NAME": "Main",
         "BACKEND": "django.template.backends.django.DjangoTemplates",

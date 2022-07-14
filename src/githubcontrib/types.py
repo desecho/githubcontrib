@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple, TypeAlias
+from typing import Any, Optional, TypeAlias
 
 from typing_extensions import NotRequired, TypedDict
 
@@ -26,9 +26,9 @@ class CommitType(TypedDict):
 class TemplatesSettingsOptions(TypedDict):
     """Templates settings options."""
 
-    context_processors: List[str]
-    loaders: List[str | Tuple[str, List[str]]]
-    builtins: List[str]
+    context_processors: list[str]
+    loaders: list[str | tuple[str, list[str]]]
+    builtins: list[str]
 
 
 class TemplatesSettings(TypedDict):
@@ -36,9 +36,9 @@ class TemplatesSettings(TypedDict):
 
     NAME: str
     BACKEND: str
-    DIRS: NotRequired[List[str]]
+    DIRS: NotRequired[list[str]]
     OPTIONS: NotRequired[TemplatesSettingsOptions]
     APP_DIRS: NotRequired[Optional[bool]]
 
 
-UntypedObject: TypeAlias = Dict[str, Any]
+UntypedObject: TypeAlias = dict[str, Any]

@@ -1,5 +1,5 @@
 """URL Configuration."""
-from typing import List, Union
+from typing import Union
 
 import debug_toolbar
 from django.conf import settings
@@ -31,7 +31,7 @@ from githubcontrib.views.user import (
 admin.autodiscover()
 
 URL = Union[URLPattern, URLResolver]
-URLList = List[URL]
+URLList = list[URL]
 
 urlpatterns: URLList = []
 
