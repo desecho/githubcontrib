@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Optional, TypeAlias
 
+from django.urls import URLPattern, URLResolver
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -42,3 +43,4 @@ class TemplatesSettings(TypedDict):
 
 
 UntypedObject: TypeAlias = dict[str, Any]
+URL: TypeAlias = URLPattern | URLResolver

@@ -1,14 +1,13 @@
 """URL Configuration."""
-from typing import Union
-
 import debug_toolbar
 from django.conf import settings
 from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
-from django.urls import URLPattern, URLResolver, path
+from django.urls import path
 from django.views.i18n import JavaScriptCatalog
 
+from githubcontrib.types import URL
 from githubcontrib.views.about import AboutView
 from githubcontrib.views.contribs import ContribsView, MyContribsView
 from githubcontrib.views.home import HomeView
@@ -30,7 +29,6 @@ from githubcontrib.views.user import (
 
 admin.autodiscover()
 
-URL = Union[URLPattern, URLResolver]
 URLList = list[URL]
 
 urlpatterns: URLList = []
