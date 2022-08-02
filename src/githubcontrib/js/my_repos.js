@@ -35,7 +35,7 @@ newApp({
     addRepo() {
       function success(response) {
         if (response.data.status === 'success') {
-          vm.repos.push({
+          vm.repos.unshift({
             id: response.data.id,
             name: vm.name,
           });
