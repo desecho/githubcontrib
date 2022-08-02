@@ -23,8 +23,8 @@
       </div>
     </div>
     <footer class="container-fluid py-3">
-      <a href="{% url 'about' %}">{% translate 'About GitHubContrib' %}</a>
-      | Copyright © {% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>
+      <a href="{% url 'about' %}">{% translate 'About GitHubContrib' %}</a><br>
+      © 2017-{% now 'Y' %} <a href="mailto:{{ ADMIN_EMAIL }}">{{ ADMIN_EMAIL }}</a>. All rights reserved.
     </footer>
 
     <script src="{% url 'javascript-catalog' %}"></script>
