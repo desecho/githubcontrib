@@ -1,7 +1,7 @@
 GitHubContrib
 ==========================================================
 
-|Deployment Status| |Requirements Status| |Codecov|
+|Deployment Status| |Codecov|
 
 The web application on Django_ 4, Vue.js_ 3, Bootstrap_ 4, `Font Awesome`_ 6.
 
@@ -51,9 +51,6 @@ Fonts used
 
 .. |Deployment Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
    :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
-
-.. |Requirements Status| image:: https://requires.io/github/desecho/githubcontrib/requirements.svg?branch=master
-   :target: https://requires.io/github/desecho/githubcontrib/requirements/?branch=master
 
 .. |Codecov| image:: https://codecov.io/gh/desecho/githubcontrib/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/desecho/githubcontrib
