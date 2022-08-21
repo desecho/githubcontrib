@@ -22,6 +22,7 @@ Cron jobs are run with `GitHub Actions`_. Time zone is UTC.
 - ``DB backup`` runs at 09:00 UTC (05:00 EDT) daily
 - ``Update avatars`` runs at 08:00 UTC (04:00 EDT) on the first day of the month
 - ``Update stars`` runs at 07:00 UTC (03:00 EDT) on the first day of the month
+- ``Update GitHub actions`` runs at 04:00 UTC (00:00 EDT) on the first day of the month
 
 CI/CD
 ----------------------------
@@ -45,6 +46,7 @@ The following GitHub Actions are used:
 * Cache_
 * `Docker Setup Buildx`_
 * `Set Timezone`_
+* `GitHub Actions Version Updater`_
 
 .. _GitHub Actions: https://github.com/features/actions
 
@@ -60,3 +62,4 @@ The following GitHub Actions are used:
 .. _Kubectl tool installer: https://github.com/marketplace/actions/kubectl-tool-installer
 .. _DigitalOcean Spaces Upload Action: https://github.com/marketplace/actions/digitalocean-spaces-upload-action
 .. _Set Timezone: https://github.com/marketplace/actions/set-timezone
+.. _GitHub Actions Version Updater: https://github.com/marketplace/actions/github-actions-version-updater
