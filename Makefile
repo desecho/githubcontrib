@@ -1,14 +1,17 @@
+.SILENT:
 .DEFAULT_GOAL := help
 
-include help.mk
+include makefiles/colors.mk
+include makefiles/help.mk
+include makefiles/deps.mk
 
 export PROJECT := githubcontrib
-export APP := ${PROJECT}
+export APP := $(PROJECT)
 export BUCKET := scrap-db-backups
 export DOCKER_SECRETS_ENV_FILE := docker_secrets.env
 
-ENV_FILE := env.sh
-ENV_CUSTOM_FILE := env_custom.sh
+ENV_FILE         := env.sh
+ENV_CUSTOM_FILE  := env_custom.sh
 ENV_SECRETS_FILE := env_secrets.sh
 DB_ENV_PROD_FILE := db_env_prod.sh
 
@@ -19,48 +22,16 @@ PYTHON := python3.10
 #------------------------------------
 # Installation
 #------------------------------------
-BIN_DIR := /usr/local/bin
-
-SHFMT_VERSION := 3.4.3
-SHFMT_PATH := ${BIN_DIR}/shfmt
-
-.PHONY: install-shfmt
-## Install shfmt | Installation
-install-shfmt:
-	sudo curl https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64 -Lo ${SHFMT_PATH}
-	sudo chmod +x ${SHFMT_PATH}
-
-HADOLINT_VERSION := 2.10.0
-HADOLINT_PATH := ${BIN_DIR}/hadolint
-
-.PHONY: install-hadolint
-## Install hadolint
-install-hadolint:
-	sudo curl https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64 -Lo ${HADOLINT_PATH}
-	sudo chmod +x ${HADOLINT_PATH}
-
-ACTIONLINT_VERSION := 1.6.13
-ACTIONLINT_PATH := ${BIN_DIR}/actionlint
-ACTIONLINT_URL := https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz
-ACTIONLINT_TMP_DIR := $(shell mktemp -d)
-ACTIONLINT_ARCHIVE := actionlint.tar.gz
-.PHONY: install-actionlint
-## Install actionlint
-install-actionlint:
-	cd ${ACTIONLINT_TMP_DIR} && \
-	curl ${ACTIONLINT_URL} -Lo ${ACTIONLINT_ARCHIVE} && \
-	tar -xvf ${ACTIONLINT_ARCHIVE} && \
-	sudo mv actionlint ${ACTIONLINT_PATH}
 
 .PHONY: install-linters-binaries
-## Install linters binaries
-install-linters-binaries: install-shfmt install-hadolint install-actionlint
+## Install linters binaries | Installation
+install-linters-binaries: .install-shfmt .install-hadolint .install-actionlint .install-shellcheck
 
 .PHONY: install-deps
 ## Install dependencies
 install-deps: install-linters-binaries
 	# Install Python
-	sudo apt install ${PYTHON} ${PYTHON}-venv ${PYTHON}-dev -y
+	sudo apt install $(PYTHON) $(PYTHON)-venv $(PYTHON)-dev -y
 	# Install MySQL dependencies
 	sudo apt install libmysqlclient-dev -y
 	# Install dependency for makemessages
@@ -69,9 +40,9 @@ install-deps: install-linters-binaries
 .PHONY: create-venv
 ## Create venv and install requirements
 create-venv:
-	${PYTHON} -m venv venv
-	${SOURCE_CMDS} && \
-		pip install -r requirements-dev.txt
+	$(PYTHON) -m venv venv
+	$(SOURCE_CMDS) \
+		&& pip install -r requirements-dev.txt
 
 .PHONY: create-tox-venv
 ## Create tox venv and install requirements
@@ -102,7 +73,7 @@ bootstrap: yarn-install-locked create-env-files create-venvs create-db migrate y
 create-env-files: $(ENV_CUSTOM_FILE) $(ENV_SECRETS_FILE) $(DB_ENV_PROD_FILE) $(DOCKER_SECRETS_ENV_FILE)
 
 $(DOCKER_SECRETS_ENV_FILE):
-	cp "${DOCKER_SECRETS_ENV_FILE}.tpl" $(DOCKER_SECRETS_ENV_FILE)
+	cp $(DOCKER_SECRETS_ENV_FILE).tpl $(DOCKER_SECRETS_ENV_FILE)
 
 $(ENV_CUSTOM_FILE):
 	cp $(ENV_CUSTOM_FILE).tpl $(ENV_CUSTOM_FILE)
@@ -204,7 +175,7 @@ mypy:
 .PHONY: eslint
 ## Run eslint linter
 eslint:
-	yarn run eslint "./*.js" "src/${APP}/js/*.js"
+	yarn run eslint "./*.js" "src/$(APP)/js/*.js"
 
 .PHONY: shfmt
 ## Run shfmt linter
@@ -258,11 +229,11 @@ prettier-yaml-lint:
 .PHONY: update-venvs
 ## Update packages in venv and tox venv with current requirements | Development
 update-venvs:
-	${SOURCE_CMDS} && \
-	pip install -r requirements-dev.txt && \
-	deactivate && \
-	source .tox/py/bin/activate && \
-	pip install -r requirements-dev.txt
+	$(SOURCE_CMDS) \
+		&& pip install -r requirements-dev.txt \
+		&& deactivate \
+		&& source .tox/py/bin/activate \
+		&& pip install -r requirements-dev.txt
 
 .PHONY: delete-venvs
 delete-venvs:
@@ -297,14 +268,14 @@ build:
 .PHONY: drop-db
 ## Drop db
 drop-db:
-	source $(ENV_FILE) && \
-	scripts/drop_db.sh
+	source $(ENV_FILE) \
+		&& scripts/drop_db.sh
 
 .PHONY: load-db
 ## Load db from today's backup
 load-db: drop-db create-db
-	source $(ENV_FILE) && \
-	./scripts/load_db.sh
+	source $(ENV_FILE) \
+		&& ./scripts/load_db.sh
 #------------------------------------
 
 #------------------------------------
@@ -313,10 +284,10 @@ load-db: drop-db create-db
 .PHONY: format
 ## Format python code | Formatting
 format:
-	${SOURCE_CMDS} && \
-	autoflake --remove-all-unused-imports --in-place -r src && \
-	isort src && \
-	black .
+	$(SOURCE_CMDS) \
+		&& autoflake --remove-all-unused-imports --in-place -r src \
+		&& isort src \
+		&& black .
 
 .PHONY: format-json
 ## Format json files
@@ -331,7 +302,7 @@ format-scss:
 .PHONY: format-js
 ## Format js files
 format-js:
-	yarn run eslint ./*.js src/${APP}/js/*.js --fix
+	yarn run eslint ./*.js src/$(APP)/js/*.js --fix
 
 .PHONY: format-sh
 ## Format sh files
@@ -361,15 +332,15 @@ MANAGE_CMD := src/manage.py
 .PHONY: makemessages
 ## Run makemessages | Django
 makemessages:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} makemessages -a --ignore=venv --ignore=.tox --ignore=static && \
-	${MANAGE_CMD} makemessages -a -d djangojs --ignore=src/${APP}/static --ignore=node_modules --ignore=venv --ignore=.tox --ignore=static
+	$(SOURCE_CMDS) \
+	&& $(MANAGE_CMD) makemessages -a --ignore=venv --ignore=.tox --ignore=static \
+	&& $(MANAGE_CMD) makemessages -a -d djangojs --ignore=src/$(APP)/static --ignore=node_modules --ignore=venv --ignore=.tox --ignore=static
 
 .PHONY: runserver
 ## Run server for development
 runserver:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} runserver 0.0.0.0:8000
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) runserver 0.0.0.0:8000
 
 .PHONY: run
 ## Run server for development
@@ -378,33 +349,33 @@ run: runserver
 .PHONY: migrate
 ## Run data migration
 migrate:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} migrate
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) migrate
 
 .PHONY: collectstatic
 ## Collect static files
 collectstatic:
-	${SOURCE_CMDS} && \
-	export IS_DEV= && \
-	${MANAGE_CMD} collectstatic --no-input
+	$(SOURCE_CMDS) \
+		&& export IS_DEV= \
+		&& $(MANAGE_CMD) collectstatic --no-input
 
 .PHONY: createsuperuser
 ## Create super user
 createsuperuser:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} createsuperuser
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) createsuperuser
 
 .PHONY: shell
 ## Run shell
 shell:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} shell
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) shell
 
 .PHONY: makemigrations
 ## Run makemigrations command. Usage: make makemigrations arguments="[arguments]"
 makemigrations:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} makemigrations $(arguments) ${APP}
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) makemigrations $(arguments) $(APP)
 
 ifeq (manage,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
@@ -416,8 +387,8 @@ endif
 .PHONY: manage
 ## Run management command. Usage: make manage [command] arguments="[arguments]"
 manage:
-	${SOURCE_CMDS} && \
-	${MANAGE_CMD} ${MANAGE_ARGS} $(arguments)
+	$(SOURCE_CMDS) \
+		&& $(MANAGE_CMD) ${MANAGE_ARGS} $(arguments)
 #------------------------------------
 
 #------------------------------------
@@ -428,7 +399,7 @@ export DOCKER_ENV_FILE := docker.env
 .PHONY: docker-build
 ## Build image | Docker
 docker-build:
-	docker build -t ${PROJECT} .
+	docker build -t $(PROJECT) .
 
 .PHONY: docker-run
 ## Run server in docker
@@ -438,7 +409,7 @@ docker-run: collectstatic
 .PHONY: docker-sh
 ## Run docker shell
 docker-sh:
-	docker run -ti --env-file ${DOCKER_ENV_FILE} --env-file $(DOCKER_SECRETS_ENV_FILE) ${PROJECT} sh
+	docker run -ti --env-file $(DOCKER_ENV_FILE) --env-file $(DOCKER_SECRETS_ENV_FILE) $(PROJECT) sh
 #------------------------------------
 
 #------------------------------------
@@ -447,26 +418,26 @@ docker-sh:
 .PHONY: prod-create-db
 ## Create prod db | Production
 prod-create-db:
-	source $(DB_ENV_PROD_FILE) && \
-	scripts/create_db.sh
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/create_db.sh
 
 .PHONY: prod-drop-db
 ## Drop prod db
 prod-drop-db:
-	source $(DB_ENV_PROD_FILE) && \
-	scripts/drop_db.sh
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/drop_db.sh
 
 .PHONY: prod-load-db
 ## Load db to prod from today's backup
 prod-load-db: prod-drop-db prod-create-db
-	source $(DB_ENV_PROD_FILE) && \
-	./scripts/load_db.sh
+	source $(DB_ENV_PROD_FILE) \
+		&& ./scripts/load_db.sh
 
 .PHONY: prod-connect-db
 ## Connect to prod db
 prod-connect-db:
-	source $(DB_ENV_PROD_FILE) && \
-	scripts/connect_db.sh
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/connect_db.sh
 
 ifeq (prod-manage,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
@@ -478,7 +449,7 @@ endif
 .PHONY: prod-manage
 ## Run management command in prod. Usage: make prod-manage [command] arguments="[arguments]"
 prod-manage:
-	scripts/run_management_command_prod.sh ${PROD_MANAGE_ARGS} $(arguments)
+	scripts/run_management_command_prod.sh $(PROD_MANAGE_ARGS) $(arguments)
 
 ifeq (prod-manage-interactive,$(firstword $(MAKECMDGOALS)))
   # Use the rest as arguments
@@ -490,7 +461,7 @@ endif
 .PHONY: prod-manage-interactive
 ## Run management command in prod (interactive). Usage: make prod-manage [command] arguments="[arguments]"
 prod-manage-interactive:
-	scripts/run_management_command_interactive_prod.sh ${PROD_MANAGE_INTERACTIVE_ARGS} $(arguments)
+	scripts/run_management_command_interactive_prod.sh $(PROD_MANAGE_INTERACTIVE_ARGS) $(arguments)
 
 .PHONY: prod-shell
 ## Run shell in prod
@@ -506,5 +477,5 @@ prod-migrate:
 ## Enable debug in prod. It will be reset with the next deployment
 prod-enable-debug:
 	yq eval '.data.DEBUG="True"' deployment/configmap.yaml | kubectl apply -f -
-	kubectl rollout restart "deployment/${PROJECT}"
+	kubectl rollout restart deployment/$(PROJECT)
 #------------------------------------

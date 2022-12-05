@@ -50,9 +50,6 @@ jobs:
       - name: Install linters binaries
         run: make install-linters-binaries
 
-      - name: Install shellcheck
-        run: sudo apt install shellcheck -y
-
       - name: Install tox
         run: pip install tox
 
