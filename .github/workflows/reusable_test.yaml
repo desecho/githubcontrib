@@ -8,27 +8,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.3.0
 
       - name: Set up Python
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: "3.10"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org
 
       - name: Use npm cache
-        uses: actions/cache@v3.0.11
+        uses: actions/cache@v3.2.4
         with:
           path: ~/.npm
           key: npm
 
       - name: Use node_modules cache
-        uses: actions/cache@v3.0.11
+        uses: actions/cache@v3.2.4
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('package-test.json') }}
@@ -36,13 +36,13 @@ jobs:
             node_modules-
 
       - name: Use pip cache
-        uses: actions/cache@v3.0.11
+        uses: actions/cache@v3.2.4
         with:
           path: ~/.cache/pip
           key: pip
 
       - name: Use tox cache
-        uses: actions/cache@v3.0.11
+        uses: actions/cache@v3.2.4
         with:
           path: .tox
           key: tox-${{ hashFiles('requirements.txt', 'requirements-dev.txt') }}
