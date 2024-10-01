@@ -1,5 +1,5 @@
 [MASTER]
-load-plugins=pylint.extensions.no_self_use,pylint.extensions.emptystring
+load-plugins=pylint.extensions.no_self_use
 ignore=migrations,fixtures
 
 [FORMAT]
@@ -11,4 +11,4 @@ output-format=colorized
 [MESSAGES CONTROL]
 # Disable no-member because looks like it is being detected improperly.
 # Disable invalid-name because it seem to mostly work incorrectly.
-disable=no-member,invalid-name,missing-docstring,too-many-arguments,arguments-differ,too-few-public-methods,fixme,abstract-method,too-many-locals,too-many-ancestors
+disable=no-member,invalid-name,missing-docstring,too-many-arguments,arguments-differ,too-few-public-methods,fixme,abstract-method,too-many-locals,too-many-ancestors,too-many-positional-arguments
