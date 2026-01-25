@@ -1,4 +1,5 @@
 """GitHub."""
+
 import github
 from django.conf import settings
 from github.GithubException import UnknownObjectException

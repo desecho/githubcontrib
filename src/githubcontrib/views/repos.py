@@ -1,4 +1,5 @@
 """Repos views."""
+
 import json
 import re
 from typing import Any
@@ -29,7 +30,7 @@ class MyReposView(TemplateView):
 class RepoView(AjaxView):
     """Repo view."""
 
-    def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+    def post(self, request: AuthenticatedHttpRequest) -> HttpResponse | HttpResponseBadRequest:
         """Add repo."""
         try:
             name = request.POST["name"]
@@ -103,7 +104,7 @@ class RepoLoadCommitDataView(AjaxView):
 class SaveReposOrderView(AjaxView):
     """Save repos order view."""
 
-    def put(self, request: AuthenticatedAjaxHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+    def put(self, request: AuthenticatedAjaxHttpRequest) -> HttpResponse | HttpResponseBadRequest:
         """Save repos order."""
         try:
             repos = request.PUT["repos"]

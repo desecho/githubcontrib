@@ -1,4 +1,5 @@
 """Middlewares."""
+
 import json
 from typing import Callable
 

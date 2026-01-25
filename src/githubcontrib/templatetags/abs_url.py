@@ -1,4 +1,5 @@
 """Template tag for absolute URL."""
+
 from typing import Any
 
 from django import template

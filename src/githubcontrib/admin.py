@@ -1,4 +1,5 @@
 """Admin."""
+
 from django.contrib.admin import site
 from django.contrib.auth.models import Group
 from social_django.models import Association, Nonce

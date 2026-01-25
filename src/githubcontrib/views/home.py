@@ -1,4 +1,5 @@
 """Home view."""
+
 from typing import Any
 
 from ..models import User

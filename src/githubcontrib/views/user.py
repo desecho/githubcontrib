@@ -1,4 +1,5 @@
 """User views."""
+
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -20,7 +21,7 @@ from ..types import UntypedObject
 from .mixins import AjaxView, TemplateAnonymousView, TemplateView
 
 
-def logout_view(request: HttpRequest) -> (HttpResponseRedirect | HttpResponsePermanentRedirect):
+def logout_view(request: HttpRequest) -> HttpResponseRedirect | HttpResponsePermanentRedirect:
     """Return response for the logout view."""
     logout(request)
     return redirect("/")
@@ -42,7 +43,7 @@ class SavePreferencesView(AjaxView):
                 return True
         return False
 
-    def post(self, request: AuthenticatedHttpRequest) -> (HttpResponse | HttpResponseBadRequest):
+    def post(self, request: AuthenticatedHttpRequest) -> HttpResponse | HttpResponseBadRequest:
         """Return response for the save preferences view."""
         try:
             language = request.POST["language"]

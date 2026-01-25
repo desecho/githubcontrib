@@ -1,4 +1,5 @@
 """Base code for tests."""
+
 from django.test import TestCase
 from django.test.client import Client
 

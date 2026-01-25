@@ -1,4 +1,5 @@
 """Mixins."""
+
 from typing import Any, Optional
 
 from braces.views import JsonRequestResponseMixin, LoginRequiredMixin

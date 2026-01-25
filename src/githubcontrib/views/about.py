@@ -1,4 +1,5 @@
 """About view."""
+
 from .mixins import TemplateAnonymousView
 
 

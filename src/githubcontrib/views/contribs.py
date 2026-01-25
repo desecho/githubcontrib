@@ -1,4 +1,5 @@
 """Contribs views."""
+
 from typing import Any, Union
 
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect

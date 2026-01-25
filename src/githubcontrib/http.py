@@ -1,4 +1,5 @@
 """HTTP classes."""
+
 from django.http import HttpRequest
 
 from .models import User
