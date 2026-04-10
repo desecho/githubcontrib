@@ -16,8 +16,10 @@ ENV_SECRETS_FILE := env_secrets.sh
 DB_ENV_PROD_FILE := db_env_prod.sh
 
 SHELL := /bin/bash
-SOURCE_CMDS := source venv/bin/activate && source $(ENV_FILE) && source $(ENV_CUSTOM_FILE) && source $(ENV_SECRETS_FILE)
-PYTHON := python3.12
+VENV_DIR := .venv
+SOURCE_CMDS := source $(VENV_DIR)/bin/activate && source $(ENV_FILE) && source $(ENV_CUSTOM_FILE) && source $(ENV_SECRETS_FILE)
+PYTHON_VERSION := 3.12
+PYTHON := python$(PYTHON_VERSION)
 
 #------------------------------------
 # Installation
@@ -36,21 +38,22 @@ install-deps: install-linters-binaries
 	sudo apt install libmysqlclient-dev -y
 	# Install dependency for makemessages
 	sudo apt install gettext -y
+	# Install Python tooling
+	pip3 install uv tox
 
 .PHONY: create-venv
-## Create venv and install requirements
+## Create venv and sync dependencies
 create-venv:
-	$(PYTHON) -m venv venv
-	$(SOURCE_CMDS) \
-		&& pip install -r requirements-dev.txt
+	uv venv --python $(PYTHON_VERSION)
+	uv sync
 
 .PHONY: create-tox-venv
-## Create tox venv and install requirements
+## Create tox venv and sync dependencies
 create-tox-venv:
 	tox -e py-requirements
 
 .PHONY: create-venvs
-## Create venv and tox venv and install requirements
+## Create venv and tox venv and sync dependencies
 create-venvs: create-venv create-tox-venv
 
 .PHONY: yarn-install-locked
@@ -85,13 +88,6 @@ $(DB_ENV_PROD_FILE):
 	cp $(DB_ENV_PROD_FILE).tpl $(DB_ENV_PROD_FILE)
 #------------------------------------
 
-#------------------------------------
-# Scripts
-#------------------------------------
-.PHONY: pydiatra-script
-pydiatra-script:
-	scripts/pydiatra.sh
-
 .PHONY: djhtml-script
 djhtml-script:
 	scripts/djhtml.sh lint
@@ -117,40 +113,10 @@ test: shellcheck hadolint shfmt actionlint tox eslint prettier-json-lint prettie
 tox:
 	tox
 
-.PHONY: pydiatra
-## Run pydiatra linter
-pydiatra:
-	tox -e py-pydiatra
-
-.PHONY: pylint
-## Run pylint linter
-pylint:
-	tox -e py-pylint
-
-.PHONY: flake8
-## Run flake8 linter
-flake8:
-	tox -e py-flake8
-
-.PHONY: isort
-## Run isort linter
-isort:
-	tox -e py-isort
-
-.PHONY: bandit
-## Run bandit linter
-bandit:
-	tox -e py-bandit
-
 .PHONY: rstlint
 ## Run rstlint linter
 rstlint:
 	tox -e py-rstlint
-
-.PHONY: pydocstyle
-## Run pydocstyle linter
-pydocstyle:
-	tox -e py-pydocstyle
 
 .PHONY: safety
 ## Run safety linter
@@ -162,10 +128,10 @@ safety:
 pytest:
 	tox -e py-pytest
 
-.PHONY: black
-## Run black linter
-black:
-	tox -e py-black
+.PHONY: ruff
+## Run ruff linter
+ruff:
+	tox -e py-ruff
 
 .PHONY: mypy
 ## Run mypy linter
@@ -227,17 +193,14 @@ prettier-yaml-lint:
 # Development
 #------------------------------------
 .PHONY: update-venvs
-## Update packages in venv and tox venv with current requirements | Development
+## Sync packages in venv and tox venv | Development
 update-venvs:
-	$(SOURCE_CMDS) \
-		&& pip install -r requirements-dev.txt \
-		&& deactivate \
-		&& source .tox/py/bin/activate \
-		&& pip install -r requirements-dev.txt
+	uv sync
+	tox -e py-requirements
 
 .PHONY: delete-venvs
 delete-venvs:
-	rm -rf venv
+	rm -rf $(VENV_DIR)
 	rm -rf .tox
 
 .PHONY: recreate-venvs
@@ -276,6 +239,16 @@ drop-db:
 load-db: drop-db create-db
 	source $(ENV_FILE) \
 		&& ./scripts/load_db.sh
+
+.PHONY: uv-update
+## Update python packages
+uv-update:
+	uv lock --upgrade
+
+.PHONY: uv-show-outdated
+## Show outdated python packages
+uv-show-outdated:
+	uv pip list --outdated
 #------------------------------------
 
 #------------------------------------
@@ -285,9 +258,7 @@ load-db: drop-db create-db
 ## Format python code | Formatting
 format:
 	$(SOURCE_CMDS) \
-		&& autoflake --remove-all-unused-imports --in-place -r src \
-		&& isort src \
-		&& black .
+		&& ruff format src
 
 .PHONY: format-json
 ## Format json files
@@ -333,8 +304,8 @@ MANAGE_CMD := src/manage.py
 ## Run makemessages | Django
 makemessages:
 	$(SOURCE_CMDS) \
-	&& $(MANAGE_CMD) makemessages -a --ignore=venv --ignore=.tox --ignore=static \
-	&& $(MANAGE_CMD) makemessages -a -d djangojs --ignore=src/$(APP)/static --ignore=node_modules --ignore=venv --ignore=.tox --ignore=static
+	&& $(MANAGE_CMD) makemessages -a --ignore=$(VENV_DIR) --ignore=.tox --ignore=static \
+	&& $(MANAGE_CMD) makemessages -a -d djangojs --ignore=src/$(APP)/static --ignore=node_modules --ignore=$(VENV_DIR) --ignore=.tox --ignore=static
 
 .PHONY: runserver
 ## Run server for development
@@ -399,7 +370,7 @@ export DOCKER_ENV_FILE := docker.env
 .PHONY: docker-build
 ## Build image | Docker
 docker-build:
-	docker build -t $(PROJECT) .
+	docker build -t $(PROJECT):backend .
 
 .PHONY: docker-run
 ## Run server in docker
@@ -409,7 +380,7 @@ docker-run: collectstatic
 .PHONY: docker-sh
 ## Run docker shell
 docker-sh:
-	docker run -ti --env-file $(DOCKER_ENV_FILE) --env-file $(DOCKER_SECRETS_ENV_FILE) $(PROJECT) sh
+	docker run -ti --env-file $(DOCKER_ENV_FILE) --env-file $(DOCKER_SECRETS_ENV_FILE) $(PROJECT):backend sh
 #------------------------------------
 
 #------------------------------------

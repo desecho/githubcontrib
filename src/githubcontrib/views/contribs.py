@@ -30,7 +30,10 @@ class MyContribsView(TemplateView):
     template_name = ""
 
     def get(  # type: ignore
-        self, request: AuthenticatedHttpRequest, *args: Any, **kwargs: Any  # pylint: disable=unused-argument
+        self,
+        request: AuthenticatedHttpRequest,
+        *args: Any,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:
         """Get."""
         return redirect(reverse("contribs", args=(request.user.username,)))

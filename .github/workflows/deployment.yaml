@@ -82,11 +82,11 @@ jobs:
           restore-keys: |
             yarn-
 
-      - name: Use pip cache
+      - name: Use uv cache
         uses: actions/cache@v4.2.3
         with:
-          path: ~/.cache/pip
-          key: pip
+          path: ~/.cache/uv
+          key: uv
 
       # Need to use this because yarn cache is not working properly
       - name: Use node_modules cache
@@ -100,8 +100,11 @@ jobs:
       - name: Use venv cache
         uses: actions/cache@v4.2.3
         with:
-          path: venv
-          key: venv-${{ hashFiles('requirements.txt', 'requirements-dev.txt') }}
+          path: .venv
+          key: venv-${{ hashFiles('pyproject.toml', 'uv.lock') }}
+
+      - name: Install uv
+        run: pip install uv
 
       - name: Install js dependencies
         run: make yarn-install-locked
