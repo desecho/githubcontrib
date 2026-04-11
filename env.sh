@@ -12,6 +12,8 @@ export SECRET_KEY=key
 export PROJECT_DOMAIN=localhost
 export INTERNAL_IP=127.0.0.1
 export STATIC_URL=/static/
+export FRONTEND_URL=http://localhost:5173
+export FRONTEND_URL2=
 export SENTRY_DSN=
 export GOOGLE_ANALYTICS_ID=id
 

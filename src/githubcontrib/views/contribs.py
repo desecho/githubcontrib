@@ -1,39 +1,67 @@
 """Contribs views."""
 
-from typing import Any, Union
+from http import HTTPStatus
 
-from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from rest_framework.permissions import AllowAny
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from ..http import AuthenticatedHttpRequest
-from ..models import User
-from .mixins import TemplateAnonymousView, TemplateView
-from .types import ContribsViewContextData
+from ..models import Commit, Repo, User
 
 
-class ContribsView(TemplateAnonymousView):
+def serialize_commit(commit: Commit) -> dict[str, int | str]:
+    """Serialize a commit."""
+    return {
+        "id": commit.pk,
+        "url": commit.url,
+        "date": commit.date.isoformat(),
+        "message": commit.message,
+    }
+
+
+def serialize_repo(repo: Repo) -> dict[str, int | str | list[dict[str, int | str]]]:
+    """Serialize a repo with commits."""
+    return {
+        "id": repo.pk,
+        "name": repo.name,
+        "commits": [serialize_commit(commit) for commit in repo.commits.all()],
+    }
+
+
+def serialize_contributions(
+    user: User,
+) -> dict[str, int | str | None | list[dict[str, int | str | list[dict[str, int | str]]]]]:
+    """Serialize contribution page data."""
+    repos = user.repos.all().prefetch_related("commits")
+    return {
+        "username": user.username,
+        "avatar": user.avatar,
+        "githubProfileUrl": user.github_profile_url,
+        "stars": user.stars,
+        "repos": [serialize_repo(repo) for repo in repos],
+    }
+
+
+class ContributionsView(APIView):
     """Contribs view."""
 
-    template_name = "contribs.html"
+    permission_classes = [AllowAny]
 
-    def get_context_data(self, **kwargs: Any) -> ContribsViewContextData:  # type: ignore  # pylint: disable=no-self-use
-        """Get context data."""
-        user = get_object_or_404(User, username=kwargs["username"])
-        repos = user.repos.all().prefetch_related("commits")
-        return {"repos": repos, "selected_user": user}
+    def get(self, request: Request, username: str) -> Response:
+        """Get contributions for a user."""
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return Response(status=HTTPStatus.NOT_FOUND)
+
+        return Response(serialize_contributions(user))
 
 
-class MyContribsView(TemplateView):
-    """My contribs view."""
+class MyContributionsView(APIView):
+    """Current user contribs view."""
 
-    template_name = ""
-
-    def get(  # type: ignore
-        self,
-        request: AuthenticatedHttpRequest,
-        *args: Any,
-        **kwargs: Any,  # pylint: disable=unused-argument
-    ) -> Union[HttpResponseRedirect, HttpResponsePermanentRedirect]:
-        """Get."""
-        return redirect(reverse("contribs", args=(request.user.username,)))
+    def get(self, request: Request) -> Response:
+        """Get current user's contribution route data."""
+        user: User = request.user  # type: ignore[assignment]
+        return Response(serialize_contributions(user))

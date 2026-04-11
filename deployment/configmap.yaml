@@ -4,10 +4,12 @@ kind: ConfigMap
 metadata:
   name: githubcontrib
 data:
-  PROJECT_DOMAIN: githubcontrib.samarchyan.me
+  PROJECT_DOMAIN: api.githubcontrib.samarchyan.me
   ADMIN_EMAIL: desecho@gmail.com
   DB_HOST: mysql
   DB_USER: githubcontrib
   STATIC_URL: https://cdn.githubcontrib.samarchyan.me/
+  FRONTEND_URL: https://githubcontrib.samarchyan.me
+  FRONTEND_URL2: ""
   GOOGLE_ANALYTICS_ID: G-4LNTLBZCVM
   REDIS_URL: redis://redis:6379

@@ -1,39 +1,23 @@
 """Base code for tests."""
 
 from django.test import TestCase
-from django.test.client import Client
+from rest_framework.test import APIClient
 
 from githubcontrib.models import User
 
 CONTENT_TYPE = "application/json"
 
 
-class BaseClient(Client):
+class BaseClient(APIClient):
     """Base client class."""
 
-    def post_ajax(
-        self,
-        path,
-        data=None,
-        content_type=CONTENT_TYPE,
-        follow=False,
-        secure=False,
-        **extra,
-    ):
-        """Perform an AJAX POST request."""
-        return self.post(path, data, content_type, follow, secure, **extra)
+    def post_json(self, path, data=None, **extra):
+        """Perform a JSON POST request."""
+        return self.post(path, data, format="json", **extra)
 
-    def put_ajax(
-        self,
-        path,
-        data="",
-        content_type=CONTENT_TYPE,
-        follow=False,
-        secure=False,
-        **extra,
-    ):
-        """Perform an AJAX PUT request."""
-        return self.put(path, data, content_type, follow, secure, **extra)
+    def put_json(self, path, data=None, **extra):
+        """Perform a JSON PUT request."""
+        return self.put(path, data, format="json", **extra)
 
 
 class BaseTestCase(TestCase):
@@ -57,13 +41,13 @@ class BaseTestCase(TestCase):
         """Login."""
         if username is None:
             username = self.USER_USERNAME
-        self.client.logout()
-        self.client.login(username=username, password=self.USER_PASSWORD)
+        user = User.objects.get(username=username)
+        self.client.force_authenticate(user=user)
 
     @property
     def is_authenticated(self):
         """Return True if user is authenticated."""
-        return "_auth_user_id" in self.client.session.keys()
+        return self.client.handler._force_user is not None  # type: ignore[attr-defined]
 
 
 class BaseTestLoginCase(BaseTestCase):

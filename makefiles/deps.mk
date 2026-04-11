@@ -1,16 +1,5 @@
 BIN_DIR := /usr/local/bin
 
-# shfmt
-# https://github.com/mvdan/sh/releases
-SHFMT_VERSION := 3.5.1
-SHFMT_PATH    := $(BIN_DIR)/shfmt
-
-.PHONY: .install-shfmt
-.install-shfmt:
-	$(call print,Installing shfmt)
-	sudo curl https://github.com/mvdan/sh/releases/download/v$(SHFMT_VERSION)/shfmt_v$(SHFMT_VERSION)_linux_amd64 -Lo $(SHFMT_PATH)
-	sudo chmod +x $(SHFMT_PATH)
-
 # shellcheck
 # https://github.com/koalaman/shellcheck/releases
 SHELLCHECK_VERSION := 0.8.0

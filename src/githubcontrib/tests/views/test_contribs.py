@@ -25,29 +25,34 @@ class ContributionsTestCase(BaseTestLoginCase):
         "repos.json",
     ]
 
-    def contribs(self, page, with_username=True, status_code=HTTPStatus.OK):
-        username = "neo"
-        args = (username,) if with_username else None
-        url = reverse(page, args=args)
+    def contribs(self, status_code=HTTPStatus.OK):
+        url = reverse("contributions", args=("neo",))
         response = self.client.get(url)
         self.assertEqual(response.status_code, status_code)
-        if status_code == HTTPStatus.FOUND:
-            response = self.client.get(url, follow=True)
-        repos = list(response.context_data["repos"].values_list("pk", flat=True))
-        self.assertListEqual(repos, [1, 2])
-        self.assertEqual(response.context_data["selected_user"].username, username)
+        data = response.json()
+        repos = data["repos"]
+        self.assertListEqual([repo["id"] for repo in repos], [1, 2])
+        self.assertEqual(data["username"], "neo")
+        self.assertEqual(data["githubProfileUrl"], "https://github.com/neo")
 
     def test_contribs(self):
-        self.contribs("contribs")
+        self.contribs()
 
     def test_contribs_anonymous(self):
-        self.client.logout()
-        self.contribs("contribs")
+        self.client.force_authenticate(user=None)
+        self.contribs()
 
     def test_my_contribs(self):
-        self.contribs("my_contribs", False, HTTPStatus.FOUND)
+        url = reverse("my_contributions")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        data = response.json()
+        repos = data["repos"]
+        self.assertListEqual([repo["id"] for repo in repos], [1, 2])
+        self.assertEqual(data["username"], "neo")
+        self.assertEqual(data["githubProfileUrl"], "https://github.com/neo")
 
     def test_contribs_not_found(self):
-        url = reverse("contribs", args=("potato",))
+        url = reverse("contributions", args=("potato",))
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)

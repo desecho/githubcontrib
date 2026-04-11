@@ -6,15 +6,15 @@ from ..base import BaseTestLoginCase
 
 
 class HomeTestCase(BaseTestLoginCase):
-    def test_home(self):
-        url = reverse("home")
+    def test_users(self):
+        url = reverse("users")
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman"])
+        self.assertListEqual(response.json(), ["fox", "ironman"])
 
-    def test_home_anonymous(self):
-        self.client.logout()
-        url = reverse("home")
+    def test_users_anonymous(self):
+        self.client.force_authenticate(user=None)
+        url = reverse("users")
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertListEqual(list(response.context_data["usernames"]), ["fox", "ironman", "neo"])
+        self.assertListEqual(response.json(), ["fox", "ironman", "neo"])

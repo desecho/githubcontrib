@@ -1,5 +1,6 @@
 """Django settings for GitHubContrib project."""
 
+from datetime import timedelta
 from os import getenv
 from os.path import abspath, dirname, join
 
@@ -29,9 +30,12 @@ sentry_sdk.init(  # pylint: disable=abstract-class-instantiated
 IS_DEV = bool(getenv("IS_DEV"))
 COLLECT_STATIC = bool(getenv("COLLECT_STATIC"))
 SRC_DIR = dirname(dirname(abspath(__file__)))
+APP = "githubcontrib"
 PROJECT_DIR = dirname(SRC_DIR)
 PROJECT_DOMAIN = getenv("PROJECT_DOMAIN")
 REDIS_URL = getenv("REDIS_URL")
+FRONTEND_URL = getenv("FRONTEND_URL", "http://localhost:5173")
+FRONTEND_URL2 = getenv("FRONTEND_URL2")
 
 # Debug
 DEBUG = bool(getenv("DEBUG"))
@@ -66,12 +70,13 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Custom
     "admin_reorder",
-    "rosetta",
     "social_django",
-    "menu",
-    "githubcontrib",
+    "rest_framework",
+    "corsheaders",
+    APP,
 ]
 if DEBUG:  # pragma: no cover
     INSTALLED_APPS += [
@@ -86,14 +91,11 @@ if not DEBUG:  # pragma: no cover
         }
     }
 
-if IS_DEV or COLLECT_STATIC:  # pragma: no cover
-    INSTALLED_APPS.append("django.contrib.staticfiles")
-
 MIDDLEWARE = [
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -102,8 +104,6 @@ MIDDLEWARE = [
     "django.middleware.gzip.GZipMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "admin_reorder.middleware.ModelAdminReorder",
-    "githubcontrib.middleware.AjaxHandlerMiddleware",
-    "githubcontrib.middleware.language_middleware",
 ]
 if DEBUG:  # pragma: no cover
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
@@ -112,45 +112,21 @@ TEMPLATES: list[TemplatesSettings] = [
     {
         "NAME": "Main",
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [join(SRC_DIR, "templates")],
+        "DIRS": [],
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # Custom
-                "django.template.context_processors.i18n",
-                "django.template.context_processors.media",
-                "django.template.context_processors.static",
-                # social_django
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
-                # githubcontrib
-                "githubcontrib.context_processors.variables",
             ],
-            "loaders": [
-                (
-                    "django.template.loaders.cached.Loader",
-                    [
-                        "django.template.loaders.filesystem.Loader",
-                        "django.template.loaders.app_directories.Loader",
-                    ],
-                ),
-            ],
-            "builtins": ["django.templatetags.static", "django.templatetags.i18n"],
         },
     }
 ]
-if IS_DEV:  # pragma: no cover
-    TEMPLATES[0]["OPTIONS"]["loaders"] = [
-        "django.template.loaders.filesystem.Loader",
-        "django.template.loaders.app_directories.Loader",
-    ]
 
 # Static files
 if IS_DEV:  # pragma: no cover
-    STATICFILES_DIRS = (join(SRC_DIR, "githubcontrib", "static"),)
     STATIC_ROOT = None
 else:
     STATIC_ROOT = join(PROJECT_DIR, "static")
@@ -165,6 +141,9 @@ MEDIA_URL = "/media/"
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = [f"https://{PROJECT_DOMAIN}"]
+CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+if FRONTEND_URL2:  # pragma: no cover
+    CORS_ALLOWED_ORIGINS.append(FRONTEND_URL2)
 
 # Authentification
 AUTH_PASSWORD_VALIDATORS = [
@@ -189,22 +168,38 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Internationalization
-LANGUAGE_CODE = "en"
-LANGUAGES = (
-    ("en", "English"),
-    ("ru", "Русский"),
-)
-LOCALE_PATHS = (join(SRC_DIR, "locale"),)
+LANGUAGE_CODE = "en-us"
+USE_I18N = True
 
 # Timezone
 TIME_ZONE = "US/Eastern"
 USE_TZ = True
 
 # Login
-LOGIN_REDIRECT_URL = "/"
-LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/auth/success/"
+LOGIN_URL = "/auth/login/github/"
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL
 
 # --== Modules settings ==--
+
+# Django REST framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
+}
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (

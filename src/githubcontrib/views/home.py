@@ -1,22 +1,23 @@
-"""Home view."""
+"""User list views."""
 
-from typing import Any
+from rest_framework.permissions import AllowAny
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from ..models import User
-from .mixins import TemplateAnonymousView
-from .types import HomeViewContextData
 
 
-class HomeView(TemplateAnonymousView):
-    """Home view."""
+class UsersView(APIView):
+    """Users view."""
 
-    template_name = "home.html"
+    permission_classes = [AllowAny]
 
-    def get_context_data(self, **kwargs: Any) -> HomeViewContextData:  # type: ignore
-        """Get context data."""
+    def get(self, request: Request) -> Response:
+        """Get public user list."""
         users = User.objects.exclude(username="admin")
-        user = self.request.user
+        user = request.user
         if user.is_authenticated:
             users = users.exclude(pk=user.pk)
         usernames = list(users.values_list("username", flat=True))
-        return {"usernames": usernames}
+        return Response(usernames)

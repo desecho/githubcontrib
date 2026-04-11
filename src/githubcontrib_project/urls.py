@@ -1,32 +1,22 @@
 """URL Configuration."""
 
-import debug_toolbar
 from django.conf import settings
-from django.conf.urls import include
 from django.contrib import admin
-from django.contrib.auth.views import LoginView
-from django.urls import path
-from django.views.i18n import JavaScriptCatalog
+from django.urls import include, path
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from githubcontrib.types import URL
-from githubcontrib.views.about import AboutView
-from githubcontrib.views.contribs import ContribsView, MyContribsView
-from githubcontrib.views.home import HomeView
+from githubcontrib.views.common import HealthView
+from githubcontrib.views.contribs import ContributionsView, MyContributionsView
+from githubcontrib.views.home import UsersView
 from githubcontrib.views.repos import (
     LoadCommitDataView,
-    MyReposView,
     RepoDeleteView,
     RepoLoadCommitDataView,
-    RepoView,
+    ReposView,
     SaveReposOrderView,
 )
-from githubcontrib.views.user import (
-    AccountDeletedView,
-    AccountDeleteView,
-    PreferencesView,
-    SavePreferencesView,
-    logout_view,
-)
+from githubcontrib.views.user import MeView, auth_success_view
 
 admin.autodiscover()
 
@@ -35,46 +25,30 @@ URLList = list[URL]
 urlpatterns: URLList = []
 
 if settings.DEBUG:  # pragma: no cover
+    import debug_toolbar
+
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
     ]
 
 urlpatterns += [
-    path("about/", AboutView.as_view(), name="about"),
-    #
-    # User
-    path("login/", LoginView.as_view(template_name="user/login.html"), name="login"),
-    path("logout/", logout_view, name="logout"),
-    path("account/delete/", AccountDeleteView.as_view(), name="delete_account"),
-    path("account/deleted/", AccountDeletedView.as_view(), name="account_deleted"),
-    #
-    # Preferences
-    path("preferences/", PreferencesView.as_view(), name="preferences"),
-    path("save-preferences/", SavePreferencesView.as_view(), name="save_preferences"),
-    #
+    # Health
+    path("health/", HealthView.as_view(), name="health"),
     # Services
     path("admin/", admin.site.urls),
-    path("", include("social_django.urls", namespace="social")),
-    path(
-        "jsi18n/",
-        JavaScriptCatalog.as_view(packages=("githubcontrib",), domain="djangojs"),
-        name="javascript-catalog",
-    ),
-    path("i18n/", include("django.conf.urls.i18n")),
-    path("rosetta/", include("rosetta.urls")),
-    # -------------------------------------------------------------------------------------------
-    path("", HomeView.as_view(), name="home"),
-    #
+    # Auth
+    path("auth/", include("social_django.urls", namespace="social")),
+    path("auth/success/", auth_success_view, name="auth_success"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # User
+    path("me/", MeView.as_view(), name="me"),
+    path("users/", UsersView.as_view(), name="users"),
+    path("users/<str:username>/contributions/", ContributionsView.as_view(), name="contributions"),
+    path("my-contributions/", MyContributionsView.as_view(), name="my_contributions"),
     # Repos
-    path("my-repositories/", MyReposView.as_view(), name="my_repos"),
-    path("repository/<int:repo_id>/load-commit-data/", RepoLoadCommitDataView.as_view(), name="repo_load_commit_data"),
-    path("repository/<int:repo_id>/", RepoDeleteView.as_view(), name="repo"),
-    path("repository/", RepoView.as_view(), name="repo"),
-    path("load-commit-data/", LoadCommitDataView.as_view(), name="load_commit_data"),
-    path("save-repos-order/", SaveReposOrderView.as_view(), name="save_repos_order"),
-    #
-    # Contribs
-    path("my-contributions/", MyContribsView.as_view(), name="my_contribs"),
-    # This route has to be in the end
-    path("<str:username>/", ContribsView.as_view(), name="contribs"),
+    path("repos/", ReposView.as_view(), name="repos"),
+    path("repos/<int:repo_id>/", RepoDeleteView.as_view(), name="repo"),
+    path("repos/load-commit-data/", LoadCommitDataView.as_view(), name="load_commit_data"),
+    path("repos/<int:repo_id>/load-commit-data/", RepoLoadCommitDataView.as_view(), name="repo_load_commit_data"),
+    path("repos/save-order/", SaveReposOrderView.as_view(), name="save_repos_order"),
 ]

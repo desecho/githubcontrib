@@ -1,68 +1,78 @@
 """Repos views."""
 
-import json
 import re
-from typing import Any
+from http import HTTPStatus
+from typing import Any, cast
 
-from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
-from django.utils.translation import gettext_lazy as _
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from ..github import Github
-from ..http import AuthenticatedAjaxHttpRequest, AuthenticatedHttpRequest
-from ..models import Commit, Repo
-from .mixins import AjaxView, TemplateView
-from .types import MyReposViewContextData
+from ..models import Commit, Repo, User
 
 
-class MyReposView(TemplateView):
+def serialize_repo(repo: Repo) -> dict[str, int | str]:
+    """Serialize repo list item."""
+    return {
+        "id": repo.pk,
+        "name": repo.name,
+        "order": repo.order,
+    }
+
+
+def error(detail: str, message_type: str = "error", status: HTTPStatus = HTTPStatus.BAD_REQUEST) -> Response:
+    """Return an API error response."""
+    return Response({"detail": detail, "messageType": message_type}, status=status)
+
+
+def get_user(request: Request) -> User:
+    """Return authenticated user from request."""
+    return cast(User, request.user)
+
+
+class ReposView(APIView):
     """My repos view."""
 
-    template_name = "my_repos.html"
+    def get(self, request: Request) -> Response:
+        """Get current user's repos."""
+        user = get_user(request)
+        return Response([serialize_repo(repo) for repo in user.repos.all()])
 
-    def get_context_data(self, **kwargs: Any) -> MyReposViewContextData:  # type: ignore
-        """Get context data."""
-        request: AuthenticatedHttpRequest = self.request  # type: ignore
-        repos = [{"id": repo.id, "name": repo.name} for repo in request.user.repos.all()]
-        return {"repos": json.dumps(repos)}
-
-
-class RepoView(AjaxView):
-    """Repo view."""
-
-    def post(self, request: AuthenticatedHttpRequest) -> HttpResponse | HttpResponseBadRequest:
+    def post(self, request: Request) -> Response:
         """Add repo."""
         try:
-            name = request.POST["name"]
+            name = request.data["name"]
         except KeyError:
-            response: HttpResponseBadRequest = self.render_bad_request_response()
-            return response
+            return Response(status=HTTPStatus.BAD_REQUEST)
 
-        if re.match(r".+/.+", name) is None:
-            return self.fail(_("Repository name is incorrect"))
-        user = request.user
+        if not isinstance(name, str) or re.fullmatch(r"[^/]+/[^/]+", name) is None:
+            return error("Repository name is incorrect")
+        user = get_user(request)
         username, __ = name.split("/")
         if username == user.username:
-            return self.fail(_("You cannot add your own repository"), self.MESSAGE_WARNING)
+            return error("You cannot add your own repository", "warning")
         if Github().is_repo_exists(name):
             if not user.repos.filter(name=name).exists():
-                repo_id = Repo.objects.create(name=name, user=user).pk
-                return self.success(id=repo_id)
-            return self.fail(_("Repository already exists"), self.MESSAGE_WARNING)
-        return self.fail(_("Repository not found"))
+                repo = Repo.objects.create(name=name, user=user)
+                return Response(serialize_repo(repo), status=HTTPStatus.CREATED)
+            return error("Repository already exists", "warning")
+        return error("Repository not found", status=HTTPStatus.NOT_FOUND)
 
 
-class RepoDeleteView(AjaxView):
+class RepoDeleteView(APIView):
     """Repo delete view."""
 
-    def delete(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
+    def delete(self, request: Request, repo_id: int) -> Response:
         """Delete repo."""
-        repos = request.user.repos.filter(pk=repo_id)
+        user = get_user(request)
+        repos = user.repos.filter(pk=repo_id)
         if repos.exists():
             repos.delete()
         else:
-            return self.fail(_("Repository not found"))
-        return self.success()
+            return error("Repository not found", status=HTTPStatus.NOT_FOUND)
+        return Response(status=HTTPStatus.NO_CONTENT)
 
 
 def load_commit_data(repo: Repo) -> None:
@@ -75,44 +85,58 @@ def load_commit_data(repo: Repo) -> None:
         Commit.objects.update_or_create(
             repo=repo,
             url=url,
-            message=message,
-            date=commit["date"],
+            defaults={
+                "message": message,
+                "date": commit["date"],
+            },
         )
 
 
-class LoadCommitDataView(AjaxView):
+class LoadCommitDataView(APIView):
     """Load commit data view."""
 
-    def post(self, request: AuthenticatedHttpRequest) -> HttpResponse:
+    def post(self, request: Request) -> Response:
         """Load commit data for all repos."""
-        repos = request.user.repos.all()
+        user = get_user(request)
+        repos = user.repos.all()
         for repo in repos:
             load_commit_data(repo)
-        return self.success()
+        return Response()
 
 
-class RepoLoadCommitDataView(AjaxView):
+class RepoLoadCommitDataView(APIView):
     """Repo load commit data view."""
 
-    def post(self, request: AuthenticatedHttpRequest, repo_id: int) -> HttpResponse:
+    def post(self, request: Request, repo_id: int) -> Response:
         """Load commit data."""
-        repo = get_object_or_404(Repo, user=request.user, pk=repo_id)
+        user = get_user(request)
+        repo = get_object_or_404(Repo, user=user, pk=repo_id)
         load_commit_data(repo)
-        return self.success()
+        return Response()
 
 
-class SaveReposOrderView(AjaxView):
+class SaveReposOrderView(APIView):
     """Save repos order view."""
 
-    def put(self, request: AuthenticatedAjaxHttpRequest) -> HttpResponse | HttpResponseBadRequest:
+    def put(self, request: Request) -> Response:
         """Save repos order."""
         try:
-            repos = request.PUT["repos"]
+            repos = request.data["repos"]
         except KeyError:
-            response: HttpResponseBadRequest = self.render_bad_request_response()
-            return response
+            return Response(status=HTTPStatus.BAD_REQUEST)
 
+        if not isinstance(repos, list):
+            return Response(status=HTTPStatus.BAD_REQUEST)
+
+        user = get_user(request)
         for repo in repos:
+            if not isinstance(repo, dict):
+                return Response(status=HTTPStatus.BAD_REQUEST)
+            try:
+                repo_id = int(cast(Any, repo)["id"])
+                order = int(cast(Any, repo)["order"])
+            except (KeyError, TypeError, ValueError):
+                return Response(status=HTTPStatus.BAD_REQUEST)
             # If repo id is not found we silently ignore it
-            Repo.objects.filter(pk=repo["id"], user=request.user).update(order=repo["order"])
-        return self.success()
+            Repo.objects.filter(pk=repo_id, user=user).update(order=order)
+        return Response()

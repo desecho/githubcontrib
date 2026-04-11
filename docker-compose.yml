@@ -16,3 +16,7 @@ services:
       - 8080:80
     volumes:
       - "./static/:/usr/share/nginx/html"
+  frontend:
+    image: ${PROJECT}:frontend
+    ports:
+      - 5173:80

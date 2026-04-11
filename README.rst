@@ -3,7 +3,7 @@ GitHubContrib
 
 |Deployment Status| |Codecov|
 
-The web application on Django_ 4, Vue.js_ 3, Bootstrap_ 4, `Font Awesome`_ 6.
+The project is split into a Django_ API backend and a Vue.js_ 3 frontend built with Vite_ and Vuetify_.
 
 It allows you to have a profile page with your opensource contributions.
 
@@ -25,12 +25,19 @@ Development
 5. Run ``make createsuperuser`` to create a superadmin user
 6. Edit files ``env_custom.sh`` and ``env_secrets.sh``
 
-| Run ``make build`` and ``make run`` to run the server for development.
+| Run ``make run`` to run the backend on http://localhost:8000/.
+| Run ``make dev`` to run the frontend on http://localhost:5173/.
 | Run ``make help`` to get a list of all available commands.
 
-| Open http://localhost:8000/ to access the web application.
+| Open http://localhost:5173/ to access the web application.
 | Open http://localhost:8000/admin to access the admin section.
-| Open http://localhost:8000/rosetta to access Rosetta.
+
+GitHub OAuth callback URLs should point at the backend, for example:
+
+* ``http://localhost:8000/auth/complete/github/`` for local development
+* ``https://<backend-domain>/auth/complete/github/`` for production
+
+Set ``FRONTEND_URL`` to the frontend origin so the backend can redirect OAuth users back with JWT tokens.
 
 Run in Docker:
 
@@ -45,10 +52,6 @@ To use production commands:
 1. Edit file ``db_env_prod.sh``
 2. Activate the kubectl context
 
-Fonts used
-----------------------------
-* Orbitron_ for logo.
-
 .. |Deployment Status| image:: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml/badge.svg
    :target: https://github.com/desecho/githubcontrib/actions/workflows/deployment.yaml
 
@@ -57,11 +60,10 @@ Fonts used
 
 .. _documentation: https://github.com/desecho/githubcontrib/blob/master/doc.rst
 .. _Vue.js: https://vuejs.org/
-.. _Bootstrap: https://getbootstrap.com/
 .. _Django: https://www.djangoproject.com/
+.. _Vite: https://vitejs.dev/
+.. _Vuetify: https://vuetifyjs.com/
 .. _ubuntu-vm: https://github.com/desecho/ubuntu-vm
 .. _macos-setup: https://github.com/desecho/macos-setup
 .. _mysql-docker: https://github.com/desecho/mysql-docker
 .. _redis-docker: https://github.com/desecho/redis-docker
-.. _Orbitron: https://fonts.google.com/specimen/Orbitron
-.. _Font Awesome: https://fontawesome.com/

@@ -18,27 +18,22 @@ DB_ENV_PROD_FILE := db_env_prod.sh
 SHELL := /bin/bash
 VENV_DIR := .venv
 SOURCE_CMDS := source $(VENV_DIR)/bin/activate && source $(ENV_FILE) && source $(ENV_CUSTOM_FILE) && source $(ENV_SECRETS_FILE)
+CMD_FRONTEND := cd frontend && source $(ENV_FILE)
 PYTHON_VERSION := 3.12
 PYTHON := python$(PYTHON_VERSION)
 
 #------------------------------------
 # Installation
 #------------------------------------
-
 .PHONY: install-linters-binaries
 ## Install linters binaries | Installation
-install-linters-binaries: .install-shfmt .install-hadolint .install-actionlint .install-shellcheck
+install-linters-binaries: .install-hadolint .install-actionlint .install-shellcheck
 
 .PHONY: install-deps
 ## Install dependencies
 install-deps: install-linters-binaries
-	# Install Python
 	sudo apt install $(PYTHON) $(PYTHON)-venv $(PYTHON)-dev -y
-	# Install MySQL dependencies
 	sudo apt install libmysqlclient-dev -y
-	# Install dependency for makemessages
-	sudo apt install gettext -y
-	# Install Python tooling
 	pip3 install uv tox
 
 .PHONY: create-venv
@@ -57,19 +52,23 @@ create-tox-venv:
 create-venvs: create-venv create-tox-venv
 
 .PHONY: yarn-install-locked
-## Run yarn install using lockfile
+## Run frontend yarn install using lockfile
 yarn-install-locked:
-	yarn install --frozen-lockfile
+	$(CMD_FRONTEND) && yarn install --immutable
+
+.PHONY: yarn-install
+## Run frontend yarn install
+yarn-install:
+	$(CMD_FRONTEND) && yarn install
 
 .PHONY: create-db
 ## Create db
 create-db:
-	source $(ENV_FILE) && \
-	scripts/create_db.sh
+	source $(ENV_FILE) && scripts/create_db.sh
 
 .PHONY: bootstrap
 ## Bootstrap project
-bootstrap: yarn-install-locked create-env-files create-venvs create-db migrate yarn-build
+bootstrap: yarn-install-locked create-env-files create-venvs create-db migrate build
 
 .PHONY: create-env-files
 ## Create env files
@@ -86,12 +85,44 @@ $(ENV_SECRETS_FILE):
 
 $(DB_ENV_PROD_FILE):
 	cp $(DB_ENV_PROD_FILE).tpl $(DB_ENV_PROD_FILE)
+
+#------------------------------------
+# Docker commands
+#------------------------------------
+export DOCKER_ENV_FILE := docker.env
+
+.PHONY: docker-build-dev
+## Build docker images | Docker
+docker-build-dev: docker-build-backend docker-build-frontend-dev
+
+.PHONY: docker-build-backend
+## Build docker backend image
+docker-build-backend:
+	$(call print,Building Docker backend image)
+	@docker build -t "${PROJECT}:backend" .
+
+.PHONY: docker-build-frontend-dev
+## Build docker frontend image
+docker-build-frontend-dev:
+	$(call print,Building Docker frontend image)
+	docker build --build-arg VITE_BACKEND_URL="http://localhost:8000/" -t "${PROJECT}:frontend" ./frontend
+
+.PHONY: docker-run
+## Run server in docker
+docker-run: collectstatic
+	$(call print,Running server in docker)
+	@docker-compose up
+
+.PHONY: docker-sh
+## Run docker shell
+docker-sh:
+	$(call print,Running docker shell)
+	@docker run -ti --env-file ${DOCKER_ENV_FILE} --env-file $(DOCKER_SECRETS_ENV_FILE) ${PROJECT}:backend sh
 #------------------------------------
 
-.PHONY: djhtml-script
-djhtml-script:
-	scripts/djhtml.sh lint
-
+#------------------------------------
+# Scripts
+#------------------------------------
 .PHONY: backup-db
 backup-db:
 	scripts/backup_db.sh
@@ -99,14 +130,18 @@ backup-db:
 .PHONY: flush-cdn-cache
 flush-cdn-cache:
 	scripts/flush_cdn_cache.sh
-#------------------------------------
 
 #------------------------------------
 # Tests
 #------------------------------------
 .PHONY: test
 ## Run tests | Tests
-test: shellcheck hadolint shfmt actionlint tox eslint prettier-json-lint prettier-scss-lint prettier-yaml-lint
+test: shellcheck hadolint actionlint tox eslint prettier-json-lint prettier-scss-lint prettier-yaml-lint \
+	prettier-ts-lint prettier-vue-lint test-frontend ts-lint
+
+.PHONY: test-python
+## Run Python tests
+test-python: ruff mypy pytest
 
 .PHONY: tox
 ## Run tox
@@ -138,56 +173,60 @@ ruff:
 mypy:
 	tox -e py-mypy
 
-.PHONY: eslint
-## Run eslint linter
-eslint:
-	yarn run eslint "./*.js" "src/$(APP)/js/*.js"
+.PHONY: test-frontend
+## Run frontend tests
+test-frontend:
+	$(CMD_FRONTEND) && yarn run test:run
 
-.PHONY: shfmt
-## Run shfmt linter
-shfmt:
-	shfmt -l -d .
+.PHONY: eslint
+## Run frontend eslint
+eslint:
+	$(CMD_FRONTEND) && yarn run eslint src/**/*.ts src/*.ts ./*.ts src/App.vue src/components/*.vue src/views/*.vue
+
+.PHONY: ts-lint
+## Run frontend TypeScript linter
+ts-lint:
+	$(CMD_FRONTEND) && npx vue-tsc --noEmit
 
 .PHONY: shellcheck
 ## Run shellcheck linter
 shellcheck:
-	shellcheck scripts/*.sh ./*.sh
+	shellcheck scripts/*.sh ./*.sh frontend/*.sh
 
 .PHONY: hadolint
 ## Run hadolint linter
 hadolint:
-	hadolint Dockerfile
+	hadolint Dockerfile frontend/Dockerfile
 
 .PHONY: actionlint
 ## Run actionlint linter
 actionlint:
 	actionlint
 
-.PHONY: djhtml-lint
-## Run djhtml linter
-djhtml-lint:
-	tox -e py-djhtml
-
-.PHONY: prettier-html-lint
-## Run html linter. This linter is used manually to verify that html is valid. It is not used in CI.
-prettier-html-lint:
-	yarn run prettier --check ./**/*.html
+.PHONY: prettier-ts-lint
+## Run prettier check for ts
+prettier-ts-lint:
+	$(CMD_FRONTEND) && yarn run prettier --check "src/**/*.ts" "src/*.ts" "./*.ts"
 
 .PHONY: prettier-scss-lint
-## Run scss linter
+## Run prettier check for scss
 prettier-scss-lint:
-	yarn run prettier --check ./**/*.scss
+	$(CMD_FRONTEND) && yarn run prettier --check "./src/styles/*.scss"
 
 .PHONY: prettier-json-lint
-## Run json linter
+## Run prettier check for json
 prettier-json-lint:
-	yarn run prettier --check ./**/*.json
+	$(CMD_FRONTEND) && yarn run prettier --check "../*.json" "./**/*.json"
 
 .PHONY: prettier-yaml-lint
-## Run yaml linter
+## Run prettier check for yaml
 prettier-yaml-lint:
-	yarn run prettier --check ./deployment/*.yaml ./.github/**/*.yaml
-#------------------------------------
+	$(CMD_FRONTEND) && yarn run prettier --check "../deployment/*.yaml" "../.github/**/*.yaml"
+
+.PHONY: prettier-vue-lint
+## Run prettier check for vue
+prettier-vue-lint:
+	$(CMD_FRONTEND) && yarn run prettier --check "src/App.vue" "src/components/*.vue" "src/views/*.vue"
 
 #------------------------------------
 # Development
@@ -207,38 +246,33 @@ delete-venvs:
 ## Recreate venvs
 recreate-venvs: delete-venvs create-venvs
 
-.PHONY: yarn-install-refresh
-## Run yarn install (refresh)
-yarn-install-refresh:
-	rm yarn.lock
-	yarn install
-
 .PHONY: yarn-build
-## Run yarn build
+## Run frontend build
 yarn-build:
-	yarn build
-
-.PHONY: yarn-build-prod
-## Run yarn build for prod
-yarn-build-prod:
-	yarn build-prod
+	$(CMD_FRONTEND) && yarn build
 
 .PHONY: build
-## Run yarn build for development
-build:
-	yarn build --watch
+## Run frontend build
+build: yarn-build
+
+.PHONY: dev
+## Run frontend development server
+dev:
+	$(CMD_FRONTEND) && yarn dev
+
+.PHONY: yarn-build-prod
+## Run frontend production build
+yarn-build-prod: yarn-build
 
 .PHONY: drop-db
 ## Drop db
 drop-db:
-	source $(ENV_FILE) \
-		&& scripts/drop_db.sh
+	source $(ENV_FILE) && scripts/drop_db.sh
 
 .PHONY: load-db
 ## Load db from today's backup
 load-db: drop-db create-db
-	source $(ENV_FILE) \
-		&& ./scripts/load_db.sh
+	source $(ENV_FILE) && ./scripts/load_db.sh
 
 .PHONY: uv-update
 ## Update python packages
@@ -249,204 +283,79 @@ uv-update:
 ## Show outdated python packages
 uv-show-outdated:
 	uv pip list --outdated
-#------------------------------------
 
 #------------------------------------
 # Formatting
 #------------------------------------
 .PHONY: format
-## Format python code | Formatting
+## Format Python code | Formatting
 format:
-	$(SOURCE_CMDS) \
-		&& ruff format src
+	$(SOURCE_CMDS) && ruff format src
 
 .PHONY: format-json
 ## Format json files
 format-json:
-	yarn run prettier --write ./**/*.json
+	$(CMD_FRONTEND) && yarn run prettier --write "../*.json" "./**/*.json"
 
 .PHONY: format-scss
 ## Format scss files
 format-scss:
-	yarn run prettier --write ./src/**/*.scss
+	$(CMD_FRONTEND) && yarn run prettier --write "./src/**/*.scss"
 
-.PHONY: format-js
-## Format js files
-format-js:
-	yarn run eslint ./*.js src/$(APP)/js/*.js --fix
+.PHONY: format-ts
+## Format ts files
+format-ts:
+	$(CMD_FRONTEND) && yarn run prettier --write "src/**/*.ts" "src/*.ts" "./*.ts"
 
-.PHONY: format-sh
-## Format sh files
-format-sh:
-	shfmt -l -w .
-
-.PHONY: format-html
-## Format html files
-format-html:
-	scripts/djhtml.sh format
+.PHONY: format-vue
+## Format vue files
+format-vue:
+	$(CMD_FRONTEND) && yarn run prettier --write "src/App.vue" "src/components/*.vue" "src/views/*.vue"
 
 .PHONY: format-yaml
 ## Format yaml files
 format-yaml:
-	yarn run prettier --write ./deployment/*.yaml ./.github/**/*.yaml
+	$(CMD_FRONTEND) && yarn run prettier --write "../deployment/*.yaml" "../.github/**/*.yaml"
 
 .PHONY: format-all
 ## Format code
-format-all: format format-html format-js format-scss format-sh format-json format-yaml
-#------------------------------------
+format-all: format format-ts format-vue format-scss format-sh format-json format-yaml
 
 #------------------------------------
 # Django management commands
 #------------------------------------
 MANAGE_CMD := src/manage.py
 
-.PHONY: makemessages
-## Run makemessages | Django
-makemessages:
-	$(SOURCE_CMDS) \
-	&& $(MANAGE_CMD) makemessages -a --ignore=$(VENV_DIR) --ignore=.tox --ignore=static \
-	&& $(MANAGE_CMD) makemessages -a -d djangojs --ignore=src/$(APP)/static --ignore=node_modules --ignore=$(VENV_DIR) --ignore=.tox --ignore=static
-
 .PHONY: runserver
-## Run server for development
+## Run backend server for development
 runserver:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) runserver 0.0.0.0:8000
+	$(SOURCE_CMDS) && $(MANAGE_CMD) runserver 0.0.0.0:8000
 
 .PHONY: run
-## Run server for development
+## Run backend server for development
 run: runserver
 
 .PHONY: migrate
 ## Run data migration
 migrate:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) migrate
+	$(SOURCE_CMDS) && $(MANAGE_CMD) migrate
 
 .PHONY: collectstatic
-## Collect static files
+## Collect backend static files
 collectstatic:
-	$(SOURCE_CMDS) \
-		&& export IS_DEV= \
-		&& $(MANAGE_CMD) collectstatic --no-input
+	$(SOURCE_CMDS) && export IS_DEV= && $(MANAGE_CMD) collectstatic --no-input
 
 .PHONY: createsuperuser
 ## Create super user
 createsuperuser:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) createsuperuser
+	$(SOURCE_CMDS) && $(MANAGE_CMD) createsuperuser
 
 .PHONY: shell
 ## Run shell
 shell:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) shell
-
-.PHONY: makemigrations
-## Run makemigrations command. Usage: make makemigrations arguments="[arguments]"
-makemigrations:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) makemigrations $(arguments) $(APP)
-
-ifeq (manage,$(firstword $(MAKECMDGOALS)))
-  # Use the rest as arguments
-  MANAGE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Turn them into do-nothing targets
-  $(eval $(MANAGE_ARGS):;@:)
-endif
+	$(SOURCE_CMDS) && $(MANAGE_CMD) shell
 
 .PHONY: manage
-## Run management command. Usage: make manage [command] arguments="[arguments]"
+## Run management command. `make manage command_name arguments="arg1 arg2"`
 manage:
-	$(SOURCE_CMDS) \
-		&& $(MANAGE_CMD) ${MANAGE_ARGS} $(arguments)
-#------------------------------------
-
-#------------------------------------
-# Docker commands
-#------------------------------------
-export DOCKER_ENV_FILE := docker.env
-
-.PHONY: docker-build
-## Build image | Docker
-docker-build:
-	docker build -t $(PROJECT):backend .
-
-.PHONY: docker-run
-## Run server in docker
-docker-run: collectstatic
-	docker-compose up
-
-.PHONY: docker-sh
-## Run docker shell
-docker-sh:
-	docker run -ti --env-file $(DOCKER_ENV_FILE) --env-file $(DOCKER_SECRETS_ENV_FILE) $(PROJECT):backend sh
-#------------------------------------
-
-#------------------------------------
-# Production commands
-#------------------------------------
-.PHONY: prod-create-db
-## Create prod db | Production
-prod-create-db:
-	source $(DB_ENV_PROD_FILE) \
-		&& scripts/create_db.sh
-
-.PHONY: prod-drop-db
-## Drop prod db
-prod-drop-db:
-	source $(DB_ENV_PROD_FILE) \
-		&& scripts/drop_db.sh
-
-.PHONY: prod-load-db
-## Load db to prod from today's backup
-prod-load-db: prod-drop-db prod-create-db
-	source $(DB_ENV_PROD_FILE) \
-		&& ./scripts/load_db.sh
-
-.PHONY: prod-connect-db
-## Connect to prod db
-prod-connect-db:
-	source $(DB_ENV_PROD_FILE) \
-		&& scripts/connect_db.sh
-
-ifeq (prod-manage,$(firstword $(MAKECMDGOALS)))
-  # Use the rest as arguments
-  PROD_MANAGE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Turn them into do-nothing targets
-  $(eval $(PROD_MANAGE_ARGS):;@:)
-endif
-
-.PHONY: prod-manage
-## Run management command in prod. Usage: make prod-manage [command] arguments="[arguments]"
-prod-manage:
-	scripts/run_management_command_prod.sh $(PROD_MANAGE_ARGS) $(arguments)
-
-ifeq (prod-manage-interactive,$(firstword $(MAKECMDGOALS)))
-  # Use the rest as arguments
-  PROD_MANAGE_INTERACTIVE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # Turn them into do-nothing targets
-  $(eval $(PROD_MANAGE_INTERACTIVE_ARGS):;@:)
-endif
-
-.PHONY: prod-manage-interactive
-## Run management command in prod (interactive). Usage: make prod-manage [command] arguments="[arguments]"
-prod-manage-interactive:
-	scripts/run_management_command_interactive_prod.sh $(PROD_MANAGE_INTERACTIVE_ARGS) $(arguments)
-
-.PHONY: prod-shell
-## Run shell in prod
-prod-shell:
-	scripts/run_shell_prod.sh
-
-.PHONY: prod-migrate
-## Run data migration for prod
-prod-migrate:
-	scripts/run_management_command_prod.sh migrate
-
-.PHONY: prod-enable-debug
-## Enable debug in prod. It will be reset with the next deployment
-prod-enable-debug:
-	yq eval '.data.DEBUG="True"' deployment/configmap.yaml | kubectl apply -f -
-	kubectl rollout restart deployment/$(PROJECT)
-#------------------------------------
+	$(SOURCE_CMDS) && $(MANAGE_CMD) $(command_name) $(arguments)

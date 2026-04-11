@@ -28,9 +28,9 @@ class CommitType(TypedDict):
 class TemplatesSettingsOptions(TypedDict):
     """Templates settings options."""
 
-    context_processors: list[str]
-    loaders: list[str | tuple[str, list[str]]]
-    builtins: list[str]
+    context_processors: NotRequired[list[str]]
+    loaders: NotRequired[list[str | tuple[str, list[str]]]]
+    builtins: NotRequired[list[str]]
 
 
 class TemplatesSettings(TypedDict):

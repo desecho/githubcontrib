@@ -16,8 +16,8 @@ spec:
       terminationGracePeriodSeconds: 30
       restartPolicy: Always
       containers:
-        - name: githubcontrib
-          image: ghcr.io/desecho/githubcontrib:latest
+        - name: backend
+          image: ghcr.io/desecho/githubcontrib-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -26,3 +26,38 @@ spec:
                 name: githubcontrib
             - configMapRef:
                 name: githubcontrib
+          livenessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: api.githubcontrib.samarchyan.me
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: api.githubcontrib.samarchyan.me
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        - name: frontend
+          image: ghcr.io/desecho/githubcontrib-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5

@@ -30,8 +30,5 @@ jobs:
 
       - name: Destroy
         run: |
-          kubectl delete -f deployment/configmap.yaml --ignore-not-found
-          kubectl delete -f deployment/deployment.yaml --ignore-not-found
-          kubectl delete -f deployment/ingress.yaml --ignore-not-found
-          kubectl delete -f deployment/service.yaml --ignore-not-found
+          kubectl delete -f deployment --ignore-not-found
           kubectl delete secret "$PROJECT" --ignore-not-found

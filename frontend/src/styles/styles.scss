@@ -1,0 +1,76 @@
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f7f9fb;
+}
+
+* {
+  letter-spacing: 0;
+}
+
+a {
+  color: #17633d;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.page-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.page-title {
+  margin-bottom: 20px;
+  font-size: 1.7rem;
+  font-weight: 650;
+  color: #1f2933;
+}
+
+.content-panel {
+  border: 1px solid #d8e0e8;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.muted {
+  color: #5d6b78;
+}
+
+.repo-row {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e3e9ef;
+}
+
+.repo-row:last-child {
+  border-bottom: 0;
+}
+
+.drag-handle {
+  cursor: grab;
+}
+
+.empty-state {
+  padding: 24px;
+  color: #5d6b78;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+  object-fit: cover;
+}
