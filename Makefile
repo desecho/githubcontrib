@@ -359,3 +359,71 @@ shell:
 ## Run management command. `make manage command_name arguments="arg1 arg2"`
 manage:
 	$(SOURCE_CMDS) && $(MANAGE_CMD) $(command_name) $(arguments)
+
+#------------------------------------
+# Production commands
+#------------------------------------
+.PHONY: prod-create-db
+## Create prod db | Production
+prod-create-db:
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/create_db.sh
+
+.PHONY: prod-drop-db
+## Drop prod db
+prod-drop-db:
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/drop_db.sh
+
+.PHONY: prod-load-db
+## Load db to prod from today's backup
+prod-load-db: prod-drop-db prod-create-db
+	source $(DB_ENV_PROD_FILE) \
+		&& ./scripts/load_db.sh
+
+.PHONY: prod-connect-db
+## Connect to prod db
+prod-connect-db:
+	source $(DB_ENV_PROD_FILE) \
+		&& scripts/connect_db.sh
+
+ifeq (prod-manage,$(firstword $(MAKECMDGOALS)))
+  # Use the rest as arguments
+  PROD_MANAGE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # Turn them into do-nothing targets
+  $(eval $(PROD_MANAGE_ARGS):;@:)
+endif
+
+.PHONY: prod-manage
+## Run management command in prod. Usage: make prod-manage [command] arguments="[arguments]"
+prod-manage:
+	scripts/run_management_command_prod.sh $(PROD_MANAGE_ARGS) $(arguments)
+
+ifeq (prod-manage-interactive,$(firstword $(MAKECMDGOALS)))
+  # Use the rest as arguments
+  PROD_MANAGE_INTERACTIVE_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # Turn them into do-nothing targets
+  $(eval $(PROD_MANAGE_INTERACTIVE_ARGS):;@:)
+endif
+
+.PHONY: prod-manage-interactive
+## Run management command in prod (interactive). Usage: make prod-manage [command] arguments="[arguments]"
+prod-manage-interactive:
+	scripts/run_management_command_interactive_prod.sh $(PROD_MANAGE_INTERACTIVE_ARGS) $(arguments)
+
+.PHONY: prod-shell
+## Run shell in prod
+prod-shell:
+	scripts/run_shell_prod.sh
+
+.PHONY: prod-migrate
+## Run data migration for prod
+prod-migrate:
+	scripts/run_management_command_prod.sh migrate
+
+.PHONY: prod-enable-debug
+## Enable debug in prod. It will be reset with the next deployment
+prod-enable-debug:
+	yq eval '.data.DEBUG="True"' deployment/configmap.yaml | kubectl apply -f -
+	kubectl rollout restart deployment/$(PROJECT)
+#------------------------------------
