@@ -1,5 +1,7 @@
 """GitHub."""
 
+from typing import cast
+
 import github
 from django.conf import settings
 from github.GithubException import UnknownObjectException
@@ -15,7 +17,8 @@ class Github:
 
     def __init__(self) -> None:
         """Initialize GitHub."""
-        self.gh = github.Github(settings.GITHUB_API_KEY, per_page=self.MAX_NUMBER_OF_ITEMS)
+        github_api_key = cast(str | None, getattr(settings, "GITHUB_API_KEY", None))
+        self.gh = github.Github(github_api_key, per_page=self.MAX_NUMBER_OF_ITEMS)
 
     def get_stars_count(self, username: str) -> int:
         """Get stars count."""
