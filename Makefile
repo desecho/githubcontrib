@@ -39,7 +39,7 @@ install-deps: install-linters-binaries
 .PHONY: create-venv
 ## Create venv and sync dependencies
 create-venv:
-	uv venv --python $(PYTHON_VERSION)
+	uv venv --python $(PYTHON_VERSION) --allow-existing
 	uv sync
 
 .PHONY: create-tox-venv
