@@ -1,6 +1,6 @@
 <template>
     <v-footer class="footer" color="surface">
-        <div>
+        <div class="footer-content">
             <span>© 2017-{{ currentYear }}</span>
             <span class="footer-separator">|</span>
             <router-link to="/about">About GitHubContrib</router-link>
@@ -21,12 +21,27 @@ const currentYear = new Date().getFullYear();
 .footer {
     min-height: 56px;
     justify-content: center;
-    border-top: 1px solid #d8e0e8;
-    color: #4a5568;
+    border-top: 1px solid #d0d7de;
+    color: #57606a;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 0;
+    font-size: 0.92rem;
 }
 
 .footer-separator {
     margin: 0 10px;
-    color: #8a97a3;
+    color: #8c959f;
+}
+
+@media (max-width: 520px) {
+    .footer-content {
+        padding: 8px 0;
+    }
 }
 </style>

@@ -12,8 +12,9 @@
                     :alt="`${profile.username} avatar`"
                 />
                 <div>
-                    <h2>{{ profile.username }}</h2>
+                    <h2 class="account-username">{{ profile.username }}</h2>
                     <a
+                        class="profile-url"
                         :href="profile.githubProfileUrl"
                         target="_blank"
                         rel="noopener"
@@ -92,7 +93,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .account-panel {
-    padding: 22px;
+    max-width: 760px;
+    padding: 24px;
 }
 
 .profile-header,
@@ -108,8 +110,30 @@ onMounted(() => {
     padding-bottom: 22px;
 }
 
+.account-username {
+    margin: 0 0 6px;
+    color: #24292f;
+    font-size: 1.35rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.profile-url {
+    overflow-wrap: anywhere;
+}
+
 .danger-zone {
     padding-top: 22px;
+}
+
+.danger-zone h2 {
+    margin: 0 0 6px;
+    color: #24292f;
+    font-size: 1.15rem;
+}
+
+.danger-zone p {
+    margin: 0;
 }
 
 @media (max-width: 720px) {

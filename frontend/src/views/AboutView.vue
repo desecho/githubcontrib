@@ -26,6 +26,16 @@
 <style scoped lang="scss">
 .about-panel {
     max-width: 760px;
-    padding: 22px;
+    padding: 24px;
+}
+
+.about-panel p {
+    margin: 0 0 16px;
+    color: #57606a;
+    line-height: 1.65;
+}
+
+.about-panel p:last-child {
+    margin-bottom: 0;
 }
 </style>

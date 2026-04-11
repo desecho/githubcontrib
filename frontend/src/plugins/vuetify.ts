@@ -6,10 +6,19 @@ import { createVuetify } from "vuetify";
 export default createVuetify({
     defaults: {
         VBtn: {
-            rounded: 0,
+            rounded: "sm",
         },
         VCard: {
-            rounded: 0,
+            rounded: "sm",
+        },
+        VExpansionPanel: {
+            elevation: 0,
+        },
+        VTextField: {
+            color: "primary",
+        },
+        VList: {
+            density: "comfortable",
         },
     },
     theme: {
@@ -17,15 +26,17 @@ export default createVuetify({
         themes: {
             light: {
                 colors: {
-                    primary: "#1f7a4d",
-                    secondary: "#4a5568",
-                    accent: "#0f766e",
-                    error: "#c2410c",
-                    info: "#256d85",
-                    success: "#2f855a",
-                    warning: "#b7791f",
-                    background: "#f7f9fb",
+                    primary: "#1a7f37",
+                    secondary: "#57606a",
+                    accent: "#0969da",
+                    error: "#cf222e",
+                    info: "#0969da",
+                    success: "#1a7f37",
+                    warning: "#9a6700",
+                    background: "#f6f8fa",
                     surface: "#ffffff",
+                    "on-background": "#24292f",
+                    "on-surface": "#24292f",
                 },
             },
         },

@@ -4,7 +4,7 @@
 
         <v-progress-linear v-if="loading" color="primary" indeterminate />
 
-        <div v-else class="content-panel">
+        <div v-else class="content-panel users-panel">
             <div v-if="users.length === 0" class="empty-state">
                 No users yet.
             </div>
@@ -12,10 +12,15 @@
                 <v-list-item
                     v-for="username in users"
                     :key="username"
+                    class="user-row"
                     :to="`/users/${username}`"
                     prepend-icon="mdi-github"
                     :title="username"
-                />
+                >
+                    <template #append>
+                        <v-icon icon="mdi-chevron-right" />
+                    </template>
+                </v-list-item>
             </v-list>
         </div>
     </section>
@@ -46,3 +51,30 @@ onMounted(() => {
     void loadUsers();
 });
 </script>
+
+<style scoped lang="scss">
+.users-panel {
+    max-width: 760px;
+}
+
+.user-row {
+    font-weight: 650;
+}
+
+.user-row :deep(.v-list-item-title) {
+    overflow-wrap: anywhere;
+}
+
+.user-row :deep(.v-list-item__prepend .v-icon) {
+    color: #57606a;
+    opacity: 1;
+}
+
+.user-row :deep(.v-list-item__append .v-icon) {
+    color: #8c959f;
+}
+
+.user-row:hover :deep(.v-list-item__append .v-icon) {
+    color: #1a7f37;
+}
+</style>

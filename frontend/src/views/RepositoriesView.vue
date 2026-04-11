@@ -5,6 +5,7 @@
         <v-form class="repo-form" @submit.prevent="addRepo">
             <v-text-field
                 v-model="name"
+                class="repo-field"
                 label="Repository"
                 placeholder="user/project"
                 :rules="repoRules"
@@ -14,6 +15,7 @@
             <v-btn color="primary" type="submit" :loading="saving">Add</v-btn>
             <v-btn
                 color="secondary"
+                class="load-commits-button"
                 variant="tonal"
                 :disabled="repos.length === 0"
                 :loading="loadingCommits"
@@ -25,7 +27,7 @@
 
         <v-progress-linear v-if="loading" color="primary" indeterminate />
 
-        <div v-else class="content-panel">
+        <div v-else class="content-panel repo-list-panel">
             <div v-if="repos.length === 0" class="empty-state">
                 Add a repository you contributed to. Then load commits from your
                 repositories.
@@ -39,7 +41,7 @@
             >
                 <template #item="{ element, index }">
                     <div class="repo-row">
-                        <div>
+                        <div class="repo-name">
                             <v-icon class="drag-handle" icon="mdi-drag" />
                             <span>{{ element.name }}</span>
                         </div>
@@ -54,6 +56,7 @@
                             <v-btn
                                 icon="mdi-delete"
                                 title="Delete"
+                                color="error"
                                 variant="text"
                                 @click="deleteRepo(element.id, index)"
                             />
@@ -182,6 +185,34 @@ onMounted(() => {
     gap: 12px;
     align-items: start;
     margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(27, 31, 36, 0.04);
+}
+
+.repo-field {
+    min-width: 0;
+}
+
+.repo-list-panel {
+    max-width: 860px;
+}
+
+.repo-name {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    color: #24292f;
+    font-weight: 650;
+}
+
+.repo-name span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .repo-actions {
@@ -191,9 +222,24 @@ onMounted(() => {
     gap: 4px;
 }
 
+.load-commits-button {
+    white-space: nowrap;
+}
+
 @media (max-width: 720px) {
     .repo-form {
         grid-template-columns: 1fr;
+        padding: 14px;
+    }
+
+    .repo-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .repo-actions {
+        width: 100%;
+        justify-content: flex-end;
     }
 }
 </style>

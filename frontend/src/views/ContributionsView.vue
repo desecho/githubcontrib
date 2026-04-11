@@ -3,8 +3,9 @@
         <v-progress-linear v-if="loading" color="primary" indeterminate />
 
         <template v-else-if="contributions !== null">
-            <div class="profile-header">
+            <div class="content-panel profile-header">
                 <a
+                    class="profile-avatar-link"
                     :href="contributions.githubProfileUrl"
                     target="_blank"
                     rel="noopener"
@@ -18,8 +19,8 @@
                         :alt="`${contributions.username} avatar`"
                     />
                 </a>
-                <div>
-                    <h1 class="page-title">{{ title }}</h1>
+                <div class="profile-summary">
+                    <h1 class="page-title profile-title">{{ title }}</h1>
                     <p v-if="own" class="profile-username">
                         {{ contributions.username }}
                     </p>
@@ -47,19 +48,35 @@
                 No loaded commits yet.
             </div>
 
-            <v-expansion-panels v-else variant="accordion">
+            <v-expansion-panels
+                v-else
+                class="contrib-panels"
+                variant="accordion"
+            >
                 <v-expansion-panel
                     v-for="repo in reposWithCommits"
                     :key="repo.id"
+                    class="contrib-panel"
                 >
                     <v-expansion-panel-title>
-                        {{ repo.name }}
+                        <div class="repo-panel-title">
+                            <span>{{ repo.name }}</span>
+                            <span class="commit-count">
+                                {{ repo.commits.length }}
+                                {{
+                                    repo.commits.length === 1
+                                        ? "commit"
+                                        : "commits"
+                                }}
+                            </span>
+                        </div>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-list bg-color="transparent">
                             <v-list-item
                                 v-for="commit in repo.commits"
                                 :key="commit.id"
+                                class="commit-row"
                             >
                                 <template #title>
                                     <span>{{ commit.message }}</span>
@@ -70,6 +87,7 @@
                                 <template #append>
                                     <v-btn
                                         :href="commit.url"
+                                        class="commit-link"
                                         icon="mdi-open-in-new"
                                         target="_blank"
                                         rel="noopener"
@@ -149,6 +167,21 @@ watch(
     align-items: center;
     gap: 18px;
     margin-bottom: 24px;
+    padding: 20px;
+}
+
+.profile-avatar-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+
+.profile-summary {
+    min-width: 0;
+}
+
+.profile-title {
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
 }
 
 .profile-links {
@@ -158,9 +191,114 @@ watch(
     align-items: center;
 }
 
+.profile-links a,
+.profile-links span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #57606a;
+    font-weight: 650;
+}
+
+.profile-links a:hover {
+    color: #1a7f37;
+}
+
 .profile-username {
     margin: 0 0 8px;
-    color: #5f6b7a;
+    color: #57606a;
     font-weight: 600;
+}
+
+.contrib-panels {
+    gap: 10px;
+}
+
+.contrib-panel {
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(27, 31, 36, 0.04);
+}
+
+.contrib-panel :deep(.v-expansion-panel-title) {
+    min-height: 58px;
+    color: #24292f;
+    font-weight: 700;
+}
+
+.contrib-panel :deep(.v-expansion-panel-text__wrapper) {
+    padding: 0;
+    border-top: 1px solid #d8dee4;
+}
+
+.repo-panel-title {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.repo-panel-title > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.commit-count {
+    flex: 0 0 auto;
+    padding: 3px 8px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    color: #57606a;
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+
+.commit-row {
+    border-bottom: 1px solid #d8dee4;
+}
+
+.commit-row:last-child {
+    border-bottom: 0;
+}
+
+.commit-row :deep(.v-list-item-title) {
+    color: #24292f;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.commit-row :deep(.v-list-item-subtitle) {
+    color: #57606a;
+    opacity: 1;
+}
+
+.commit-link {
+    color: #57606a;
+}
+
+@media (max-width: 720px) {
+    .profile-header {
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .profile-avatar {
+        width: 72px;
+        height: 72px;
+    }
+
+    .repo-panel-title {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .repo-panel-title > span:first-child {
+        white-space: normal;
+    }
 }
 </style>
