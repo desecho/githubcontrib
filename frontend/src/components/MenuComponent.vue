@@ -1,7 +1,13 @@
 <template>
     <v-app-bar color="surface" elevation="1">
         <v-app-bar-title>
-            <router-link class="brand-link" to="/">GitHubContrib</router-link>
+            <router-link
+                aria-label="GitHubContrib home"
+                class="brand-link"
+                to="/"
+            >
+                <img :src="logoUrl" alt="" class="brand-logo" />
+            </router-link>
         </v-app-bar-title>
 
         <v-spacer />
@@ -29,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import logoUrl from "../assets/logo.png";
 import { useAuthStore } from "../stores/auth";
 
 const auth = useAuthStore();
@@ -36,8 +43,15 @@ const auth = useAuthStore();
 
 <style scoped lang="scss">
 .brand-link {
-    color: #1f2933;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
+}
+
+.brand-logo {
+    width: 44px;
+    height: 40px;
+    flex: 0 0 auto;
+    object-fit: contain;
 }
 </style>
