@@ -25,20 +25,20 @@ jobs:
       VITE_ADMIN_EMAIL: desecho@gmail.com
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.10.0
+        uses: docker/setup-buildx-action@v4.4.1
 
       - name: Login to GitHub registry
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
 
       - name: Build and push docker backend image
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v7.4.0
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}-backend:latest
@@ -47,7 +47,7 @@ jobs:
           context: .
 
       - name: Build and push docker frontend image
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v7.4.0
         with:
           context: ./frontend
           build-args: |
@@ -69,21 +69,21 @@ jobs:
       SPACE_NAME: cdn.githubcontrib.samarchyan.me
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v5.5.0
+        uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.12"
 
       - name: Use uv cache
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/uv
           key: uv
 
       - name: Use venv cache
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v6.1.0
         with:
           path: .venv
           key: venv-${{ hashFiles('pyproject.toml', 'uv.lock') }}
@@ -111,7 +111,7 @@ jobs:
           source: static
 
       - name: Install doctl
-        uses: digitalocean/action-doctl@v2.5.1
+        uses: digitalocean/action-doctl@v2.5.2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
@@ -133,10 +133,10 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v4.0.0
+        uses: azure/setup-kubectl@v5.1.0
 
       - name: Configure kubectl
         run: |
@@ -146,7 +146,7 @@ jobs:
           KUBECONFIG: ${{ secrets.KUBECONFIG }} # Done as a variable because it doesn't work in place.
 
       - name: Install doctl
-        uses: digitalocean/action-doctl@v2.5.1
+        uses: digitalocean/action-doctl@v2.5.2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
